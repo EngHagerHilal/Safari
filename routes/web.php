@@ -28,6 +28,7 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('/home', 'users\usersController@index')->name('home');
     Route::get('/trips/join/{trip_id}', 'users\usersController@joinToTrip')->name('users.joinTrip');
     Route::get('/trips/cancle/{trip_id}', 'users\usersController@cancleToTrip')->name('users.cancleTrip');
+    Route::post('/tripDetails/rate/', 'users\usersController@rateTrip')->name('users.RateTrip');
 
 });
 
@@ -74,6 +75,7 @@ Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied
     Route::post('/trips/new','company\companyController@insertNewTrip')->name('company.trips.insert');
     Route::get('/trips/{action}/{trip_id}','company\companyController@controlTrip')->name('company.trips.control');
     Route::get('/tripDetails/{trip_id}','company\companyController@tripDetails')->name('company.trips.details');
+    Route::get('/tripDetails/joiners/{action}/{trip_id}/{user_id}','company\companyController@controlJoiners')->name('company.trip.control.joiner');
 
 });
 

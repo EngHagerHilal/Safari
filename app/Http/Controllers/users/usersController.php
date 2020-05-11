@@ -5,6 +5,7 @@ namespace App\Http\Controllers\users;
 use App\Company;
 use App\gallary;
 use App\Http\Controllers\Controller;
+use App\trip_rate;
 use App\trips;
 use App\User;
 use App\userTrips;
@@ -46,12 +47,38 @@ class usersController extends Controller
         return redirect()->back()->with('success','you are canceled this trip successfully ');
     }
     public function index(){
-        $user=User::find(Auth::id());
-         $myTrips = $user->myTrips($user->id);
+         $myTrips = Auth::user()->myTrips(Auth::id());
         $availableTrips= DB::table('trips')
-            ->whereNotIn('id', $user->myTripsIds($user->id))
+            ->whereNotIn('id', Auth::user()->myTripsIds(Auth::id()))
             ->where('status', 'active')
             ->get();
+        foreach ($availableTrips as $availableTrip) {
+            $ratedCount = trip_rate::where([
+                ['trip_id','=',$availableTrip->id],
+            ])->get()->count();
+            if($ratedCount >0 ){
+                $availableTrip->rate=(trip_rate::where([
+                        ['trip_id','=',$availableTrip->id],
+                    ])->sum('rate')) / ($ratedCount);
+            }
+            else{
+                $availableTrip->rate='not rated';
+            }
+        }
+        foreach ($myTrips as $availableTrip) {
+            $ratedCount = trip_rate::where([
+                ['trip_id','=',$availableTrip->id],
+            ])->get()->count();
+            if($ratedCount >0 ){
+                $availableTrip->rate=(trip_rate::where([
+                        ['trip_id','=',$availableTrip->id],
+                    ])->sum('rate')) / ($ratedCount);
+            }
+            else{
+                $availableTrip->rate='not rated';
+            }
+        }
+       // return $myTrips;
         return view('home',['myTrips'=>$myTrips,'available'=>$availableTrips]);
     }
     public function search(Request $request){
@@ -78,6 +105,22 @@ class usersController extends Controller
 
         return view('search',['available'=>$availableTrips]);
     }
+    public function rateTrip(Request $request){
+        $trip = trips::find($request->trip_id);
+        if($trip ==null){
+            return redirect()->back()->with('alert','sorry trip not found!');
+        }
+        $tripRated=trip_rate::updateOrCreate([
+            'trip_id'=>$trip->id,
+            'user_id'=>Auth::id(),
+            'rate'=>$request->rate
+        ]);
+        if($tripRated != null){
+            return redirect()->back()->with('success','trip rated successfully ');
+        }
+        return redirect()->back()->with('error','error hapend ');
+
+    }
 
 
 
@@ -100,6 +143,32 @@ class usersController extends Controller
             ->whereNotIn('id', $joinedTripsID)
             ->where('status', 'active')
             ->get();
+        foreach ($availableTrips as $availableTrip) {
+            $ratedCount = trip_rate::where([
+                ['trip_id','=',$availableTrip->id],
+            ])->get()->count();
+            if($ratedCount >0 ){
+                $availableTrip->rate=(trip_rate::where([
+                        ['trip_id','=',$availableTrip->id],
+                    ])->sum('rate')) / ($ratedCount);
+            }
+            else{
+                $availableTrip->rate='not rated';
+            }
+        }
+        foreach ($myTrips as $availableTrip) {
+            $ratedCount = trip_rate::where([
+                ['trip_id','=',$availableTrip->id],
+            ])->get()->count();
+            if($ratedCount >0 ){
+                $availableTrip->rate=(trip_rate::where([
+                        ['trip_id','=',$availableTrip->id],
+                    ])->sum('rate')) / ($ratedCount);
+            }
+            else{
+                $availableTrip->rate='not rated';
+            }
+        }
         return $data=['myTrips'=>$myTrips,'available'=>$availableTrips];
     }
     public function joinToTripAPI(Request $request){
@@ -172,8 +241,37 @@ class usersController extends Controller
         }
         $trip->img=gallary::where('trip_id','=',$trip->id)->get();
         $trip->joiners=userTrips::where('trip_id','=',$trip->id)->get()->count();
-
+        $ratedCount = trip_rate::where([
+            ['trip_id','=',$trip->id],
+        ])->get()->count();
+        if($ratedCount >0 ){
+            $trip->rate=(trip_rate::where([
+                    ['trip_id','=',$trip->id],
+                ])->sum('rate')) / ($ratedCount);
+        }
+        else{
+            $trip->rate='not rated';
+        }
         return $trip;
+    }
+    public function rateTripAPI(Request $request){
+        $user = User::isLoggedIn($request->api_token);
+        if ($user == null) {
+            return \Response::json(['error' => 'login', 'message' => 'please login to access this data']);
+        }
+        $trip = trips::find($request->trip_id);
+        if($trip ==null){
+            return \Response::json(['error' => 'not found', 'message' => 'sorry trip not found!']);
+        }
+        $tripRated=trip_rate::updateOrCreate([
+            'trip_id'=>$trip->id,
+            'user_id'=>Auth::id(),
+            'rate'=>$request->rate
+        ]);
+        if($tripRated != null){
+            return \Response::json(['success' => 'rated', 'message' => 'trip rated successfully ']);
+        }
+        return \Response::json(['error' => 'error', 'message' => 'error hapend']);
     }
 
 }

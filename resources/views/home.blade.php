@@ -37,8 +37,14 @@
                         @foreach($available as $trip)
                             <div class="col-4">
                                 <h3><a href="#"> {{$trip->title}} </a></h3>
-                                {{$trip->description}}
+                                {{$trip->description}}<br><br>Rate  : {{$trip->rate}} <br><br>
                                 <a class="btn btn-success" href="{{route('users.joinTrip',['trip_id'=>$trip->id])}}">join this trip</a>
+                                <form method="post" action="{{route('users.RateTrip')}}">
+                                    @csrf
+                                    <input type="number" min="1" max="5" value="5" name="rate">
+                                    <input type="hidden" value="{{$trip->id}}" name="trip_id">
+                                    <input type="submit" value="rate">
+                                </form>
                             </div>
                         @endforeach
                     </div>
@@ -49,8 +55,15 @@
                                 @foreach($myTrips as $trip)
                                     <div class="col-4">
                                         <h3><a href="#"> {{$trip->title}} </a></h3>
-                                        {{$trip->description}}
+                                        {{$trip->description}}<br><br>Rate  : {{$trip->rate}} <br><br>
                                         <a class="btn btn-success" href="{{route('users.cancleTrip',['trip_id'=>$trip->id])}}">cancle this trip</a>
+
+                                        <form method="post" action="{{route('users.RateTrip')}}">
+                                            @csrf
+                                            <input type="number" min="1" max="5" value="5" name="rate">
+                                            <input type="hidden" value="{{$trip->id}}" name="trip_id">
+                                            <input type="submit" value="rate">
+                                        </form>
                                     </div>
                                 @endforeach
                             </div>

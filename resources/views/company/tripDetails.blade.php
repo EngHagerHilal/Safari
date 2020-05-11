@@ -30,7 +30,16 @@
                             <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="false">trip details</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="joiners-tab" data-toggle="tab" href="#joiners" role="tab" aria-controls="joiners" aria-selected="false">joiners [{{count($joiners)}}]</a>
+                            <a class="nav-link" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="false">new join request [{{count($newJoinRequest)}}]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="resolved-tab" data-toggle="tab" href="#resolved" role="tab" aria-controls="resolved" aria-selected="false">resolved join request [{{count($resolvedJoinRequest)}}]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="rejected-tab" data-toggle="tab" href="#rejected" role="tab" aria-controls="rejected" aria-selected="false">rejected join request [{{count($rejectedJoinRequest)}}]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="confirmedTraveler-tab" data-toggle="tab" href="#confirmedTraveler" role="tab" aria-controls="confirmedTraveler" aria-selected="false">confirmed Traveler [{{count($confirmedTraveler)}}]</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -63,22 +72,80 @@
                                 <p>price : {{$trip->price}}</p>
                                 <p>trip start : {{$trip->start_at}}</p>
                                 <p>trip end : {{$trip->end_at}}</p>
-                                <p><strong>joiners : [{{count($joiners)}}]</strong></p>
+                                <p><strong>new join request : [{{count($newJoinRequest)}}]</strong></p>
+                                <p><strong>resolved Join Request : [{{count($resolvedJoinRequest)}}]</strong></p>
+                                <p><strong>rejected Join Request : [{{count($rejectedJoinRequest)}}]</strong></p>
+                                <p><strong>confirmed Traveler : [{{count($confirmedTraveler)}}]</strong></p>
 
                             </div>
                         </div>
-                        <div class="tab-pane fade " id="joiners" role="tabpanel" aria-labelledby="joiners-tab">
+                        <div class="tab-pane fade " id="pending" role="tabpanel" aria-labelledby="pending-tab">
                             <div class="row">
-                            @foreach($joiners as $user)
-                            <div class="col-md-4 border">
-                                <a href="#"><h4 class="text-center" >{{$user->name}}</h4></a>
-                                <p class="font-weight-bolder">{{$user->email}}</p>
-                                <p>status: <strong>{{$user->status}}</strong></p>
-                                <p>date: {{$user->created_at}}</p>
-
+                                @foreach($newJoinRequest as $user)
+                                    <div class="col-md-4 border">
+                                        <a href="#"><h4 class="text-center" >{{$user->name}}</h4></a>
+                                        <p class="font-weight-bolder">{{$user->email}}</p>
+                                        <p>status: <strong>{{$user->status}}</strong></p>
+                                        <p>request date: {{$user->created_at}}</p>
+                                        @if(in_array($user->status,['pending','resolved']))
+                                            <a href="{{route('company.trip.control.joiner',['action'=>'resolved','trip_id'=>$trip->id,'user_id'=>$user->id])}}">resolve joiner</a>
+                                            <a href="{{route('company.trip.control.joiner',['action'=>'rejected','trip_id'=>$trip->id,'user_id'=>$user->id])}}">reject joiner</a>
+                                            <a href="{{route('company.trip.control.joiner',['action'=>'confirmed','trip_id'=>$trip->id,'user_id'=>$user->id])}}">confirm joiner</a>
+                                        @endif
+                                    </div>
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
+                        <div class="tab-pane fade " id="resolved" role="tabpanel" aria-labelledby="resolved-tab">
+                            <div class="row">
+                                @foreach($resolvedJoinRequest as $user)
+                                    <div class="col-md-4 border">
+                                        <a href="#"><h4 class="text-center" >{{$user->name}}</h4></a>
+                                        <p class="font-weight-bolder">{{$user->email}}</p>
+                                        <p>status: <strong>{{$user->status}}</strong></p>
+                                        <p>request date: {{$user->created_at}}</p>
+                                        @if(in_array($user->status,['pending','resolved']))
+                                            <a href="{{route('company.trip.control.joiner',['action'=>'resolved','trip_id'=>$trip->id,'user_id'=>$user->id])}}">resolve joiner</a>
+                                            <a href="{{route('company.trip.control.joiner',['action'=>'rejected','trip_id'=>$trip->id,'user_id'=>$user->id])}}">reject joiner</a>
+                                            <a href="{{route('company.trip.control.joiner',['action'=>'confirmed','trip_id'=>$trip->id,'user_id'=>$user->id])}}">confirm joiner</a>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="tab-pane fade " id="rejected" role="tabpanel" aria-labelledby="rejected-tab">
+                            <div class="row">
+                                @foreach($rejectedJoinRequest as $user)
+                                    <div class="col-md-4 border">
+                                        <a href="#"><h4 class="text-center" >{{$user->name}}</h4></a>
+                                        <p class="font-weight-bolder">{{$user->email}}</p>
+                                        <p>status: <strong>{{$user->status}}</strong></p>
+                                        <p>request date: {{$user->created_at}}</p>
+                                        @if(in_array($user->status,['pending','resolved']))
+                                            <a href="{{route('company.trip.control.joiner',['action'=>'resolved','trip_id'=>$trip->id,'user_id'=>$user->id])}}">resolve joiner</a>
+                                            <a href="{{route('company.trip.control.joiner',['action'=>'rejected','trip_id'=>$trip->id,'user_id'=>$user->id])}}">reject joiner</a>
+                                            <a href="{{route('company.trip.control.joiner',['action'=>'confirmed','trip_id'=>$trip->id,'user_id'=>$user->id])}}">confirm joiner</a>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="tab-pane fade " id="confirmedTraveler" role="tabpanel" aria-labelledby="confirmedTraveler-tab">
+                            <div class="row">
+                                @foreach($confirmedTraveler as $user)
+                                <div class="col-md-4 border">
+                                    <a href="#"><h4 class="text-center" >{{$user->name}}</h4></a>
+                                    <p class="font-weight-bolder">{{$user->email}}</p>
+                                    <p>status: <strong>{{$user->status}}</strong></p>
+                                    <p>request date: {{$user->created_at}}</p>
+                                    @if(in_array($user->status,['pending','resolved']))
+                                    <a href="{{route('company.trip.control.joiner',['action'=>'resolved','trip_id'=>$trip->id,'user_id'=>$user->id])}}">resolve joiner</a>
+                                    <a href="{{route('company.trip.control.joiner',['action'=>'rejected','trip_id'=>$trip->id,'user_id'=>$user->id])}}">reject joiner</a>
+                                    <a href="{{route('company.trip.control.joiner',['action'=>'confirmed','trip_id'=>$trip->id,'user_id'=>$user->id])}}">confirm joiner</a>
+                                    @endif
+                                </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>

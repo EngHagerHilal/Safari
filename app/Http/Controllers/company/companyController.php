@@ -69,6 +69,32 @@ class companyController extends Controller
         $trip->save();
         return redirect()->back()->with('trip_message','the trip status udated ')->with('status',$trip->status);
     }
+    public function controlJoiners(Request $request){
+
+        $trip=trips::where([['id','=',$request->trip_id],['company_id','=',Auth::guard('company')->user()->id]])->get()->first();
+        if($trip==null){
+            return view('error');
+        }
+        $user=User::find($request->user_id);
+        if($user==null){
+            return view('error');
+        }
+
+        $controlArray=['confirmed','resolved','pending','rejected'];
+        $control = $request->action;
+        if (!in_array($control, $controlArray)) {
+            return view('error');
+        }
+         $JoinRequest=userTrips::where([
+            ['trip_id','=',$trip->id],
+            ['user_id','=',$user->id]
+        ])->update(['status'=>$control]);
+        if($JoinRequest!=true){
+            return view('error');
+        }
+
+            return redirect()->back()->with('trip_message','the joiner status udated ')->with('status',$control);
+    }
     public function tripDetails(Request $request){
 
         $trip=trips::where([['id','=',$request->trip_id],['company_id','=',Auth::guard('company')->user()->id]])->get()->first();
@@ -76,20 +102,59 @@ class companyController extends Controller
             return view('error');
         }
         $trip->img=gallary::where('trip_id','=',$trip->id)->get();
-        $joiners=userTrips::where('trip_id','=',$trip->id)->get();
-        foreach ($joiners as $joiner){
+        $newJoinRequest=userTrips::where([
+            ['trip_id','=',$trip->id],
+            ['status','=','pending']
+        ])->get();
+        $resolvedJoinRequest=userTrips::where([
+            ['trip_id','=',$trip->id],
+            ['status','=','resolved']
+        ])->get();
+        $rejectedJoinRequest=userTrips::where([
+            ['trip_id','=',$trip->id],
+            ['status','=','rejected']
+        ])->get();
+        $confirmedTraveler=userTrips::where([
+            ['trip_id','=',$trip->id],
+            ['status','=','confirmed']
+        ])->get();
+        foreach ($newJoinRequest as $joiner){
             $user=User::find($joiner->user_id)->get()->first();
             $joiner->id=$user->id;
             $joiner->name=$user->name;
             $joiner->email=$user->email;
         }
-        return view('company.tripDetails',['trip'=>$trip,'joiners'=>$joiners]);
+        foreach ($resolvedJoinRequest as $joiner){
+            $user=User::find($joiner->user_id)->get()->first();
+            $joiner->id=$user->id;
+            $joiner->name=$user->name;
+            $joiner->email=$user->email;
+        }
+        foreach ($rejectedJoinRequest as $joiner){
+            $user=User::find($joiner->user_id)->get()->first();
+            $joiner->id=$user->id;
+            $joiner->name=$user->name;
+            $joiner->email=$user->email;
+        }
+        foreach ($confirmedTraveler as $joiner){
+            $user=User::find($joiner->user_id)->get()->first();
+            $joiner->id=$user->id;
+            $joiner->name=$user->name;
+            $joiner->email=$user->email;
+        }
+        return view('company.tripDetails',
+            [
+                'trip'=>$trip,
+                'newJoinRequest'=>$newJoinRequest,
+                'resolvedJoinRequest'=>$resolvedJoinRequest,
+                'rejectedJoinRequest'=>$rejectedJoinRequest,
+                'confirmedTraveler'=>$confirmedTraveler,
+                ]);
         return redirect()->back()->with('trip_message','the trip status udated ')->with('status',$trip->status);
     }
 
     ////////////api //////////////
     public function insertNewTripAPI(Request $request){
-        //return $request;
         $user=Company::isLoggedIn($request->api_token);
         if($user==null){
             return \Response::json(['error'=>'login','message'=>'please login to access this data']);
@@ -184,4 +249,31 @@ class companyController extends Controller
         }
         return $data=['trip'=>$trip,'joiners'=>$joiners];
     }
+
+    public function controlJoinersAPI(Request $request){
+        $user=Company::isLoggedIn($request->api_token);
+        if($user==null){
+            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
+        }
+        $trip=trips::where([['id','=',$request->trip_id],['company_id','=',$user->id]])->get()->first();
+        if($trip==null){
+            return \Response::json(['error'=>'not found','message'=>'trip not found']);
+        }
+
+        $controlArray=['confirmed','resolved','pending','rejected'];
+        $control = $request->action;
+        if (!in_array($control, $controlArray)) {
+            return \Response::json(['error'=>'not valid','message'=>'the control action not correct']);
+        }
+        $JoinRequest=userTrips::where([
+            ['trip_id','=',$trip->id],
+            ['user_id','=',$request->user_id]
+        ])->update(['status'=>$control]);
+        if($JoinRequest!=true){
+            return \Response::json(['error'=>'not found','message'=>'the join request not found']);
+        }
+
+        return \Response::json(['success'=>'updated success','message'=>'the join request updated to be'.$control]);
+    }
+
 }

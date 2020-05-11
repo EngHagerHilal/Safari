@@ -24,6 +24,7 @@ Route::post('/trip_datails/','users\usersController@tripDetailsAPI')->name('trip
 Route::post('/join','users\usersController@joinToTripAPI')->name('user.join.trip.api');
 Route::post('/cancel','users\usersController@cancleToTripAPI')->name('user.cancel.trip.api');
 Route::post('/search','users\usersController@searchAPI')->name('user.search.api');
+Route::post('/tripDetails/rate/', 'users\usersController@rateTripAPI')->name('users.RateTrip.api');
 
 Route::post('/admin/login','AdminAuth\LoginController@ApiLogin')->name('admin.login.api');
 Route::post('/admin/register','AdminAuth\RegisterController@APIregister')->name('admin.register.api');
@@ -42,3 +43,4 @@ Route::post('/company/my_trips/','company\companyController@homeAPI')->name('com
 Route::post('/company/trips/create','company\CompanyController@insertNewTripAPI')->name('company.create.trip.api');
 Route::post('/company/trips/control/','company\companyController@controlTripAPI')->name('company.trips.control.api');
 Route::post('/company/trips/trip_datails/','company\companyController@tripDetailsAPI')->name('company.trips.details.api');
+Route::post('/company/tripDetails/joiners/control','company\companyController@controlJoiners')->name('company.trip.control.joiner');

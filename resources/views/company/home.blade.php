@@ -40,51 +40,58 @@
                         <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
                             <div class="row">
                             @foreach($active as $trip)
-                            <div class="col-md-4 border">
-                                <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}"><h4 class="text-center" >{{$trip->title}}</h4></a>
-                                <p class="font-weight-bolder">{{$trip->description}}</p>
-                                <p class="font-weight-bolder">joiners [{{$trip->joinersCount}}]</p>
-                                <p>status: <strong>{{$trip->status}}</strong></p>
-                                @switch($trip->status)
-                                    @case('active')
-                                    <a class="btn btn-secondary" href="{{route('company.trips.control',['action'=>'disabled','trip_id'=>$trip->id])}}">disable this trip</a>
-                                    <a class="btn btn-primary" href="{{route('company.trips.control',['action'=>'completed','trip_id'=>$trip->id])}}">mark as completed</a>
-                                    @break
+                                    <div class="col-md-4 border">
+                                        <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}"><h4 class="text-center" >{{$trip->title}}</h4></a>
+                                        <p class="font-weight-bolder">{{$trip->description}}</p>
+                                        <p>status: <strong>{{$trip->status}}</strong></p>
+                                        <p class="font-weight-bolder">new Join Request [{{$trip->newJoinRequest}}]</p>
+                                        <p class="font-weight-bolder">resolved Join Request [{{$trip->resolvedJoinRequest}}]</p>
+                                        <p class="font-weight-bolder">rejected Join Request [{{$trip->rejectedJoinRequest}}]</p>
+                                        <p class="font-weight-bolder">confirmed Traveler [{{$trip->confirmedTraveler}}]</p>
 
-                                    @case('disabled')
-                                    <a class="btn btn-success" href="{{route('company.trips.control',['action'=>'active','trip_id'=>$trip->id])}}">active this trip</a>
-                                    @break
+                                        @switch($trip->status)
+                                            @case('active')
+                                            <a class="btn btn-secondary" href="{{route('company.trips.control',['action'=>'disabled','trip_id'=>$trip->id])}}">disable this trip</a>
+                                            <a class="btn btn-primary" href="{{route('company.trips.control',['action'=>'completed','trip_id'=>$trip->id])}}">mark as completed</a>
+                                            @break
 
-                                    @default
-                                    this trip completed
-                                @endswitch
-                            </div>
+                                            @case('disabled')
+                                            <a class="btn btn-success" href="{{route('company.trips.control',['action'=>'active','trip_id'=>$trip->id])}}">active this trip</a>
+                                            @break
+
+                                            @default
+                                            this trip completed
+                                        @endswitch
+                                    </div>
                             @endforeach
                         </div>
                         </div>
                         <div class="tab-pane fade " id="disabled" role="tabpanel" aria-labelledby="disabled-tab">
                             <div class="row">
                             @foreach($disabled as $trip)
-                            <div class="col-md-4 border">
-                                <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}"><h4 class="text-center" >{{$trip->title}}</h4></a>
-                                <p class="font-weight-bolder">{{$trip->description}}</p>
-                                <p>status: <strong>{{$trip->status}}</strong></p>
-                                <p class="font-weight-bolder">joiners [{{$trip->joinersCount}}]</p>
+                                    <div class="col-md-4 border">
+                                        <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}"><h4 class="text-center" >{{$trip->title}}</h4></a>
+                                        <p class="font-weight-bolder">{{$trip->description}}</p>
+                                        <p>status: <strong>{{$trip->status}}</strong></p>
+                                        <p class="font-weight-bolder">new Join Request [{{$trip->newJoinRequest}}]</p>
+                                        <p class="font-weight-bolder">resolved Join Request [{{$trip->resolvedJoinRequest}}]</p>
+                                        <p class="font-weight-bolder">rejected Join Request [{{$trip->rejectedJoinRequest}}]</p>
+                                        <p class="font-weight-bolder">confirmed Traveler [{{$trip->confirmedTraveler}}]</p>
 
-                            @switch($trip->status)
-                                    @case('active')
-                                    <a class="btn btn-secondary" href="{{route('company.trips.control',['action'=>'disabled','trip_id'=>$trip->id])}}">disable this trip</a>
-                                    <a class="btn btn-primary" href="{{route('company.trips.control',['action'=>'completed','trip_id'=>$trip->id])}}">mark as completed</a>
-                                    @break
+                                        @switch($trip->status)
+                                            @case('active')
+                                            <a class="btn btn-secondary" href="{{route('company.trips.control',['action'=>'disabled','trip_id'=>$trip->id])}}">disable this trip</a>
+                                            <a class="btn btn-primary" href="{{route('company.trips.control',['action'=>'completed','trip_id'=>$trip->id])}}">mark as completed</a>
+                                            @break
 
-                                    @case('disabled')
-                                    <a class="btn btn-success" href="{{route('company.trips.control',['action'=>'active','trip_id'=>$trip->id])}}">active this trip</a>
-                                    @break
+                                            @case('disabled')
+                                            <a class="btn btn-success" href="{{route('company.trips.control',['action'=>'active','trip_id'=>$trip->id])}}">active this trip</a>
+                                            @break
 
-                                    @default
-                                    this trip completed
-                                @endswitch
-                            </div>
+                                            @default
+                                            this trip completed
+                                        @endswitch
+                                    </div>
                             @endforeach
                         </div>
                         </div>
@@ -95,7 +102,10 @@
                                 <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}"><h4 class="text-center" >{{$trip->title}}</h4></a>
                                 <p class="font-weight-bolder">{{$trip->description}}</p>
                                 <p>status: <strong>{{$trip->status}}</strong></p>
-                                <p class="font-weight-bolder">joiners [{{$trip->joinersCount}}]</p>
+                                <p class="font-weight-bolder">new Join Request [{{$trip->newJoinRequest}}]</p>
+                                <p class="font-weight-bolder">resolved Join Request [{{$trip->resolvedJoinRequest}}]</p>
+                                <p class="font-weight-bolder">rejected Join Request [{{$trip->rejectedJoinRequest}}]</p>
+                                <p class="font-weight-bolder">confirmed Traveler [{{$trip->confirmedTraveler}}]</p>
 
                                 @switch($trip->status)
                                     @case('active')
