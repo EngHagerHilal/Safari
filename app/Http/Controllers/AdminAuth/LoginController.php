@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\AdminAuth;
 
 use App\Admin;
+use App\Company;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MailController;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -66,7 +68,71 @@ class LoginController extends Controller
     {
         return Auth::guard('admin');
     }
-
+    public function resendEmail(Request $request){
+        $verfiyCode=Str::random(70);
+        $user=Admin::where('email',$request->email)->get()->first();
+        if($user==null){
+            return redirect()->back()->withErrors('email','user not found with this email!');
+        }
+        $user->verfiy_code=$verfiyCode;
+        $user->save();
+        $message='reset your password please click link below';
+        $url=url('/admin/resetPassword/'.$request->email.'/'.$verfiyCode);
+        MailController::sendEmail($user,$url,'reset password',$message);
+        return redirect()->back()->with('success','email sent success please check your inbox mail!');
+    }
+    public function ViewResetForm(Request $request){
+        if($request->type=='user'){
+            $user=User::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->get()->first();
+        }
+        elseif($request->type=='company'){
+            $user=Company::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->get()->first();
+        }
+        elseif($request->type=='admin'){
+            $user=Admin::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->get()->first();
+        }
+        else{
+            return view('error');
+        }
+        if($user==null){
+            return view('notAvialable',['message'=>'this user not found.']);
+        }
+        $data=[
+                'type'=>$request->type,
+                'email'=>$request->email,
+                'verfiy_code'=>$request->verfiyCode,
+        ];
+        return view('resetNewPasswordForm',$data);
+    }
+    public function updateNewPassword(Request $request){
+        $validated=$request->validate([
+            'type'          => 'required',
+            'verfiy_code'   => 'required',
+            'email'         => 'required',
+            'new_password'  => 'required',
+            'confirm_password'=> 'required|same:new_password',
+        ]);
+        if($request->type=='user'){
+            $user=User::where([['email',$request->email],['verfiy_code',$request->verfiy_code]])->get()->first();
+        }
+        elseif($request->type=='company'){
+            $user=Company::where([['email',$request->email],['verfiy_code',$request->verfiy_code]])->get()->first();
+        }
+        elseif($request->type=='admin'){
+            $user=Admin::where([['email',$request->email],['verfiy_code',$request->verfiy_code]])->get()->first();
+        }
+        else{
+            return view('error');
+        }
+        if($user==null){
+            return view('notAvialable',['message'=>'this user not found.']);
+        }
+        $verfiyCode=Str::random(70);
+        $user->password=\Hash::make($request->new_password);
+        $user->verfiy_code=$verfiyCode;
+        $user->update();
+        return redirect('home')->with('success','new password reset success you can now login');
+    }
     public function ApiLogin(Request $request)
     {
         $validateRules=[

@@ -10,6 +10,9 @@ body{
 .font-1-2{
     font-size: 1.2em;
 }
+.font-1-6{
+    font-size: 1.6em;
+}
 .main-bg-green{
     background-color: #00AA6C;
 }
@@ -26,7 +29,7 @@ body{
 h1.safari-text{
     position: absolute;
     left: 50%;
-    margin-left: -25%;
+    margin-left: -20%;
     top: 50%;
     z-index: 1;
     color: #eee;
@@ -56,7 +59,7 @@ h1.safari-text{
     position: sticky;
     top: 65px;
     padding: 5px;
-    height: 500px;
+    min-height: 500px;
 }
 .posts-container{
     width: 45%;
@@ -97,7 +100,7 @@ h1.safari-text{
     display: block;
     width: 60%;
     margin: auto;
-    margin-top: 50px;
+    margin: 10px auto;
 }
 .post-details-container .post-details{
     padding:5px;
@@ -107,10 +110,20 @@ h1.safari-text{
     width: 100%;
     margin: 0 auto;
 }
-.first-main-container.login-bg {
+body{
+    font-family: 'Almarai', sans-serif;
+    font-family: 'Cairo', sans-serif;
+    font-weight: bold;
+}
+.first-main-container.login-bg ,
+.main-bg-safary{
+    background-attachment: fixed;
     padding-top: 60px!important;
     margin: 0;
     background-image: url("../img/slide-5.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 700px;
 }
 .container-login100 {
     width: 100%;
@@ -124,6 +137,9 @@ h1.safari-text{
     align-items: center;
     padding: 15px;
     position: relative;
+    font-family: 'Cairo', sans-serif;
+    font-family: 'Almarai', sans-serif;
+    font-weight: bold;
 }
 .wrap-login100 {
     width: 500px;
@@ -136,6 +152,7 @@ h1.safari-text{
     -o-box-shadow: 0 3px 20px 0 rgba(0,0,0,.1);
     -ms-box-shadow: 0 3px 20px 0 rgba(0,0,0,.1);
 }
+
 .login100-form {
     width: 100%;
     position: relative;
@@ -151,7 +168,6 @@ h1.safari-text{
     padding-top: 178px;
 }
 .login100-form-title {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     font-size: 30px;
     color: #fff;
     line-height: 1.2;
@@ -180,7 +196,6 @@ h1.safari-text{
     margin-bottom: 16px;
 }
 .input100 {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
     font-size: 15px;
     color: #1b3815;
     line-height: 1.2;
@@ -194,7 +209,6 @@ h1.safari-text{
 }
 .login100-form {
     padding: 178px 10px 20px 10px;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"
 }
 .login100-form input {
     outline: none;
@@ -264,4 +278,99 @@ h1.safari-text{
     -o-transition: all .4s;
     -moz-transition: all .4s;
     transition: all .4s;
+}
+/*search form*/
+input[type='range'] {
+    width: 210px;
+    height: 30px;
+    overflow: hidden;
+    cursor: pointer;
+    outline: none;
+}
+input[type='range'],
+input[type='range']::-webkit-slider-runnable-track,
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: none;
+}
+input[type='range']::-webkit-slider-runnable-track {
+    width: 200px;
+    height: 1px;
+    background: #003D7C;
+}
+
+input[type='range']:nth-child(2)::-webkit-slider-runnable-track{
+    background: none;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    position: relative;
+    height: 15px;
+    width: 15px;
+    margin-top: -7px;
+    background: #fff;
+    border: 1px solid #003D7C;
+    border-radius: 25px;
+    z-index: 1;
+}
+
+
+input[type='range']:nth-child(1)::-webkit-slider-thumb{
+    z-index: 2;
+}
+
+.rangeslider{
+    position: relative;
+    height: 60px;
+    width: 210px;
+    display: inline-block;
+    margin-top: -5px;
+    margin-left: 20px;
+}
+.rangeslider input{
+    position: absolute;
+}
+.rangeslider{
+    position: absolute;
+}
+
+.rangeslider span{
+    position: absolute;
+    margin-top: 30px;
+    left: 0;
+}
+
+.rangeslider .right{
+    position: relative;
+    float: right;
+    margin-right: -5px;
+}
+
+
+
+
+
+
+
+/*bg glass important*/
+.bg-glass{
+    box-shadow: 0 0 1rem 0 rgba(77,151,228,.35);
+    border-radius: 5px;
+    position: relative;
+    z-index: 1;
+    background: inherit;
+    overflow: hidden;
+}
+.bg-glass:before {
+    content: "";
+    position: absolute;
+    background: inherit;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
+    filter: blur(10px);
+    margin: -20px;
 }

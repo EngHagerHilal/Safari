@@ -12,23 +12,44 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::get('locale/{locale}', function ($locale){
+    Session::put('locale', $locale);
+    return redirect()->back();
 });
 Route::get('/{accountType}/verfiy/{email}/{verifyCode}', 'admin\AdminController@verifyEmail');
 Route::get('needToActive', function (){
     return view('needToActive');
 });
+//to view th form
+Route::get('user/forgotPassword', function (){
+        return view('auth.passwordReset');
+    })->name('forgotPassword');
+Route::get('company/forgotPassword', function (){
+        return view('company.passwordReset');
+    })->name('company.forgoYourPassword');
+Route::get('admin/forgotPassword', function (){
+        return view('admin.passwordReset');
+    })->name('admin.forgotPassword');
+
+//to send email
+Route::post('user/forgotPassword', 'Auth\loginController@resendEmail')->name('user.sendEmailReset');
+Route::post('company/forgotPassword', 'CompanyAuth\loginController@resendEmail')->name('company.sendEmailReset');
+Route::post('admin/forgotPassword', 'AdminAuth\loginController@resendEmail')->name('admin.sendEmailReset');
+//to view reset new pass form
+Route::get('{type}/resetPassword/{email}/{verfiyCode}', 'AdminAuth\loginController@ViewResetForm')->name('newPassResetForm');
+Route::post('updatePassword', 'AdminAuth\loginController@updateNewPassword')->name('updatePassword');
 
 Auth::routes(['verify' => true]);
 Route::get('/trips/search', 'users\usersController@search')->name('user.trips.search');
+Route::get('/home', 'users\usersController@index')->name('home');
+Route::get('/', 'users\usersController@index')->name('home');
 
 Route::middleware(['auth','verified'])->group(function(){
-    Route::get('/home', 'users\usersController@index')->name('home');
+    Route::get('/myTrips', 'users\usersController@myTrips')->name('myJoinedTrips');
     Route::get('/trips/join/{trip_id}', 'users\usersController@joinToTrip')->name('users.joinTrip');
     Route::get('/trips/cancle/{trip_id}', 'users\usersController@cancleToTrip')->name('users.cancleTrip');
     Route::post('/tripDetails/rate/', 'users\usersController@rateTrip')->name('users.RateTrip');
+    Route::get('/tripDetails/{trip_id}/', 'users\usersController@tripDetails')->name('users.tripDetails');
 
 });
 
@@ -69,6 +90,7 @@ Route::group(['prefix' => 'admin',  'middleware' => ['admin','adminVerfied']], f
     Route::get('/reject/partner/{partner_id}', 'Admin\AdminController@rejectPartner')->name('admin.reject.partner');
     Route::get('/active/partner/{partner_id}', 'Admin\AdminController@activePartner')->name('admin.active.partner');
     Route::get('/users', 'Admin\AdminController@usersControl');
+    Route::get('/users/{control}/{user_id}/', 'Admin\AdminController@blockUser')->name('users.control');
 });
 Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied']], function(){
     Route::get('/trips/new','company\companyController@newTrip')->name('company.trips.new');

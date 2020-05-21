@@ -47,11 +47,17 @@ class usersController extends Controller
         return redirect()->back()->with('success','you are canceled this trip successfully ');
     }
     public function index(){
-         $myTrips = Auth::user()->myTrips(Auth::id());
-        $availableTrips= DB::table('trips')
-            ->whereNotIn('id', Auth::user()->myTripsIds(Auth::id()))
-            ->where('status', 'active')
-            ->get();
+        if(Auth::check()){
+            $availableTrips= DB::table('trips')
+                ->whereNotIn('id', Auth::user()->myTripsIds(Auth::id()))
+                ->where('status', 'active')
+                ->get();
+        }
+        else{
+            $availableTrips= DB::table('trips')
+                ->where('status', 'active')
+                ->get();
+        }
         foreach ($availableTrips as $availableTrip) {
             $ratedCount = trip_rate::where([
                 ['trip_id','=',$availableTrip->id],
@@ -64,7 +70,21 @@ class usersController extends Controller
             else{
                 $availableTrip->rate='not rated';
             }
+             $availableTrip->companyName=Company::find($availableTrip->company_id)->name;
+             $img=gallary::where('trip_id','=',$availableTrip->id)->get()->first();//->img_url;
+            if($img==null){
+                $availableTrip->mainIMG='img/no-img.png';
+            }
+            else{
+                $availableTrip->mainIMG=$img->img_url;
+            }
         }
+       // return $myTrips;
+        return view('home',['available'=>$availableTrips]);
+    }
+    public function myTrips(){
+        $myTrips = Auth::user()->myTrips(Auth::id());
+
         foreach ($myTrips as $availableTrip) {
             $ratedCount = trip_rate::where([
                 ['trip_id','=',$availableTrip->id],
@@ -77,9 +97,18 @@ class usersController extends Controller
             else{
                 $availableTrip->rate='not rated';
             }
+            $availableTrip->companyName=Company::find($availableTrip->company_id)->name;
+            $img=gallary::where('trip_id','=',$availableTrip->id)->get()->first();//->img_url;
+            if($img==null){
+                $availableTrip->mainIMG='img/no-img.png';
+            }
+            else{
+                $availableTrip->mainIMG=$img->img_url;
+            }
         }
-       // return $myTrips;
-        return view('home',['myTrips'=>$myTrips,'available'=>$availableTrips]);
+
+        // return $myTrips;
+        return view('myTrips',['myTrips'=>$myTrips]);
     }
     public function search(Request $request){
         $param=[];
@@ -102,9 +131,56 @@ class usersController extends Controller
         else{
             $availableTrips = trips::where('status','=','active')->get();
         }
+        foreach ($availableTrips as $availableTrip) {
+            $ratedCount = trip_rate::where([
+                ['trip_id','=',$availableTrip->id],
+            ])->get()->count();
+            if($ratedCount >0 ){
+                $availableTrip->rate=(trip_rate::where([
+                        ['trip_id','=',$availableTrip->id],
+                    ])->sum('rate')) / ($ratedCount);
+            }
+            else{
+                $availableTrip->rate='not rated';
+            }
+            $availableTrip->companyName=Company::find($availableTrip->company_id)->name;
+            $img=gallary::where('trip_id','=',$availableTrip->id)->get()->first();//->img_url;
+            if($img==null){
+                $availableTrip->mainIMG='img/no-img.png';
+            }
+            else{
+                $availableTrip->mainIMG=$img->img_url;
+            }
+        }
+
 
         return view('search',['available'=>$availableTrips]);
     }
+    public function tripDetails(Request $request){
+        $trip=trips::where([['id','=',$request->trip_id],['status','!=','disabled']])->get()->first();
+        if($trip==null){
+            return view('notAvialable');
+        }
+        $trip->img=gallary::where('trip_id','=',$trip->id)->get();
+        $trip->joiners=userTrips::where('trip_id','=',$trip->id)->get()->count();
+        $ratedCount = trip_rate::where([
+            ['trip_id','=',$trip->id],
+        ])->get()->count();
+        if($ratedCount >0 ){
+            $trip->rate=(trip_rate::where([
+                    ['trip_id','=',$trip->id],
+                ])->sum('rate')) / ($ratedCount);
+        }
+        else{
+            $trip->rate='not rated';
+        }
+        $trip->comapnyName=Company::find($trip->company_id)->name;
+        $joined=userTrips::where([['user_id',\auth()->id()],['trip_id',$trip->id]])->get()->first();
+        $trip->joined = ($joined != null) ? true : false;
+        //return $trip;
+        return view('tripDetails',['trip'=>$trip]);
+    }
+
     public function rateTrip(Request $request){
         $trip = trips::find($request->trip_id);
         if($trip ==null){

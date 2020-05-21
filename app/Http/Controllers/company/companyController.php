@@ -59,11 +59,13 @@ class companyController extends Controller
         }*/
     }
     public function controlTrip(Request $request){
-
         $trip=trips::where([['id','=',$request->trip_id],['company_id','=',Auth::guard('company')->user()->id]])->get()->first();
         if($trip==null){
             return view('error');
         }
+        $status=['active','disabled','completed'];
+        if(!in_array($request->action,$status))
+            return view('error');
 
         $trip->status=$request->action;
         $trip->save();
@@ -73,6 +75,7 @@ class companyController extends Controller
 
         $trip=trips::where([['id','=',$request->trip_id],['company_id','=',Auth::guard('company')->user()->id]])->get()->first();
         if($trip==null){
+            return 'no';
             return view('error');
         }
         $user=User::find($request->user_id);
@@ -92,7 +95,6 @@ class companyController extends Controller
         if($JoinRequest!=true){
             return view('error');
         }
-
             return redirect()->back()->with('trip_message','the joiner status udated ')->with('status',$control);
     }
     public function tripDetails(Request $request){
@@ -119,25 +121,25 @@ class companyController extends Controller
             ['status','=','confirmed']
         ])->get();
         foreach ($newJoinRequest as $joiner){
-            $user=User::find($joiner->user_id)->get()->first();
+            $user=User::find($joiner->user_id);
             $joiner->id=$user->id;
             $joiner->name=$user->name;
             $joiner->email=$user->email;
         }
         foreach ($resolvedJoinRequest as $joiner){
-            $user=User::find($joiner->user_id)->get()->first();
+            $user=User::find($joiner->user_id);
             $joiner->id=$user->id;
             $joiner->name=$user->name;
             $joiner->email=$user->email;
         }
         foreach ($rejectedJoinRequest as $joiner){
-            $user=User::find($joiner->user_id)->get()->first();
+            $user=User::find($joiner->user_id);
             $joiner->id=$user->id;
             $joiner->name=$user->name;
             $joiner->email=$user->email;
         }
         foreach ($confirmedTraveler as $joiner){
-            $user=User::find($joiner->user_id)->get()->first();
+            $user=User::find($joiner->user_id);
             $joiner->id=$user->id;
             $joiner->name=$user->name;
             $joiner->email=$user->email;

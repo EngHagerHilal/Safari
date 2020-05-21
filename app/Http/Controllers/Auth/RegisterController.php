@@ -83,7 +83,6 @@ class RegisterController extends Controller
         $data->message='email created successfully check your email address to active your account';
         return $data;
     }
-
     public function APIregister(Request $request)
     {
         $validateRules=[

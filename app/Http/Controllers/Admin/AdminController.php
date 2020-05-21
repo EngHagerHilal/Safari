@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Admin;
 use App\Company;
 use App\Http\Controllers\Controller;
+use App\trips;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use phpDocumentor\Reflection\Types\Compound;
 
@@ -42,8 +44,19 @@ class AdminController extends Controller
     }
     public function homeAdmin(){
         $users=User::all()->count();
+        $active_users=User::filterBy('active')->count();
+        $blocked_users=User::filterBy('blocked')->count();
         $companies=Company::all()->count();
-        return view('admin.home',['users'=>$users,'companies'=>$companies,]);
+        $active_companies=Company::filterBy('active')->count();
+        $blocked_companies=Company::filterBy('blocked')->count();
+        return view('admin.home',[
+            'users'             => $users,
+            'active_users'      => $active_users,
+            'blocked_users'     => $blocked_users,
+            'partners'          => $companies,
+            'active_partners'   => $active_companies,
+            'blocked_partners'  => $blocked_companies,
+            ]);
     }
 
     public function partnersControl(){
@@ -97,6 +110,21 @@ class AdminController extends Controller
         $blocked=User::filterBy('blocked');
         return view('admin.users',['users'=>$users,'active'=>$active,'blocked'=>$blocked,]);
     }
+    public function blockUser(Request $request){
+        if(!in_array($request->control,['active','blocked'])){
+            return view('error');
+        }
+        $user=User::find($request->user_id);
+        if($user==null){
+            return view('error');
+        }
+
+        $user->status=$request->control;
+        $user->save();
+        return redirect()->back()->with('trip_message','the user status udated ')->with('status',$user->status);
+
+    }
+
 
 
 
