@@ -46,9 +46,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">{{__('frontEnd.land_trips')}}</a>
                         </li>
+                        @guest()
                         <li class="nav-item">
                             <a class="nav-link" href="{{url('/company/login/')}}">{{__('frontEnd.travel_partner')}}</a>
                         </li>
+                        @endguest
                     </ul>
                     <ul class="navbar-nav {{$margin}}">
 

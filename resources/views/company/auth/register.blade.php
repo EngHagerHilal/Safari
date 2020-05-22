@@ -12,7 +12,7 @@
                         </span>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                            <input required class="input100 @error('name') is-invalid @enderror" type="text" name="name" id="name" placeholder="{{__('frontEnd.your_name')}}">
+                            <input required class="input100 @error('name') is-invalid @enderror" value="{{old('name')}}" type="text" name="name" id="name" placeholder="{{__('frontEnd.your_name')}}">
                             <span class="focus-input100"></span>
                             @error('name')
                             <span class="px-4 invalid-feedback" role="alert">
@@ -21,7 +21,7 @@
                             @enderror
                         </div>
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                            <input id="email" class="@error('email') is-invalid @enderror input100" type="email" name="email" placeholder="{{__('frontEnd.your_email')}}" required="required" autocomplete="email" >
+                            <input id="email" class="@error('email') is-invalid @enderror input100" value="{{old('email')}}" type="email" name="email" placeholder="{{__('frontEnd.your_email')}}" required="required" autocomplete="email" >
                             <span class="focus-input100"></span>
                             @error('email')
                             <span class="px-4 invalid-feedback" role="alert">

@@ -39,10 +39,12 @@ Route::post('admin/forgotPassword', 'AdminAuth\loginController@resendEmail')->na
 Route::get('{type}/resetPassword/{email}/{verfiyCode}', 'AdminAuth\loginController@ViewResetForm')->name('newPassResetForm');
 Route::post('updatePassword', 'AdminAuth\loginController@updateNewPassword')->name('updatePassword');
 
-Auth::routes(['verify' => true]);
-Route::get('/trips/search', 'users\usersController@search')->name('user.trips.search');
-Route::get('/home', 'users\usersController@index')->name('home');
-Route::get('/', 'users\usersController@index')->name('home');
+Route::middleware('company.guest')->group(function (){
+    Auth::routes(['verify' => true]);
+    Route::get('/trips/search', 'users\usersController@search')->name('user.trips.search')->middleware('company.guest');
+    Route::get('/home', 'users\usersController@index')->name('home')->middleware('company.guest');
+    Route::get('/', 'users\usersController@index')->name('home')->middleware('company.guest');
+});
 
 Route::middleware(['auth','verified'])->group(function(){
     Route::get('/myTrips', 'users\usersController@myTrips')->name('myJoinedTrips');
@@ -67,7 +69,7 @@ Route::group(['prefix' => 'admin'], function () {
   Route::get('/password/reset/{token}', 'AdminAuth\ResetPasswordController@showResetForm')->name('admin.password.rest.token');
 });
 
-Route::group(['prefix' => 'company'], function () {
+Route::group(['prefix' => 'company','middleware'=>'guest'], function () {
   Route::get('/login', 'CompanyAuth\LoginController@showLoginForm')->name('company.login');
   Route::post('/login', 'CompanyAuth\LoginController@login');
   Route::post('/logout', 'CompanyAuth\LoginController@logout')->name('company.logout');
@@ -84,7 +86,7 @@ Route::group(['prefix' => 'company'], function () {
 //auth admin routes
 Route::group(['prefix' => 'admin',  'middleware' => ['admin','adminVerfied']], function()
 {
-    Route::get('/home', 'Admin\AdminController@homeAdmin')->name('home');;
+    Route::get('/home', 'Admin\AdminController@homeAdmin')->name('admin.home');
     Route::get('/partners', 'Admin\AdminController@partnersControl');
     Route::get('/accept/partner/{partner_id}', 'Admin\AdminController@acceptPartner')->name('admin.accept.partner');
     Route::get('/reject/partner/{partner_id}', 'Admin\AdminController@rejectPartner')->name('admin.reject.partner');
@@ -92,7 +94,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['admin','adminVerfied']], f
     Route::get('/users', 'Admin\AdminController@usersControl');
     Route::get('/users/{control}/{user_id}/', 'Admin\AdminController@blockUser')->name('users.control');
 });
-Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied']], function(){
+Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied','guest']], function(){
+    Route::get('/home', 'company\CompanyController@home')->name('home');
     Route::get('/trips/new','company\companyController@newTrip')->name('company.trips.new');
     Route::post('/trips/new','company\companyController@insertNewTrip')->name('company.trips.insert');
     Route::get('/trips/{action}/{trip_id}','company\companyController@controlTrip')->name('company.trips.control');

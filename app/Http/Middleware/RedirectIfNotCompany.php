@@ -18,7 +18,7 @@ class RedirectIfNotCompany
 	public function handle($request, Closure $next, $guard = 'company')
 	{
 	    if (!Auth::guard($guard)->check()) {
-	        return redirect('company/login');
+	        return redirect('/company/login');
 	    }
 
 	    return $next($request);
