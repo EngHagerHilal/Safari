@@ -94,11 +94,39 @@
 
             </div>
             <div class="col-3 panner-right ">
-                <div class="panner bg-light box-shadow">
+                <div class="panner bg-light box-shadow" >
                     <h3 class="text-uppercase text-center">{{__('frontEnd.special_trips')}}</h3>
-                    <div class="special-posts">
+                    <div class="special-posts" style="overflow: auto;max-height: 475px">
+                        @foreach($myTrips as $trip)
+                            <div class="post-item bg-light box-shadow">
+                                <div class="post-body">
+                                    <div class="image-container">
+                                        <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
+                                    </div>
+                                    <div class="px-2 more-details {{$text}}">
+                                        <a href="{{route('users.tripDetails',['trip_id'=>$trip->id])}}">
+                                            <h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
+                                        </a>
+                                        <p class="text-dark">
+                                            <i class="fas fa-calendar-alt font-1-2 main-text-green"></i>
+                                            {{__('frontEnd.travel_day')}} : {{$trip->start_at}}
+                                        </p>
 
+                                    </div>
+                                </div>
+                            </div>
+
+                        @endforeach
                     </div>
+
+                    @guest
+                    @else
+                    <div class=" position-relative">
+                        <a href="{{route('myJoinedTrips')}}" style="bottom: 0;width: 80%; left: 0;right: 0" class="btn btn-success d-block m-auto position-absolute">
+                            <i class="fas fa-suitcase-rolling"></i> {{__('frontEnd.my_joined_trips')}}
+                        </a>
+                    </div>
+                    @endguest
                 </div>
 
             </div>

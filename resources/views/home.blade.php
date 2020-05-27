@@ -111,15 +111,26 @@
                                 <h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
                             </a>
                             <p class="text-dark">{{$trip->description}}</p>
-                            <p >
-                                {{__('frontEnd.rate')}}  : <strong>{{$trip->rate}}</strong>
-                            </p>
-                            <form method="post" action="{{route('users.RateTrip')}}">
-                                @csrf
-                                <input type="number" min="1" max="5" value="5" name="rate">
-                                <input type="hidden" value="{{$trip->id}}" name="trip_id">
-                                <input type="submit" value="rate">
-                            </form>
+
+                            @if($trip->rated==false)
+                                @php
+                                    $rated='rate-it';
+                                @endphp
+                            @else
+                                @php
+                                    $rated='';
+                                @endphp
+                            @endif
+                            <div id="rate-trip-id_{{$trip->id}}" class="main-rate {{$rated}}">
+
+                                    @for($i=1;$i<=$trip->rate;$i++)
+                                    <i trip-id="{{$trip->id}}" class="fa fa-star gold-color font-1-6" rate-value={{$i}}></i>
+                                    @endfor
+                                    @for($y=1;$y<=(5 - $trip->rate);$y++)
+                                    <i trip-id="{{$trip->id}}" class="far fa-star gold-color font-1-6" rate-value="{{$y+$trip->rate}}"></i>
+                                    @endfor
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -127,15 +138,80 @@
 
             </div>
             <div class="col-3 panner-right ">
-                <div class="panner bg-light box-shadow">
+                <div class="panner bg-light box-shadow" >
                     <h3 class="text-uppercase text-center">{{__('frontEnd.special_trips')}}</h3>
-                    <div class="special-posts">
+                    <div class="special-posts" style="overflow: auto;max-height: 475px">
+                        @foreach($myTrips as $trip)
+                            <div class="post-item bg-light box-shadow">
+                                <div class="post-body">
+                                    <div class="image-container">
+                                        <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
+                                    </div>
+                                    <div class="px-2 more-details {{$text}}">
+                                        <a href="{{route('users.tripDetails',['trip_id'=>$trip->id])}}">
+                                            <h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
+                                        </a>
+                                        <p class="text-dark">
+                                            <i class="fas fa-calendar-alt font-1-2 main-text-green"></i>
+                                            {{__('frontEnd.travel_day')}} : {{$trip->start_at}}
+                                        </p>
 
+                                    </div>
+                                </div>
+                            </div>
+
+                        @endforeach
                     </div>
+
+                    @guest
+                    @else
+                        <div class=" position-relative">
+                            <a href="{{route('myJoinedTrips')}}" style="bottom: 0;width: 80%; left: 0;right: 0" class="btn btn-success d-block m-auto position-absolute">
+                                <i class="fas fa-suitcase-rolling"></i> {{__('frontEnd.my_joined_trips')}}
+                            </a>
+                        </div>
+                    @endguest
                 </div>
 
             </div>
         </div>
     </div>
 
+@endsection
+@section('ajaxCode')
+    <script>
+        $(document).ready(function() {
+            $('.rate-it>i').click(function(e){
+                var trip_id = $(this).attr('trip-id');
+                var rate    = $(this).attr('rate-value');
+                var token   = '{{csrf_token()}}';
+                var newHTML ='';
+                $(this).parent('.main-rate').hasClass('rate-it')
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{route('users.RateTrip')}}",
+                        dataType: "json",
+                        data: {'trip_id': trip_id, 'rate': rate, '_token': token},
+                        success: function (data) {
+                            if (data.success) {
+                                data.newRate;
+                                $('#rate-trip-id_' + trip_id).removeClass('rate-it');
+
+                                $('#rate-trip-id_' + trip_id ).children('i').removeClass('fa').addClass('far');
+
+                                for (var i = 0; i <= data.newRate; i++) {
+                                    $('#rate-trip-id_' + trip_id + ' i:nth-child(' + i + ')').addClass('fa');
+                                }
+
+                            } else {
+
+                            }
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
 @endsection

@@ -15,8 +15,7 @@
     <title>{{ config('app.name', 'safari') }}</title>
 
 <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/jquery-3.4.1.min.js') }}" defer></script>
+    <script src="{{ asset('js/jquery-3.4.1.min.js') }}" ></script>
 
 <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -54,14 +53,14 @@
                     </ul>
                     <ul class="navbar-nav {{$margin}}">
 
-                    @guest
+                        @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('frontEnd.login') }}</a>
                             </li>
-                        @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ url('/register') }}">{{ __('frontEnd.register') }}</a>
-                                </li>
+                            @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/register') }}">{{ __('frontEnd.register') }}</a>
+                            </li>
                             @endif
                         @else
                             <li class="nav-item">
@@ -105,6 +104,8 @@
             @yield('content')
         </main>
     </div>
+@yield('ajaxCode')
+<script src="{{ asset('js/bootstrap.min.js') }}" ></script>
 
 <script src="https://kit.fontawesome.com/8aaad534d4.js" crossorigin="anonymous"></script>
 </body>

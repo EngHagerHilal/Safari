@@ -49,11 +49,17 @@ class User extends Authenticatable //implements MustVerifyEmail
 
     }
 
-    public function myTrips($user_id)
+    public function myTrips($user_id,$limiter=null)
     {
+
         $MyTrips=new User();
         $trips=[];
-        $userTrips= userTrips::where('user_id','=',$user_id)->get();
+        if ($limiter==null){
+            $userTrips= userTrips::where('user_id','=',$user_id)->get();
+        }
+        else{
+            $userTrips= userTrips::where('user_id','=',$user_id)->limit($limiter)->get();
+        }
         foreach ($userTrips as $trip){
             $trips[]=trips::find($trip->trip_id);
         }

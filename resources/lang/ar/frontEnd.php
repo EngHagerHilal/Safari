@@ -25,7 +25,7 @@ return [
     'departure_date'=> 'تاريخ المغادرة :',
     'date'          => 'تاريخ',
     'rate'          => 'تقييم',
-    'special_trips' => 'رحلات خاصة',
+    'special_trips' => 'الرحلات المحجوزة',
 
     'from'          => 'من :',
     'to'            => 'إلي :',
@@ -107,6 +107,7 @@ return [
     'forgot_password'    => 'نسيت كلمة المرور؟',
     'rejected_partners'  => 'الطلبات المرفوضة',
 
+    'travel_day'         => 'موعد السفر',
 
 
 

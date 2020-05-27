@@ -1,6 +1,16 @@
 body{
     background-color: rgb(242,242,242);
 }
+.gold-color{
+    color: #FFD700;
+}
+.main-rate >i{
+    padding-left: 5px;
+}
+.rate-it >i{
+    cursor: pointer;
+    padding-left: 5px;
+}
 .box-shadow{
     box-shadow: 0 0 8px rgba(0,0,0,.6)
 }
@@ -60,6 +70,10 @@ h1.safari-text{
     top: 65px;
     padding: 5px;
     min-height: 500px;
+    max-height: 500px;
+}
+.special-posts{
+    max-height: 445px!important;
 }
 .posts-container{
     width: 45%;

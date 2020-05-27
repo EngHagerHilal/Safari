@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('locale/{locale}', function ($locale){
+Route::get('/locale/{locale}', function ($locale){
     Session::put('locale', $locale);
     return redirect()->back();
 });
@@ -44,6 +44,8 @@ Route::middleware('company.guest')->group(function (){
     Route::get('/trips/search', 'users\usersController@search')->name('user.trips.search')->middleware('company.guest');
     Route::get('/home', 'users\usersController@index')->name('home')->middleware('company.guest');
     Route::get('/', 'users\usersController@index')->name('home')->middleware('company.guest');
+    Route::get('/tripDetails/{trip_id}/', 'users\usersController@tripDetails')->name('users.tripDetails');
+
 });
 
 Route::middleware(['auth','verified'])->group(function(){
@@ -51,7 +53,6 @@ Route::middleware(['auth','verified'])->group(function(){
     Route::get('/trips/join/{trip_id}', 'users\usersController@joinToTrip')->name('users.joinTrip');
     Route::get('/trips/cancle/{trip_id}', 'users\usersController@cancleToTrip')->name('users.cancleTrip');
     Route::post('/tripDetails/rate/', 'users\usersController@rateTrip')->name('users.RateTrip');
-    Route::get('/tripDetails/{trip_id}/', 'users\usersController@tripDetails')->name('users.tripDetails');
 
 });
 

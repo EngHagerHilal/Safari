@@ -14,6 +14,7 @@ class CreateUserTripsTable extends Migration
     public function up()
     {
         Schema::create('user_trips', function (Blueprint $table) {
+            $table->id();
             $table->bigInteger("trip_id")->unsigned();
             $table->bigInteger("user_id")->unsigned();
             $table->enum("status",['confirmed','resolved','pending','rejected'])->default('pending');
