@@ -123,7 +123,7 @@
                                     @endphp
                                 @endif
                                 <div id="rate-trip-id_{{$trip->id}}" class="{{$text}} main-rate {{$rated}}">
-                                    <div {{$animate='jerk'}}></div>
+                                    <div {{$animate='pop'}}></div>
                                     @for($i=1;$i<=$trip->rate;$i++)
                                         <i trip-id="{{$trip->id}}" data-micron="{{$animate=''}}" class="fa fa-star gold-color font-1-6" rate-value={{$i}}></i>
                                     @endfor
