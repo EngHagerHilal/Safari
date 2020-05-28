@@ -14,6 +14,12 @@ return [
     */
 
 
+    'ar'            => 'عربي',
+    'en'            => 'english',
+    'es'            => 'español',
+    'it'            => 'Italian',
+
+
     'air_flights'   => 'Air flights',
     'sea_trips'     => 'sea ​​trips',
     'land_trips'    => 'land ​​trips',

@@ -25,6 +25,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/main.css')}}"></head>
+<link href="https://unpkg.com/webkul-micron@1.1.6/dist/css/micron.min.css" type="text/css" rel="stylesheet">
 <body dir="{{$dir}}">
 <div id="app">
     @yield('homePageSlider')
@@ -85,16 +86,18 @@
                             </li>
 
                         @endguest
-                        @if(str_replace('_', '-', app()->getLocale()) == 'en')
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('locale/ar') }}" >عربي</a>
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{__('frontEnd.'.str_replace('_', '-', app()->getLocale()))}}
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ url('locale/ar') }}" >{{__('frontEnd.ar')}}</a>
+                                    <a class="dropdown-item" href="{{ url('locale/en') }}" >{{__('frontEnd.en')}}</a>
+                                    <a class="dropdown-item" href="{{ url('locale/es') }}" >{{__('frontEnd.es')}}</a>
+                                    <a class="dropdown-item" href="{{ url('locale/it') }}" >{{__('frontEnd.it')}}</a>
+                                </div>
                             </li>
-                        @else
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('locale/en') }}" >English</a>
-                            </li>
-                        @endif
-
                     </ul>
                 </div>
             </div>
@@ -106,6 +109,7 @@
     </div>
 @yield('ajaxCode')
 <script src="{{ asset('js/bootstrap.min.js') }}" ></script>
+<script src="https://unpkg.com/webkul-micron@1.1.6/dist/script/micron.min.js" type="text/javascript"></script>
 
 <script src="https://kit.fontawesome.com/8aaad534d4.js" crossorigin="anonymous"></script>
 </body>

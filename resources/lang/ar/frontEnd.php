@@ -12,6 +12,10 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'ar'            => 'عربي',
+    'en'            => 'english',
+    'es'            => 'español',
+    'it'            => 'Italian',
 
     'air_flights'   => 'رحلات جوية',
     'sea_trips'     => 'رحلات بحرية',

@@ -122,13 +122,13 @@
                                         $rated='';
                                     @endphp
                                 @endif
-                                <div id="rate-trip-id_{{$trip->id}}" class="main-rate {{$rated}}">
-
+                                <div id="rate-trip-id_{{$trip->id}}" class="{{$text}} main-rate {{$rated}}">
+                                    <div {{$animate='jerk'}}></div>
                                     @for($i=1;$i<=$trip->rate;$i++)
-                                        <i trip-id="{{$trip->id}}" class="fa fa-star gold-color font-1-6" rate-value={{$i}}></i>
+                                        <i trip-id="{{$trip->id}}" data-micron="{{$animate=''}}" class="fa fa-star gold-color font-1-6" rate-value={{$i}}></i>
                                     @endfor
                                     @for($y=1;$y<=(5 - $trip->rate);$y++)
-                                        <i trip-id="{{$trip->id}}" class="far fa-star gold-color font-1-6" rate-value="{{$y+$trip->rate}}"></i>
+                                        <i trip-id="{{$trip->id}}" data-micron="{{$animate}}" class="far fa-star gold-color font-1-6" rate-value="{{$y+$trip->rate}}"></i>
                                     @endfor
 
                                 </div>
@@ -180,6 +180,7 @@
 
 @endsection
 
+
 @section('ajaxCode')
     <script>
         $(document).ready(function() {
@@ -201,10 +202,13 @@
                                 $('#rate-trip-id_' + trip_id).removeClass('rate-it');
 
                                 $('#rate-trip-id_' + trip_id ).children('i').removeClass('fa').addClass('far');
+                                $('#rate-trip-id_' + trip_id + ' i:nth-child(' + 3 + ')').attr('data-micron','').siblings().attr('data-micron','');
 
-                                for (var i = 0; i <= data.newRate; i++) {
+
+                                for (var i = 1; i <= (data.newRate + 1); i++) {
                                     $('#rate-trip-id_' + trip_id + ' i:nth-child(' + i + ')').addClass('fa');
                                 }
+
 
                             } else {
 
@@ -217,4 +221,3 @@
         });
     </script>
 @endsection
-

@@ -78,15 +78,26 @@
                                     <h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
                                 </a>
                                 <p class="text-dark">{{$trip->description}}</p>
-                                <p >
-                                    {{__('frontEnd.rate')}}  : <strong>{{$trip->rate}}</strong>
-                                </p>
-                                <form method="post" action="{{route('users.RateTrip')}}">
-                                    @csrf
-                                    <input type="number" min="1" max="5" value="5" name="rate">
-                                    <input type="hidden" value="{{$trip->id}}" name="trip_id">
-                                    <input type="submit" value="rate">
-                                </form>
+
+                                @if($trip->rated==false)
+                                    @php
+                                        $rated='rate-it';
+                                    @endphp
+                                @else
+                                    @php
+                                        $rated='';
+                                    @endphp
+                                @endif
+                                <div id="rate-trip-id_{{$trip->id}}" class="{{$text}} main-rate {{$rated}}">
+                                    <div {{$animate='jerk'}}></div>
+                                    @for($i=1;$i<=$trip->rate;$i++)
+                                        <i trip-id="{{$trip->id}}" data-micron="{{$animate=''}}" class="fa fa-star gold-color font-1-6" rate-value={{$i}}></i>
+                                    @endfor
+                                    @for($y=1;$y<=(5 - $trip->rate);$y++)
+                                        <i trip-id="{{$trip->id}}" data-micron="{{$animate}}" class="far fa-star gold-color font-1-6" rate-value="{{$y+$trip->rate}}"></i>
+                                    @endfor
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -133,4 +144,44 @@
         </div>
     </div>
 
+@endsection
+@section('ajaxCode')
+    <script>
+        $(document).ready(function() {
+            $('.rate-it>i').click(function(e){
+                var trip_id = $(this).attr('trip-id');
+                var rate    = $(this).attr('rate-value');
+                var token   = '{{csrf_token()}}';
+                var newHTML ='';
+                $(this).parent('.main-rate').hasClass('rate-it')
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{route('users.RateTrip')}}",
+                        dataType: "json",
+                        data: {'trip_id': trip_id, 'rate': rate, '_token': token},
+                        success: function (data) {
+                            if (data.success) {
+                                data.newRate;
+                                $('#rate-trip-id_' + trip_id).removeClass('rate-it');
+
+                                $('#rate-trip-id_' + trip_id ).children('i').removeClass('fa').addClass('far');
+                                $('#rate-trip-id_' + trip_id + ' i:nth-child(' + 3 + ')').attr('data-micron','').siblings().attr('data-micron','');
+
+
+                                for (var i = 1; i <= (data.newRate + 1); i++) {
+                                    $('#rate-trip-id_' + trip_id + ' i:nth-child(' + i + ')').addClass('fa');
+                                }
+
+
+                            } else {
+
+                            }
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
 @endsection
