@@ -12,6 +12,7 @@ use App\userTrips;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class companyController extends Controller
 {
@@ -153,6 +154,51 @@ class companyController extends Controller
                 'confirmedTraveler'=>$confirmedTraveler,
                 ]);
         return redirect()->back()->with('trip_message','the trip status udated ')->with('status',$trip->status);
+    }
+
+
+
+    public function editProfile(){
+        $user=Auth::guard('company')->user();
+        return view('company.editProfile',['user'=>$user]);
+
+    }
+    public function updateProfile(Request $request){
+        $dataValidated=$request->validate([
+            'name'              => 'required',
+            'email'             => 'required|email',
+            'current_password'  => 'required',
+        ]);
+        $other_user=Company::where([
+            ['email','=',$request->email],
+            ['id','!=',Auth::guard('company')->id()]
+        ])->first();
+        if(!$other_user){
+            $other_user=User::where('email','=',$request->email)->first();
+        }
+        if($other_user){
+            return redirect()->back()->with(['email',__('frontEnd.repeatedEmail')]);
+        }
+        if($request->has('new_password')){
+            $dataValidated=$request->validate([
+                'new_password'               => 'required',
+                'new_password_confirmation'  => 'required|same:new_password',
+            ]);
+        }
+        if(Auth::guard('company')->attempt(['email'=>$request->email,'password'=>$request->current_password])){
+            $user=Company::where('email',$request->email)->first();
+            $user->name=$request->name;
+            $user->email=$request->email;
+            if($request->has('new_password')){
+                $user->password=Hash::make($request->new_password);
+            }
+            $user->save();
+
+            return redirect()->back()->with('success',__('fontEnd.profileUpdated'));
+        }
+        else{
+            return redirect()->back()->withErrors(['current_password' => __('frontEnd.pass_failed')]);
+        }
     }
 
     ////////////api //////////////

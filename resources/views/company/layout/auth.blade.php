@@ -65,6 +65,9 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('company.editProfile') }}">
+                                    {{ __('frontEnd.Edit_profile') }}
+                                </a>
                                 <a class="dropdown-item" href="{{ route('company.logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -77,15 +80,19 @@
                             </div>
                         </li>
                     @endguest
-                    @if(str_replace('_', '-', app()->getLocale()) == 'en')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('locale/ar') }}" >عربي</a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('locale/en') }}" >English</a>
-                        </li>
-                    @endif
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{__('frontEnd.'.str_replace('_', '-', app()->getLocale()))}}
+                            <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ url('locale/ar') }}" >{{__('frontEnd.ar')}}</a>
+                            <a class="dropdown-item" href="{{ url('locale/en') }}" >{{__('frontEnd.en')}}</a>
+                            <a class="dropdown-item" href="{{ url('locale/fr') }}" >{{__('frontEnd.fr')}}</a>
+                            <a class="dropdown-item" href="{{ url('locale/es') }}" >{{__('frontEnd.es')}}</a>
+                            <a class="dropdown-item" href="{{ url('locale/it') }}" >{{__('frontEnd.it')}}</a>
+                        </div>
+                    </li>
 
                 </ul>
             </div>

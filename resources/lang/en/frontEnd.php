@@ -14,6 +14,15 @@ return [
     */
 
 
+    'ar'            => 'عربي',
+    'en'            => 'english',
+    'es'            => 'español',
+    'it'            => 'Italian',
+    'fr'            => 'français',
+    'de'            => 'Deutsche',
+    'ru'            => 'русский',
+
+
     'air_flights'   => 'Air flights',
     'sea_trips'     => 'sea ​​trips',
     'land_trips'    => 'land ​​trips',
@@ -26,7 +35,7 @@ return [
     'departure_date'=> 'departure date :',
     'date'          => 'date',
     'rate'          => 'Rate',
-    'special_trips' => 'Special trips',
+    'special_trips' => 'joined trips',
 
     'from'          => 'from :',
     'to'            => 'to :',
@@ -108,10 +117,14 @@ return [
     'sign_up'            => 'sign up',
     'forgot_password'    => 'forgot your password?',
     'rejected_partners'  => 'rejected partners',
+    'travel_day'         => 'travel day',
 
 
-
-
+    'Edit_profile'       => 'Edit Profile',
+    'current_password'   => 'current password',
+    'new_password'       => 'new password',
+    'new_password_confirmation'=> 'confirm new password',
+    'save'               => 'save',
 
 
 ];

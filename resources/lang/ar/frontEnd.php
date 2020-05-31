@@ -12,6 +12,13 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'ar'            => 'عربي',
+    'en'            => 'english',
+    'es'            => 'español',
+    'it'            => 'Italian',
+    'fr'            => 'français',
+    'de'            => 'Deutsche',
+    'ru'            => 'русский',
 
     'air_flights'   => 'رحلات جوية',
     'sea_trips'     => 'رحلات بحرية',
@@ -25,7 +32,7 @@ return [
     'departure_date'=> 'تاريخ المغادرة :',
     'date'          => 'تاريخ',
     'rate'          => 'تقييم',
-    'special_trips' => 'رحلات خاصة',
+    'special_trips' => 'الرحلات المحجوزة',
 
     'from'          => 'من :',
     'to'            => 'إلي :',
@@ -107,8 +114,13 @@ return [
     'forgot_password'    => 'نسيت كلمة المرور؟',
     'rejected_partners'  => 'الطلبات المرفوضة',
 
+    'travel_day'         => 'موعد السفر',
 
-
+    'Edit_profile'       => 'تعديل الحساب',
+    'current_password'   => 'كلمة المرور الحالية',
+    'new_password'       => 'كلمة المرور الجديدة',
+    'new_password_confirmation'=> 'تأكيد كلمة المرور الجديدة',
+    'save'               => 'حفظ',
 
 
 

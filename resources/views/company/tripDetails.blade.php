@@ -65,7 +65,6 @@
                         </div>
                         <div class="more-details">
                             <a href="#"><h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3></a>
-                            <p class="text-dark">{{$trip->description}}</p>
                         </div>
                     </div>
 
@@ -74,8 +73,10 @@
             </div>
             <div class="col-4 panner-right post-full-details">
                 <div class="panner bg-light box-shadow">
-                    <h3 class="text-uppercase text-center">{{$trip->title}}</h3>
+                    <h3 class="text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
                     <div class="{{$text}} full-details">
+                        <p class="text-dark">{{$trip->description}}</p>
+
                         <p>
                             <i class="fas fa-location-arrow font-1-2 main-text-green"></i>
                             {{__('frontEnd.from')}}
@@ -83,17 +84,7 @@
                             {{__('frontEnd.to')}}
                             <strong class="text-uppercase">{{$trip->trip_to}}</strong>
                         </p>
-                        <p>
-                            <i class="fas fa-user font-1-2 main-text-green"></i>
-                            {{__('frontEnd.age_from')}}
-                            <strong class="text-uppercase">12</strong>
-                            {{__('frontEnd.to')}} <strong class="text-uppercase">45</strong>
-                            {{__('frontEnd.years')}}
-                        </p>
-                        <p>
-                            <i class="fas fa-users font-1-2 main-text-green"></i>
-                            {{__('frontEnd.available_places')}} : <strong class="text-uppercase">45</strong> {{__('frontEnd.persons')}}
-                        </p>
+
                         <p>
                             <i class="fas fa-money-bill-wave font-1-2 main-text-green"></i>
                             {{__('frontEnd.price')}} <strong class="text-uppercase">{{$trip->price}}</strong> $

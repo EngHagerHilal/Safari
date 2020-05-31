@@ -5,12 +5,8 @@
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100">
-                <h4 class="text-center text-uppercase">sorry !</h4>
-                @if($message!=null)
-                <h5 class="text-center">{{$message}}</h5>
-                @else
-                    <h5 class="text-center">this trip not available now.</h5>
-                @endif
+                <h4 class="text-center text-uppercase py-5">sorry !</h4>
+                <h5 class="text-center py-5">{{ $message ?? 'this trip not available now.' }}</h5>
             </div>
         </div>
     </div>

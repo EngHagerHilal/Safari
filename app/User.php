@@ -57,7 +57,7 @@ class User extends Authenticatable //implements MustVerifyEmail
         foreach ($userTrips as $trip){
             $trips[]=trips::find($trip->trip_id);
         }
-        return $MyTrips->myTrips=$trips;
+        return $trips;
 
     }
     public function myTripsIds($user_id)

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('locale/{locale}', function ($locale){
+Route::get('/locale/{locale}', function ($locale){
     Session::put('locale', $locale);
     return redirect()->back();
 });
@@ -42,16 +42,21 @@ Route::post('updatePassword', 'AdminAuth\loginController@updateNewPassword')->na
 Route::middleware('company.guest')->group(function (){
     Auth::routes(['verify' => true]);
     Route::get('/trips/search', 'users\usersController@search')->name('user.trips.search')->middleware('company.guest');
+    Route::get('/trips/searchPagination', 'users\usersController@searchPagination')->name('user.trips.search.Pagination')->middleware('company.guest');
     Route::get('/home', 'users\usersController@index')->name('home')->middleware('company.guest');
+    Route::get('/pagination', 'users\usersController@pagination')->name('paginatePosts')->middleware('company.guest');
     Route::get('/', 'users\usersController@index')->name('home')->middleware('company.guest');
+    Route::get('/tripDetails/{trip_id}/', 'users\usersController@tripDetails')->name('users.tripDetails');
+    Route::get('/edit-profile/', 'users\usersController@editProfile')->name('users.editProfile')->middleware(['auth','verified']);
+    Route::post('/edit-profile/', 'users\usersController@updateProfile')->name('users.updateProfile')->middleware(['auth','verified']);
+
 });
 
 Route::middleware(['auth','verified'])->group(function(){
     Route::get('/myTrips', 'users\usersController@myTrips')->name('myJoinedTrips');
     Route::get('/trips/join/{trip_id}', 'users\usersController@joinToTrip')->name('users.joinTrip');
     Route::get('/trips/cancle/{trip_id}', 'users\usersController@cancleToTrip')->name('users.cancleTrip');
-    Route::post('/tripDetails/rate/', 'users\usersController@rateTrip')->name('users.RateTrip');
-    Route::get('/tripDetails/{trip_id}/', 'users\usersController@tripDetails')->name('users.tripDetails');
+    Route::get('/tripDetails/rate/{trip_id}/{rate}', 'users\usersController@rateTrip')->name('users.RateTrip');
 
 });
 
@@ -101,6 +106,8 @@ Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied
     Route::get('/trips/{action}/{trip_id}','company\companyController@controlTrip')->name('company.trips.control');
     Route::get('/tripDetails/{trip_id}','company\companyController@tripDetails')->name('company.trips.details');
     Route::get('/tripDetails/joiners/{action}/{trip_id}/{user_id}','company\companyController@controlJoiners')->name('company.trip.control.joiner');
+    Route::get('/edit-profile/', 'company\companyController@editProfile')->name('company.editProfile');
+    Route::post('/edit-profile/', 'company\companyController@updateProfile')->name('company.updateProfile');
 
 });
 

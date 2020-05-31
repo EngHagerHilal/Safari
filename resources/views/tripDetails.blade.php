@@ -66,7 +66,7 @@
                         </div>
                         <div class="more-details">
                             <a href="#"><h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3></a>
-                            <p class="text-dark">{{$trip->description}}</p>
+
                         </div>
                     </div>
 
@@ -75,8 +75,10 @@
             </div>
             <div class="col-4 panner-right post-full-details">
                 <div class="panner bg-light box-shadow">
-                    <h3 class="text-uppercase text-center">{{$trip->title}}</h3>
+                    <h3 style="padding-top: 70px" class="text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
                     <div class="{{$text}} full-details">
+                        <p class="text-dark font-weight-bold">{{$trip->description}}</p>
+
                         <p>
                             <i class="fas fa-location-arrow font-1-2 main-text-green"></i>
                             {{__('frontEnd.from')}}
@@ -84,17 +86,7 @@
                             {{__('frontEnd.to')}}
                             <strong class="text-uppercase">{{$trip->trip_to}}</strong>
                         </p>
-                        <p>
-                            <i class="fas fa-user font-1-2 main-text-green"></i>
-                            {{__('frontEnd.age_from')}}
-                            <strong class="text-uppercase">12</strong>
-                            {{__('frontEnd.to')}} <strong class="text-uppercase">45</strong>
-                            {{__('frontEnd.years')}}
-                        </p>
-                        <p>
-                            <i class="fas fa-users font-1-2 main-text-green"></i>
-                            {{__('frontEnd.available_places')}} : <strong class="text-uppercase">45</strong> {{__('frontEnd.persons')}}
-                        </p>
+
                         <p>
                             <i class="fas fa-money-bill-wave font-1-2 main-text-green"></i>
                             {{__('frontEnd.price')}} <strong class="text-uppercase">{{$trip->price}}</strong> $
@@ -109,6 +101,25 @@
                             <i class="fas fa-suitcase-rolling font-1-2 main-text-green"></i> {{__('frontEnd.you_are_joined')}}
                         </p>
                         @endif
+
+                    </div>
+                    @if($trip->rated==false)
+                        @php
+                            $rated='rate-it';
+                        @endphp
+                    @else
+                        @php
+                            $rated='';
+                        @endphp
+                    @endif
+                    <div rate="{{$trip->rate}}" id="rate-trip-id_{{$trip->id}}" class="{{$text}} main-rate {{$rated}}">
+                        <div {{$animate='pop'}}></div>
+                        @for($i=1;$i<=$trip->rate;$i++)
+                            <i trip-id="{{$trip->id}}" data-micron="{{$animate=''}}" class="fa fa-star gold-color font-1-6" rate-value={{$i}}></i>
+                        @endfor
+                        @for($y=1;$y<=(5 - $trip->rate);$y++)
+                            <i trip-id="{{$trip->id}}" data-micron="{{$animate}}" class="far fa-star gold-color font-1-6" rate-value="{{$y+$trip->rate}}"></i>
+                        @endfor
 
                     </div>
                     <div class="aply-now">
@@ -127,3 +138,49 @@
         </div>
     </div>
 @endsection
+
+@section('ajaxCode')
+    <script>
+        $(document).ready(function() {
+            $('.rate-it>i').click(function(e){
+                var trip_id = $(this).attr('trip-id');
+                var rate    = $(this).attr('rate-value');
+                var token   = '{{csrf_token()}}';
+                var newHTML ='';
+                $(this).parent('.main-rate').hasClass('rate-it')
+                {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{url('/tripDetails/rate')}}/"+trip_id+"/"+rate,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.success) {
+                                data.newRate;
+                                $('#rate-trip-id_' + trip_id).removeClass('rate-it');
+
+                                $('#rate-trip-id_' + trip_id).children('i').removeClass('fa').addClass('far');
+                                $('#rate-trip-id_' + trip_id + ' i:nth-child(' + 3 + ')').attr('data-micron', '').siblings().attr('data-micron', '');
+                                if(!data.already){
+                                    $('<audio id="chatAudio"> ' +
+                                        '<source src="{{asset('sounds/star1.mp3')}}" type="audio/mpeg"> ' +
+                                '</audio>').appendTo('body');
+                                    // play sound
+                                    $('#chatAudio')[0].play();
+                                }
+                                for (var i = 1; i <= (data.newRate + 1); i++) {
+                                    $('#rate-trip-id_' + trip_id + ' i:nth-child(' + i + ')').addClass('fa');
+                                }
+
+
+                            } else {
+
+                            }
+                        }
+                    });
+                }
+
+            });
+        });
+    </script>
+@endsection
+

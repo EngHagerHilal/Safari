@@ -22,7 +22,7 @@
             </div>
         @endif
             <h2 class="text-center py-2">{{__('frontEnd.search_for_trip')}}</h2>
-            <h4 class="text-center py-2">[{{$available->count()}}] {{__('frontEnd.trip_founded')}}</h4>
+            <h4 class="text-center py-2">[{{$totalFounded}}] {{__('frontEnd.trip_founded')}}</h4>
         <div class="row">
             <div class="col-3 panner-left ">
                 <div class="panner bg-light box-shadow">
@@ -54,7 +54,7 @@
                     </form>
                 </div>
             </div>
-            <div class="col-6 posts-container">
+            <div class="col-6 posts-container" id="posts-container">
                 @foreach($available as $trip)
                     <div class="post-item bg-light box-shadow">
                         <div class="post-header {{$text}}">
@@ -78,15 +78,26 @@
                                     <h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
                                 </a>
                                 <p class="text-dark">{{$trip->description}}</p>
-                                <p >
-                                    {{__('frontEnd.rate')}}  : <strong>{{$trip->rate}}</strong>
-                                </p>
-                                <form method="post" action="{{route('users.RateTrip')}}">
-                                    @csrf
-                                    <input type="number" min="1" max="5" value="5" name="rate">
-                                    <input type="hidden" value="{{$trip->id}}" name="trip_id">
-                                    <input type="submit" value="rate">
-                                </form>
+
+                                @if($trip->rated==false)
+                                    @php
+                                        $rated='rate-it';
+                                    @endphp
+                                @else
+                                    @php
+                                        $rated='';
+                                    @endphp
+                                @endif
+                                <div id="rate-trip-id_{{$trip->id}}" class="{{$text}} main-rate {{$rated}}">
+                                    <div {{$animate='pop'}}></div>
+                                    @for($i=1;$i<=$trip->rate;$i++)
+                                        <i trip-id="{{$trip->id}}" data-micron="{{$animate=''}}" class="fa fa-star gold-color font-1-6" rate-value={{$i}}></i>
+                                    @endfor
+                                    @for($y=1;$y<=(5 - $trip->rate);$y++)
+                                        <i trip-id="{{$trip->id}}" data-micron="{{$animate}}" class="far fa-star gold-color font-1-6" rate-value="{{$y+$trip->rate}}"></i>
+                                    @endfor
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,15 +105,137 @@
 
             </div>
             <div class="col-3 panner-right ">
-                <div class="panner bg-light box-shadow">
+                <div class="panner bg-light box-shadow" >
                     <h3 class="text-uppercase text-center">{{__('frontEnd.special_trips')}}</h3>
-                    <div class="special-posts">
+                    <div class="special-posts" style="overflow: auto;max-height: 475px">
+                        @foreach($myTrips as $trip)
+                            <div class="post-item bg-light box-shadow">
+                                <div class="post-body">
+                                    <div class="image-container">
+                                        <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
+                                    </div>
+                                    <div class="px-2 more-details {{$text}}">
+                                        <a href="{{route('users.tripDetails',['trip_id'=>$trip->id])}}">
+                                            <h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
+                                        </a>
+                                        <p class="text-dark">
+                                            <i class="fas fa-calendar-alt font-1-2 main-text-green"></i>
+                                            {{__('frontEnd.travel_day')}} : {{$trip->start_at}}
+                                        </p>
 
+                                    </div>
+                                </div>
+                            </div>
+
+                        @endforeach
                     </div>
+
+                    @guest
+                    @else
+                    <div class=" position-relative">
+                        <a href="{{route('myJoinedTrips')}}" style="bottom: 0;width: 80%; left: 0;right: 0" class="btn btn-success d-block m-auto position-absolute">
+                            <i class="fas fa-suitcase-rolling"></i> {{__('frontEnd.my_joined_trips')}}
+                        </a>
+                    </div>
+                    @endguest
                 </div>
 
             </div>
         </div>
+            <div class="ajax-load text-center" style="display:none;position: fixed; left: 0;right: 0;bottom: 30%;z-index: 1000">
+                <p class="d-inline-block text-center rounded-circle bg-glass"><img src="{{asset('img/loading.gif')}}" height="100" width="100" class="d-block m-auto"></p>
+            </div>
+
     </div>
 
+@endsection
+@section('ajaxCode')
+    <script>
+        $(document).ready(function() {
+            $('.rate-it>i').click(function(e){
+                var trip_id = $(this).attr('trip-id');
+                var rate    = $(this).attr('rate-value');
+                var token   = '{{csrf_token()}}';
+                var newHTML ='';
+                $(this).parent('.main-rate').hasClass('rate-it')
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{url('/tripDetails/rate')}}/"+trip_id+"/"+rate,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.success) {
+                                data.newRate;
+                                $('#rate-trip-id_' + trip_id).removeClass('rate-it');
+
+                                $('#rate-trip-id_' + trip_id ).children('i').removeClass('fa').addClass('far');
+                                $('#rate-trip-id_' + trip_id + ' i:nth-child(' + 3 + ')').attr('data-micron','').siblings().attr('data-micron','');
+
+
+                                for (var i = 1; i <= (data.newRate + 1); i++) {
+                                    $('#rate-trip-id_' + trip_id + ' i:nth-child(' + i + ')').addClass('fa');
+                                }
+
+
+                            } else {
+
+                            }
+                        }
+                    });
+                }
+
+            });
+
+            //lod more posts
+            var page = 1;
+            $(function() {
+                /* this is only for demonstration purpose */
+                scroll_enabled = true;
+                function loadMoreData(page){
+                    $('.ajax-load').show();
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{!! url()->full() !!}&page="+page,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.success) {
+                                if(data.posts.length >0){
+                                    $("#posts-container").append(data.posts);
+                                    console.log(data.pageNumber);
+                                    $('.ajax-load').hide();
+                                    scroll_enabled = true;
+
+                                    return;
+                                }
+                                //alert('no more');
+
+                                $('.ajax-load').hide();
+
+                            } else {
+                                alert('server not responding...');
+                            }
+                        }
+                    });
+                }
+
+                $(window).bind('scroll', function() {
+                    if (scroll_enabled) {
+
+                        /* if 90% scrolled */
+                        if($(window).scrollTop() >= ($('#posts-container').offset().top + $('#posts-container').outerHeight()-window.innerHeight)*0.9) {
+
+                            /* load ajax content */
+                            scroll_enabled = false;
+                            page++;
+                            loadMoreData(page);
+
+                        }
+                    }
+
+                });
+
+            });
+        });
+    </script>
 @endsection
