@@ -116,9 +116,7 @@
 @yield('ajaxCode')
 <script src="{{ asset('js/bootstrap.min.js') }}" ></script>
 <script src="{{ asset('js/main.js') }}" ></script>
-<script src="https://unpkg.com/webkul-micron@1.1.6/dist/script/micron.min.js" type="text/javascript"></script>
 
-<script src="https://kit.fontawesome.com/8aaad534d4.js" crossorigin="anonymous"></script>
 <script>
     function rateIt(trip_id,value){
 
@@ -196,5 +194,9 @@
     });
 
 </script>
+<script src="https://kit.fontawesome.com/8aaad534d4.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/webkul-micron@1.1.6/dist/script/micron.min.js" type="text/javascript"></script>
+
+
 </body>
 </html>

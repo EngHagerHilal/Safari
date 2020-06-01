@@ -32,22 +32,9 @@ class trips extends Model
             else{
                 $trip->mainIMG=$img->img_url;
             }
-            $trip->newJoinRequest=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','pending']
-            ])->get()->count();
-            $trip->resolvedJoinRequest=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','resolved']
-            ])->get()->count();
-            $trip->rejectedJoinRequest=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','rejected']
-            ])->get()->count();
-            $trip->confirmedTraveler=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','confirmed']
-            ])->get()->count();
+            $trip->joinersNumber=userTrips::where(
+                'trip_id','=',$trip->id
+            )->count();
         }
         foreach ($mytrips->disabled as $trip){
             $img=gallary::where('trip_id','=',$trip->id)->get()->first();//->img_url;
@@ -57,22 +44,9 @@ class trips extends Model
             else{
                 $trip->mainIMG=$img->img_url;
             }
-            $trip->newJoinRequest=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','pending']
-            ])->get()->count();
-            $trip->resolvedJoinRequest=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','resolved']
-            ])->get()->count();
-            $trip->rejectedJoinRequest=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','rejected']
-            ])->get()->count();
-            $trip->confirmedTraveler=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','confirmed']
-            ])->get()->count();
+            $trip->joinersNumber=userTrips::where(
+                'trip_id','=',$trip->id
+            )->count();
         }
         foreach ($mytrips->completed as $trip){
             $img=gallary::where('trip_id','=',$trip->id)->get()->first();//->img_url;
@@ -82,22 +56,9 @@ class trips extends Model
             else{
                 $trip->mainIMG=$img->img_url;
             }
-            $trip->newJoinRequest=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','pending']
-            ])->get()->count();
-            $trip->resolvedJoinRequest=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','resolved']
-            ])->get()->count();
-            $trip->rejectedJoinRequest=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','rejected']
-            ])->get()->count();
-            $trip->confirmedTraveler=userTrips::where([
-                ['trip_id','=',$trip->id],
-                ['status','=','confirmed']
-            ])->get()->count();
+            $trip->joinersNumber=userTrips::where(
+                'trip_id','=',$trip->id
+            )->count();
         }
         return $mytrips;
     }

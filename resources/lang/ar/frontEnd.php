@@ -53,7 +53,7 @@ return [
     //company text
     'dashboard'      => 'لوحة التحكم',
     'my_trips'       => 'الرحلات المنشأة',
-    'active_trips'   => 'الرحلات المعفلة',
+    'active_trips'   => 'الرحلات المفعلة',
     'disabled_trips' => 'الرحلات المتوقفة',
     'completed_trips'=> 'الرحلات المكتملة',
     'new_join_req'   => 'طلبات الالتحاق',
@@ -121,6 +121,25 @@ return [
     'new_password'       => 'كلمة المرور الجديدة',
     'new_password_confirmation'=> 'تأكيد كلمة المرور الجديدة',
     'save'               => 'حفظ',
+    'joiners'            => 'عدد المشتركين',
+
+    'enter_voucher'      => 'ادخل كود الخصم',
+    'code_invalid'       => 'كود غير صالح',
+    'code_valid'         => 'كود صالح',
+    'add_voucher'        => 'اضافة كود خصم',
+    'discount_percent'   => 'نسبة الخصم',
+    'expire_at'          => 'موعد الانتهاء',
+    'voucher_created'    => 'تم اضافة كود الخصم',
+    'error_happened'     => 'حدث خطأ',
+    'code'               => 'كود الخصم',
+    'discount'           => 'تسبة الخصم',
+    'created_at'         => 'تاريخ الخصم',
+    'expire_at'          => 'تاريخ الانتهاء',
+    'times_use'          => 'عدد مرات الاستخدام',
+    'active_voucher'     => 'اكواد مفعلة',
+    'expired_voucher'    => 'اكواد منتهيه',
+    'disabled_voucher'   => 'اكواد معطلة',
+    'joined_with_code'   => 'تم الاشتراك بكود الخصم ',
 
 
 

@@ -119,6 +119,29 @@ return [
     'rejected_partners'  => 'partenaires refusés',
     'travel_day'         => 'travel day',
 
+    'Edit_profile'       => 'Editer le profil',
+    'current_password'   => 'Mot de passe actuel',
+    'new_password'       => 'nouveau mot de passe',
+    'new_password_confirmation'=> 'confirmer le nouveau mot de passe',
+    'save'               => 'enregistrer',
+    'joiners'            => 'Nombre de voyageurs',
+
+    'enter_voucher'      => 'Entrez le code du bon',
+    'code_invalid'       => 'Code invalide',
+    'code_valid'         => 'Code valide',
+    'add_voucher'        => 'Ajouter un code de bon',
+    'discount_percent'   => 'pourcentage de remise',
+    'expire_at'          => 'date d\'expiration',
+    'voucher_created'    => 'code de bon créé',
+    'error_happened'     => 'une erreur est survenue',
+    'code'               => 'code de réduction',
+    'discount'           => 'pourcentage de remise',
+    'created_at'         => 'Date de remise',
+    'times_use'          => 'usage',
+    'active_voucher'     => 'codes actifs',
+    'expired_voucher'    => 'codes expirés',
+    'disabled_voucher'   => 'bon pour handicapés',
+    'joined_with_code'   => 'vous êtes rejoint avec le code de réduction',
 
 
 

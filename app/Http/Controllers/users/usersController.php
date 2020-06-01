@@ -9,6 +9,8 @@ use App\trip_rate;
 use App\trips;
 use App\User;
 use App\userTrips;
+use App\voucherUsers;
+use App\voucher;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,8 +31,30 @@ class usersController extends Controller
         if($tripJoined != null){
             return redirect()->back()->with('alert','you are already joined to this trip');
         }
+        if($request->has('code')){
+            $voucher=voucher::where([['trip_id',$request->trip_id],['code',$request->code],['status','active']])->first();
+            if($voucher){
+                $usedBefore=voucherUsers::where([['user_id',Auth::id()],['voucher_id',$voucher->id]])->first();
+                if($usedBefore){
+                    return redirect()->back()->with('alert','you are used this voucher before');
+                }
+                $newUserVoucher=voucherUsers::create([
+                    'voucher_id'=>$voucher->id,
+                    'user_id'   =>Auth::id(),
+                    'trip_id'   =>$request->trip_id,
+                ]);
+                if(!$newUserVoucher){
+                    return redirect()->back()->with('alert','error happened');
+                }
+            }
+            else{
+                return redirect()->back()->with('alert','this voucher invalid');
+            }
+        }
         userTrips::create(['user_id'=>Auth::id(),
         'trip_id'=>$request->trip_id]);
+        if($request->has('code'))
+        return redirect()->back()->with('success',__('frontEnd.joined_with_code').' : '.$request->code);
         return redirect()->back()->with('success','you are joined successfully ');
     }
     public function cancleToTrip(Request $request){
@@ -42,6 +66,9 @@ class usersController extends Controller
                 ['trip_id','=',$trip->id],
                 ['user_id','=',Auth::id()]
         ])->delete();
+
+        $usedBefore=voucherUsers::where([['user_id',Auth::id()],['trip_id',$trip->id]])->delete();
+
         if($tripJoined == null){
             return redirect()->back()->with('alert','you are not joined to this trip!!');
         }
@@ -366,7 +393,18 @@ class usersController extends Controller
         //return $trip;
         return view('tripDetails',['trip'=>$trip]);
     }
+    public function checkVoucher(Request $request){
+        if($request->has('code') &&$request->has('trip_id')){
+            $voucher=voucher::where([['trip_id',$request->trip_id],['code',$request->code],['status','active']])->first();
+            if($voucher) {
+                return response()->json(['success' =>'voucher valid','valid'=>true,'discount'=>$voucher->discount]);
+            }
+            else{
+                return response()->json(['error' =>'voucher invalid',]);
+            }
+        }
 
+    }
     public function rateTrip(Request $request){
         $trip = trips::find($request->trip_id);
         if(!$trip){

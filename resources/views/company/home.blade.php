@@ -54,37 +54,7 @@
                             <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
                                 <div dir="{{$dir}}" class="row py-3">
                                 @foreach($active as $trip)
-                                        <div style="{{$offset_1}}" class="col-md-3 post-item bg-light box-shadow">
-                                                <div class="post-body">
-                                                    <div class="image-container">
-                                                        <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
-                                                    </div>
-                                                    <div class="{{$text}} px-2 more-details">
-                                                        <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}">
-                                                            <h4 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h4>
-                                                        </a>
-                                                        <p>status: <strong>{{$trip->status}}</strong></p>
-                                                        <p class="font-weight-bolder">
-                                                            {{__('frontEnd.new_join_req')}} [{{$trip->newJoinRequest}}]
-                                                        </p>
-                                                        <p class="font-weight-bolder">
-                                                            {{__('frontEnd.resolved_join_req')}} [{{$trip->resolvedJoinRequest}}]
-                                                        </p>
-                                                        <p class="font-weight-bolder">
-                                                            {{__('frontEnd.rejected_join_req')}} [{{$trip->rejectedJoinRequest}}]
-                                                        </p>
-                                                        <p class="font-weight-bolder">{{__('frontEnd.confirmed_join_req')}} [{{$trip->confirmedTraveler}}]</p>
-
-                                                    </div>
-                                                </div>
-                                        </div>
-                                @endforeach
-                            </div>
-                            </div>
-                            <div class="tab-pane fade " id="disabled" role="tabpanel" aria-labelledby="disabled-tab">
-                                <div dir="{{$dir}}" class="row py-3">
-                                    @foreach($disabled as $trip)
-                                        <div style="{{$offset_1}}" class="col-md-3 post-item bg-light box-shadow">
+                                    <div style="{{$offset_1}}" class="col-md-3 post-item bg-light box-shadow">
                                             <div class="post-body">
                                                 <div class="image-container">
                                                     <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
@@ -93,21 +63,37 @@
                                                     <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}">
                                                         <h4 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h4>
                                                     </a>
-                                                    <p>status: <strong>{{$trip->status}}</strong></p>
+                                                    <p>{{__('frontEnd.status')}}: <strong>{{$trip->status}}</strong></p>
                                                     <p class="font-weight-bolder">
-                                                        {{__('frontEnd.new_join_req')}} [{{$trip->newJoinRequest}}]
+                                                        <i class="fas fa-user-check font-1-2 main-text-green"></i>
+                                                        {{__('frontEnd.joiners')}} [{{$trip->joinersNumber}}]
                                                     </p>
-                                                    <p class="font-weight-bolder">
-                                                        {{__('frontEnd.resolved_join_req')}} [{{$trip->resolvedJoinRequest}}]
-                                                    </p>
-                                                    <p class="font-weight-bolder">
-                                                        {{__('frontEnd.rejected_join_req')}} [{{$trip->rejectedJoinRequest}}]
-                                                    </p>
-                                                    <p class="font-weight-bolder">{{__('frontEnd.confirmed_join_req')}} [{{$trip->confirmedTraveler}}]</p>
-
-                                                </div>
+                                                     </div>
+                                            </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            </div>
+                            <div class="tab-pane fade " id="disabled" role="tabpanel" aria-labelledby="disabled-tab">
+                                <div dir="{{$dir}}" class="row py-3">
+                                    @foreach($disabled as $trip)
+                                    <div style="{{$offset_1}}" class="col-md-3 post-item bg-light box-shadow">
+                                        <div class="post-body">
+                                            <div class="image-container">
+                                                <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
+                                            </div>
+                                            <div class="{{$text}} px-2 more-details">
+                                                <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}">
+                                                    <h4 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h4>
+                                                </a>
+                                                <p>{{__('frontEnd.status')}}: <strong>{{$trip->status}}</strong></p>
+                                                <p class="font-weight-bolder">
+                                                    <i class="fas fa-user-check font-1-2 main-text-green"></i>
+                                                    {{__('frontEnd.joiners')}} [{{$trip->joinersNumber}}]
+                                                </p>
                                             </div>
                                         </div>
+                                    </div>
                                     @endforeach
 
                                 </div>
@@ -125,22 +111,14 @@
                                                     <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}">
                                                         <h4 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h4>
                                                     </a>
-                                                    <p>status: <strong>{{$trip->status}}</strong></p>
+                                                    <p>{{__('frontEnd.status')}}: <strong>{{$trip->status}}</strong></p>
                                                     <p class="font-weight-bolder">
-                                                        {{__('frontEnd.new_join_req')}} [{{$trip->newJoinRequest}}]
+                                                        <i class="fas fa-user-check font-1-2 main-text-green"></i>
+                                                        {{__('frontEnd.joiners')}} [{{$trip->joinersNumber}}]
                                                     </p>
-                                                    <p class="font-weight-bolder">
-                                                        {{__('frontEnd.resolved_join_req')}} [{{$trip->resolvedJoinRequest}}]
-                                                    </p>
-                                                    <p class="font-weight-bolder">
-                                                        {{__('frontEnd.rejected_join_req')}} [{{$trip->rejectedJoinRequest}}]
-                                                    </p>
-                                                    <p class="font-weight-bolder">{{__('frontEnd.confirmed_join_req')}} [{{$trip->confirmedTraveler}}]</p>
-
                                                 </div>
                                             </div>
                                         </div>
-
                                     @endforeach
 
                                 </div>

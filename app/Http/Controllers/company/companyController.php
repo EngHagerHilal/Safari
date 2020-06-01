@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\trips;
 use App\User;
 use App\userTrips;
+use App\voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -59,6 +60,28 @@ class companyController extends Controller
             return redirect()->back()->withErrors('img','one image required at least');
         }*/
     }
+    public function newVoucher(Request $request){
+        $dataValidated=$request->validate([
+            'discount'      => 'required',
+            'trip_id'       => 'required',
+            'expire_at'     => 'required',
+            ]);
+        $voucherCode=mt_rand(100000,999999);
+        $voucherCode=implode('-',str_split(str_shuffle($voucherCode.time(now())),4));
+        $newVoucher=voucher::create([
+            'trip_id'=>$request->trip_id,
+            'discount'=>$request->discount,
+            'expire_at'=>$request->expire_at,
+            'code'=>$voucherCode,
+        ]);
+        if($newVoucher){
+            return redirect()->back()->with('success',__('frontEnd.voucher_created').' : '.$voucherCode);
+        }
+        else{
+            return 'error';
+            return redirect()->back()->with('alert',__('frontEnd.error_happened'));
+        }
+    }
     public function controlTrip(Request $request){
         $trip=trips::where([['id','=',$request->trip_id],['company_id','=',Auth::guard('company')->user()->id]])->get()->first();
         if($trip==null){
@@ -96,7 +119,7 @@ class companyController extends Controller
         if($JoinRequest!=true){
             return view('error');
         }
-            return redirect()->back()->with('trip_message','the joiner status udated ')->with('status',$control);
+            return redirect()->back()->with('trip_message','the joiner status updated ')->with('status',$control);
     }
     public function tripDetails(Request $request){
 
@@ -105,54 +128,19 @@ class companyController extends Controller
             return view('error');
         }
         $trip->img=gallary::where('trip_id','=',$trip->id)->get();
-        $newJoinRequest=userTrips::where([
-            ['trip_id','=',$trip->id],
-            ['status','=','pending']
-        ])->get();
-        $resolvedJoinRequest=userTrips::where([
-            ['trip_id','=',$trip->id],
-            ['status','=','resolved']
-        ])->get();
-        $rejectedJoinRequest=userTrips::where([
-            ['trip_id','=',$trip->id],
-            ['status','=','rejected']
-        ])->get();
-        $confirmedTraveler=userTrips::where([
-            ['trip_id','=',$trip->id],
-            ['status','=','confirmed']
-        ])->get();
-        foreach ($newJoinRequest as $joiner){
-            $user=User::find($joiner->user_id);
-            $joiner->id=$user->id;
-            $joiner->name=$user->name;
-            $joiner->email=$user->email;
-        }
-        foreach ($resolvedJoinRequest as $joiner){
-            $user=User::find($joiner->user_id);
-            $joiner->id=$user->id;
-            $joiner->name=$user->name;
-            $joiner->email=$user->email;
-        }
-        foreach ($rejectedJoinRequest as $joiner){
-            $user=User::find($joiner->user_id);
-            $joiner->id=$user->id;
-            $joiner->name=$user->name;
-            $joiner->email=$user->email;
-        }
-        foreach ($confirmedTraveler as $joiner){
-            $user=User::find($joiner->user_id);
-            $joiner->id=$user->id;
-            $joiner->name=$user->name;
-            $joiner->email=$user->email;
-        }
+        $joinersNumber=userTrips::where('trip_id',$trip->id)->count();
+        $activeVouchers=voucher::where([['trip_id',$trip->id],['status','active']])->get();
+        $disableVouchers=voucher::where([['trip_id',$trip->id],['status','disable']])->get();
+        $expiredVouchers=voucher::where([['trip_id',$trip->id],['status','expired']])->get();
         return view('company.tripDetails',
             [
                 'trip'=>$trip,
-                'newJoinRequest'=>$newJoinRequest,
-                'resolvedJoinRequest'=>$resolvedJoinRequest,
-                'rejectedJoinRequest'=>$rejectedJoinRequest,
-                'confirmedTraveler'=>$confirmedTraveler,
-                ]);
+                'joinersNumber'=>$joinersNumber,
+                'activeVoucher'=>$activeVouchers,
+                'disabledVoucher'=>$disableVouchers,
+                'expiredVoucher'=>$expiredVouchers,
+            ]
+        );
         return redirect()->back()->with('trip_message','the trip status udated ')->with('status',$trip->status);
     }
 

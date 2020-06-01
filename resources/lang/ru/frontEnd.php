@@ -125,6 +125,23 @@ return [
     'new_password'       => 'Новый пароль',
     'new_password_confirmation'=> 'подтвердите новый пароль',
     'save'               => 'спасти',
+    'joiners'            => 'Количество путешественников',
 
+    'enter_voucher'      => 'Введите код ваучера',
+    'code_invalid'       => 'Неверный код',
+    'code_valid'         => 'Действительный код',
+    'add_voucher'        => 'Добавить код ваучера',
+    'discount_percent'   => 'процент скидки',
+    'expire_at'          => 'годен до',
+    'voucher_created'    => 'код ваучера создан',
+    'error_happened'     => 'произошла ошибка',
+    'code'               => 'код скидки',
+    'discount'           => 'процент скидки',
+    'created_at'         => 'Дата скидки',
+    'times_use'          => 'Применение',
+    'active_voucher'     => 'активные коды',
+    'expired_voucher'    => 'просроченные коды',
+    'disabled_voucher'   => 'ваучер для инвалидов',
+    'joined_with_code'   => 'вы присоединились с кодом скидки',
 
 ];

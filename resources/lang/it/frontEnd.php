@@ -118,8 +118,29 @@ return [
     'rejected_partners'  => 'partner respinti',
     'travel_day'         => 'giorno di viaggio',
 
+    'Edit_profile'       => 'Modifica Profilo',
+    'current_password'   => 'Password attuale',
+    'new_password'       => 'nuova password',
+    'new_password_confirmation'=> 'conferma la nuova password',
+    'save'               => 'Salva',
+    'joiners'            => 'Numero di viaggiatori',
 
-
+    'enter_voucher'      => 'Inserisci il codice voucher',
+    'code_invalid'       => 'Codice non VALIDO',
+    'code_valid'         => 'Codice valido',
+    'add_voucher'        => 'Aggiungi codice voucher',
+    'discount_percent'   => 'percentuale di sconto',
+    'expire_at'          => 'data di scadenza',
+    'voucher_created'    => 'codice voucher creato',
+    'error_happened'     => 'si è verificato un errore',
+    'code'               => 'codice di sconto',
+    'discount'           => 'codice di sconto',
+    'created_at'         => 'Data di sconto',
+    'times_use'          => 'uso',
+    'active_voucher'     => 'codici attivi',
+    'expired_voucher'    => 'codici scaduti',
+    'disabled_voucher'   => 'buono per disabili',
+    'joined_with_code'   => 'sei iscritto con il codice sconto',
 
 
 

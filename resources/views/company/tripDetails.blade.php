@@ -73,7 +73,7 @@
             </div>
             <div class="col-4 panner-right post-full-details">
                 <div class="panner bg-light box-shadow">
-                    <h3 class="text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
+                    <h3 class="py-3 text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
                     <div class="{{$text}} full-details">
                         <p class="text-dark">{{$trip->description}}</p>
 
@@ -94,24 +94,17 @@
                             {{__('frontEnd.duration_from')}} <strong class="text-uppercase">{{$trip->start_at}}</strong> {{__('frontEnd.to')}} <strong>{{$trip->end_at}}</strong>
                         </p>
                         <p>
-                            <i class="fas fa-user-clock font-1-2 main-text-green"></i>
-                            {{__('frontEnd.new_join_req')}} : <strong>{{count($newJoinRequest)}}</strong></p>
-                        <p>
                             <i class="fas fa-user-check font-1-2 main-text-green"></i>
-                            {{__('frontEnd.resolved_join_req')}} : <strong>{{count($resolvedJoinRequest)}}</strong>
+                            {{__('frontEnd.joiners')}} : <strong>{{$joinersNumber}}</strong>
                         </p>
-                        <p>
-                            <i class="fas fa-user-times font-1-2 main-text-green"></i>
-                            {{__('frontEnd.rejected_join_req')}} : <strong>{{count($rejectedJoinRequest)}} </strong>
-                        </p>
-                        <p>
-                            <i class="fas fa-users font-1-2 main-text-green"></i>
-                            {{__('frontEnd.confirmed_join_req')}} : <strong>{{count($confirmedTraveler)}} </strong>
-                        </p>
+
                     </div>
                     <div class="aply-now">
                         @switch($trip->status)
                             @case('active')
+                            <a href="!#" class="btn btn-success input-group aply-button" data-toggle="modal" data-target="#modalRegisterForm">
+                                {{__('frontEnd.add_voucher')}}
+                            </a>
                             <a href="{{route('company.trips.control',['action'=>'disabled','trip_id'=>$trip->id])}}" class="btn btn-danger input-group aply-button">
                                 <i class="fas fa-eye-slash font-1-2"></i> {{__('frontEnd.mark_disabled')}}
                             </a>
@@ -144,116 +137,99 @@
 
             </div>
         </div>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <ul class="nav nav-tabs text-center" id="myTab" role="tablist">
 
-                <li class="nav-item">
-                    <a class="nav-link active" id="pending-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="false">
-                        <i class="fas fa-user-clock font-1-2 main-text-green"></i>
-                        {{__('frontEnd.new_join_req')}} : <strong>{{count($newJoinRequest)}}</strong>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="resolved-tab" data-toggle="tab" href="#resolved" role="tab" aria-controls="resolved" aria-selected="false">
-                        <i class="fas fa-user-check font-1-2 main-text-green"></i>
-                        {{__('frontEnd.resolved_join_req')}} : <strong>{{count($resolvedJoinRequest)}}</strong>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="rejected-tab" data-toggle="tab" href="#rejected" role="tab" aria-controls="rejected" aria-selected="false">
-                        <i class="fas fa-user-times font-1-2 main-text-green"></i>
-                        {{__('frontEnd.rejected_join_req')}} : <strong>{{count($rejectedJoinRequest)}} </strong>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="confirmedTraveler-tab" data-toggle="tab" href="#confirmedTraveler" role="tab" aria-controls="confirmedTraveler" aria-selected="false">
-                        <i class="fas fa-users font-1-2 main-text-green"></i>
-                        {{__('frontEnd.confirmed_join_req')}} : <strong>{{count($confirmedTraveler)}} </strong>
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
-                    <div dir="{{$dir}}" class="row">
-                        @foreach($newJoinRequest as $user)
-                            <div class="{{$text}} col-md-4 border">
-                                <a href="#"><h4 class="text-center" >{{$user->name}}</h4></a>
-                                <p class="font-weight-bolder">{{__('frontEnd.email')}} : {{$user->email}}</p>
-                                <p>{{__('frontEnd.status')}} : <strong>{{$user->status}}</strong></p>
-                                <p>{{__('frontEnd.req_date')}} : {{$user->created_at}}</p>
-                                @if(in_array($user->status,['pending','resolved']))
-                                    <a class="btn btn-success " href="{{route('company.trip.control.joiner',['action'=>'resolved','trip_id'=>$trip->id,'user_id'=>$user->id])}}">
-                                        <i class="fas fa-check-square font-1-6"></i> {{__('frontEnd.resolve_request')}}
-                                    </a>
-                                    <a class="btn btn-danger " href="{{route('company.trip.control.joiner',['action'=>'rejected','trip_id'=>$trip->id,'user_id'=>$user->id])}}">
-                                        <i class="fas fa-window-close font-1-6"></i> {{__('frontEnd.reject_request')}}
-                                    </a>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="tab-pane fade " id="resolved" role="tabpanel" aria-labelledby="resolved-tab">
-                    <div class="row">
-                        @foreach($resolvedJoinRequest as $user)
-                            <div class="{{$text}} col-md-4 border">
-                                <a href="#"><h4 class="text-center" >{{$user->name}}</h4></a>
-                                <p class="font-weight-bolder">{{__('frontEnd.email')}} : {{$user->email}}</p>
-                                <p>{{__('frontEnd.status')}} : <strong>{{$user->status}}</strong></p>
-                                <p>{{__('frontEnd.req_date')}} : {{$user->created_at}}</p>
-                                @if(in_array($user->status,['pending','resolved']))
-                                    <a class="btn btn-success " href="{{route('company.trip.control.joiner',['action'=>'resolved','trip_id'=>$trip->id,'user_id'=>$user->id])}}">
-                                        <i class="fas fa-check-square font-1-6"></i> {{__('frontEnd.resolve_request')}}
-                                    </a>
-                                    <a class="btn btn-danger " href="{{route('company.trip.control.joiner',['action'=>'rejected','trip_id'=>$trip->id,'user_id'=>$user->id])}}">
-                                        <i class="fas fa-window-close font-1-6"></i> {{__('frontEnd.reject_request')}}
-                                    </a>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="tab-pane fade " id="rejected" role="tabpanel" aria-labelledby="rejected-tab">
-                    <div class="row">
-                        @foreach($rejectedJoinRequest as $user)
-                            <div class="{{$text}} col-md-4 border">
-                                <a href="#"><h4 class="text-center" >{{$user->name}}</h4></a>
-                                <p class="font-weight-bolder">{{__('frontEnd.email')}} : {{$user->email}}</p>
-                                <p>{{__('frontEnd.status')}} : <strong>{{$user->status}}</strong></p>
-                                <p>{{__('frontEnd.req_date')}} : {{$user->created_at}}</p>
-                                @if(in_array($user->status,['pending','resolved']))
-                                    <a class="btn btn-success " href="{{route('company.trip.control.joiner',['action'=>'resolved','trip_id'=>$trip->id,'user_id'=>$user->id])}}">
-                                        <i class="fas fa-check-square font-1-6"></i> {{__('frontEnd.resolve_request')}}
-                                    </a>
-                                    <a class="btn btn-danger " href="{{route('company.trip.control.joiner',['action'=>'rejected','trip_id'=>$trip->id,'user_id'=>$user->id])}}">
-                                        <i class="fas fa-window-close font-1-6"></i> {{__('frontEnd.reject_request')}}
-                                    </a>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="tab-pane fade " id="confirmedTraveler" role="tabpanel" aria-labelledby="confirmedTraveler-tab">
-                    <div class="row">
-                        @foreach($confirmedTraveler as $user)
-                            <div class="{{$text}} col-md-4 border">
-                                <a href="#"><h4 class="text-center" >{{$user->name}}</h4></a>
-                                <p class="font-weight-bolder">{{__('frontEnd.email')}} : {{$user->email}}</p>
-                                <p>{{__('frontEnd.status')}} : <strong>{{$user->status}}</strong></p>
-                                <p>{{__('frontEnd.req_date')}} : {{$user->created_at}}</p>
-                                @if(in_array($user->status,['pending','resolved']))
-                                    <a class="btn btn-success " href="{{route('company.trip.control.joiner',['action'=>'resolved','trip_id'=>$trip->id,'user_id'=>$user->id])}}">
-                                        <i class="fas fa-check-square font-1-6"></i> {{__('frontEnd.resolve_request')}}
-                                    </a>
-                                    <a class="btn btn-danger " href="{{route('company.trip.control.joiner',['action'=>'rejected','trip_id'=>$trip->id,'user_id'=>$user->id])}}">
-                                        <i class="fas fa-window-close font-1-6"></i> {{__('frontEnd.reject_request')}}
-                                    </a>
-                                @endif
-                            </div>
-                        @endforeach
-                    </div>
+            <li class="nav-item">
+                <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab" aria-controls="active" aria-selected="false">
+                    {{__('frontEnd.active_voucher')}} [ <strong>{{count($activeVoucher)}}</strong> ]
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="expired-tab" data-toggle="tab" href="#expired" role="tab" aria-controls="expired" aria-selected="false">
+                    {{__('frontEnd.expired_voucher')}} [ <strong>{{count($expiredVoucher)}}</strong> ]
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="disabled-tab" data-toggle="tab" href="#disabled" role="tab" aria-controls="disabled" aria-selected="false">
+                    {{__('frontEnd.disabled_voucher')}} [ <strong>{{count($disabledVoucher)}} </strong> ]
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
+                <div dir="{{$dir}}" class="row">
+                    @foreach($activeVoucher as $voucher)
+                        <div class="{{$text}} col-md-4 border">
+                            <p>{{__('frontEnd.code')}} : <strong>{{$voucher->code}}</strong></p>
+                            <p>{{__('frontEnd.discount')}} : <strong>{{$voucher->discount}} %</strong></p>
+                            <p>{{__('frontEnd.created_at')}} : {{$voucher->created_at}}</p>
+                            <p>{{__('frontEnd.expire_at')}} : {{$voucher->expire_at}}</p>
+                            <p>{{__('frontEnd.times_use')}} : {{$voucher->times_use}}</p>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-
+            <div class="tab-pane fade " id="expired" role="tabpanel" aria-labelledby="expired-tab">
+                <div class="row">
+                    @foreach($expiredVoucher as $voucher)
+                        <div class="{{$text}} col-md-4 border">
+                            <p>{{__('frontEnd.code')}} : <strong>{{$voucher->code}}</strong></p>
+                            <p>{{__('frontEnd.discount')}} : <strong>{{$voucher->discount}} %</strong></p>
+                            <p>{{__('frontEnd.created_at')}} : {{$voucher->created_at}}</p>
+                            <p>{{__('frontEnd.expire_at')}} : {{$voucher->expire_at}}</p>
+                            <p>{{__('frontEnd.times_use')}} : {{$voucher->times_use}}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="tab-pane fade " id="disabled" role="tabpanel" aria-labelledby="disabled-tab">
+                <div class="row">
+                    @foreach($disabledVoucher as $voucher)
+                        <div class="{{$text}} col-md-4 border">
+                            <p>{{__('frontEnd.code')}} : <strong>{{$voucher->code}}</strong></p>
+                            <p>{{__('frontEnd.discount')}} : <strong>{{$voucher->discount}} %</strong></p>
+                            <p>{{__('frontEnd.created_at')}} : {{$voucher->created_at}}</p>
+                            <p>{{__('frontEnd.expire_at')}} : {{$voucher->expire_at}}</p>
+                            <p>{{__('frontEnd.times_use')}} : {{$voucher->times_use}}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">{{__('frontEnd.new_voucher')}}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" action="{{route('company.trips.newVoucher')}}">
+                        @csrf
+                        <div class="modal-body mx-3">
+                            <div class="md-form mb-5 row">
+                                <div class="col-2 text-center">
+                                    <i class="fas fa-money-bill-alt font-1-6 main-text-green"></i>
+                                </div>
+                                <input required name="discount" placeholder="{{__('frontEnd.discount_percent')}}" type="number" class="col-10 form-control @error('discount') is-invalid @enderror" min="1" max="99">
+                                <input required name="trip_id"type="hidden" value="{{$trip->id}}">
+                            </div>
+                            <div class="md-form mb-5 row">
+                                <div class="col-2 text-center">
+                                    <i class="fas fa-calendar-check font-1-6 main-text-green"></i>
+                                </div>
+                                <input required name="expire_at" placeholder="{{__('frontEnd.expire_at')}}" type="date" class="col-10 form-control @error('expire_at') is-invalid @enderror">
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button class="btn btn-success">{{__('frontEnd.add')}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 

@@ -54,9 +54,10 @@ Route::middleware('company.guest')->group(function (){
 
 Route::middleware(['auth','verified'])->group(function(){
     Route::get('/myTrips', 'users\usersController@myTrips')->name('myJoinedTrips');
-    Route::get('/trips/join/{trip_id}', 'users\usersController@joinToTrip')->name('users.joinTrip');
+    Route::get('/trips/join/{trip_id}/{voucher?}', 'users\usersController@joinToTrip')->name('users.joinTrip');
     Route::get('/trips/cancle/{trip_id}', 'users\usersController@cancleToTrip')->name('users.cancleTrip');
     Route::get('/tripDetails/rate/{trip_id}/{rate}', 'users\usersController@rateTrip')->name('users.RateTrip');
+    Route::get('/voucher/check', 'users\usersController@checkVoucher')->name('users.check.voucher');
 
 });
 
@@ -105,6 +106,7 @@ Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied
     Route::post('/trips/new','company\companyController@insertNewTrip')->name('company.trips.insert');
     Route::get('/trips/{action}/{trip_id}','company\companyController@controlTrip')->name('company.trips.control');
     Route::get('/tripDetails/{trip_id}','company\companyController@tripDetails')->name('company.trips.details');
+    Route::post('/new-voucher','company\companyController@newVoucher')->name('company.trips.newVoucher');
     Route::get('/tripDetails/joiners/{action}/{trip_id}/{user_id}','company\companyController@controlJoiners')->name('company.trip.control.joiner');
     Route::get('/edit-profile/', 'company\companyController@editProfile')->name('company.editProfile');
     Route::post('/edit-profile/', 'company\companyController@updateProfile')->name('company.updateProfile');

@@ -125,6 +125,23 @@ return [
     'new_password'       => 'new password',
     'new_password_confirmation'=> 'confirm new password',
     'save'               => 'save',
+    'joiners'            => 'Number of travelers',
 
+    'enter_voucher'      => 'Enter the voucher code',
+    'code_invalid'       => 'Invalid code',
+    'code_valid'         => 'Valid code',
+    'add_voucher'        => 'Add voucher code',
+    'discount_percent'   => 'discount percent',
+    'expire_at'          => 'expire date',
+    'voucher_created'    => 'voucher code created',
+    'error_happened'     => 'an error occurred',
+    'code'               => 'discount code',
+    'discount'           => 'discount percent',
+    'created_at'         => 'Discount date',
+    'times_use'          => 'usage',
+    'active_voucher'     => 'active codes',
+    'expired_voucher'    => 'expired codes',
+    'disabled_voucher'   => 'disabled voucher',
+    'joined_with_code'   => 'you are joined with discount code',
 
 ];

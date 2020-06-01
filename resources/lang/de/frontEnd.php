@@ -125,6 +125,23 @@ return [
     'new_password'       => 'Neues Kennwort',
     'new_password_confirmation'=> 'bestätige neues Passwort',
     'save'               => 'speichern',
+    'joiners'            => 'Anzahl der Reisenden',
 
 
+    'enter_voucher'      => 'Geben Sie den Gutscheincode ein',
+    'code_invalid'       => 'Ungültiger Code',
+    'code_valid'         => 'Gültiger Code',
+    'add_voucher'        => 'Gutscheincode hinzufügen',
+    'discount_percent'   => 'Rabatt Prozent',
+    'expire_at'          => 'Ablaufdatum',
+    'voucher_created'    => 'Gutscheincode erstellt',
+    'error_happened'     => 'ein Fehler ist aufgetreten',
+    'code'               => 'Rabattcode',
+    'discount'           => 'Rabatt Prozent',
+    'created_at'         => 'Rabattdatum',
+    'times_use'          => 'Verwendungszweck',
+    'active_voucher'     => 'aktive Codes',
+    'expired_voucher'    => 'abgelaufene Codes',
+    'disabled_voucher'   => 'Gutschein für Behinderte',
+    'joined_with_code'   => 'Sie sind mit Rabattcode verbunden',
 ];

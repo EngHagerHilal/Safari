@@ -89,7 +89,7 @@
 
                         <p>
                             <i class="fas fa-money-bill-wave font-1-2 main-text-green"></i>
-                            {{__('frontEnd.price')}} <strong class="text-uppercase">{{$trip->price}}</strong> $
+                            {{__('frontEnd.price')}} <strong class="text-uppercase" id="tripPrice">{{$trip->price}}</strong> $
                         </p>
                         <p>
                             <i class="fas fa-calendar-alt font-1-2 main-text-green"></i>
@@ -100,7 +100,15 @@
                         <p>
                             <i class="fas fa-suitcase-rolling font-1-2 main-text-green"></i> {{__('frontEnd.you_are_joined')}}
                         </p>
+                        @else
+                            <p>
+                                <i aria-hidden="true" class="fas fa-money-bill-alt font-1-2 main-text-green"></i>
+                                <input type="text" placeholder="{{__('frontEnd.enter_voucher')}}" id="voucherCode">
+                            <p class="alert alert-danger text-danger" style="display: none" id="codeInvalid"><i class="fas fa-ban text-danger font-1-6"></i>  {{__('frontEnd.code_invalid')}}</p>
+                            <p class="alert alert-success " style="display: none" id="codeValid"><i class="fas fa-check-circle main-text-green font-1-6"></i> {{__('frontEnd.code_valid')}}</p>
+                            </p>
                         @endif
+
 
                     </div>
                     @if($trip->rated==false)
@@ -128,7 +136,7 @@
                             {{__('frontEnd.cancel_trip')}}
                         </a>
                         @else
-                         <a href="{{route('users.joinTrip',['trip_id'=>$trip->id])}}" class="btn btn-success input-group aply-button"><i class="fas fa-user-plus"></i>
+                         <a id="join-trip" href="{{route('users.joinTrip',['trip_id'=>$trip->id])}}" class="btn btn-success input-group aply-button"><i class="fas fa-user-plus"></i>
                              {{__('frontEnd.join_trip')}}</a>
                         @endif
                     </div>
@@ -142,6 +150,53 @@
 @section('ajaxCode')
     <script>
         $(document).ready(function() {
+            var originalPrice={{$trip->price}};
+            var originalLink='{{route('users.joinTrip',['trip_id'=>$trip->id])}}';
+            //check voucher
+            $("#voucherCode").on("input", function(e) {
+                $('#codeInvalid').hide();
+                $('#codeValid').hide();
+
+                var input = $(this);
+                var code = input.val();
+                if( $(this).val().trim() == '' ) {
+                    $('#codeInvalid').hide();
+                    $('#tripPrice').text(originalPrice );
+
+                }
+                else{
+                    $.ajax({
+                        type: "GET",
+                        url: "{{route('users.check.voucher')}}/?code=" + code +'&trip_id={{$trip->id}}' ,
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.success) {
+                                if(data.valid){
+                                    $('#tripPrice').text($('#tripPrice').text() * (data.discount/100) );
+                                    $('#codeValid').show();
+                                    var newLink=$('#join-trip').attr('href')+'?code='+code;
+                                    $('#join-trip').attr('href',newLink);originalLink
+                                }
+                                else{
+                                    $('#codeInvalid').show();
+                                    $('#tripPrice').text(originalPrice );
+                                    $('#join-trip').attr('href',originalLink);
+
+
+                                }
+                            }
+                            else{
+                                $('#codeInvalid').show();
+                                $('#tripPrice').text(originalPrice );
+                                $('#join-trip').attr('href',originalLink);
+
+                            }
+                        }
+                    });
+                }
+
+            });
+
             $('.rate-it>i').click(function(e){
                 var trip_id = $(this).attr('trip-id');
                 var rate    = $(this).attr('rate-value');
