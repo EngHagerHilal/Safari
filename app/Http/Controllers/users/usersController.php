@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Symfony\Component\Mime\Encoder\QpEncoder;
 
 class usersController extends Controller
 {
@@ -24,6 +26,7 @@ class usersController extends Controller
         if($trip->status !='active'){
             return redirect()->back()->with('alert','you can not join this trip now!');
         }
+        $price=$trip->price;
         $tripJoined=userTrips::where([
                 ['trip_id','=',$trip->id],
                 ['user_id','=',Auth::id()]
@@ -50,9 +53,32 @@ class usersController extends Controller
             else{
                 return redirect()->back()->with('alert','this voucher invalid');
             }
+            $price=$trip->price*$voucher->discount/100;
         }
-        userTrips::create(['user_id'=>Auth::id(),
-        'trip_id'=>$request->trip_id]);
+        $joinCode=mt_rand(100000,999999);
+        $joinCode=implode('-',str_split(str_shuffle($joinCode.time(now())),4));
+        $user_id=Auth::id();
+        $QR_code=public_path(
+             "img/users/$user_id/trips/$trip->id"
+        );
+        if(!is_dir(public_path("img/users/")))
+        mkdir(public_path('img/users/'));
+        if(!is_dir(public_path("img/users/").Auth::id()))
+        mkdir(public_path('img/users/').Auth::id());
+         if(!is_dir(public_path("img/users/").Auth::id()."/trips/"))
+            mkdir(public_path('img/users/').Auth::id()."/trips/");
+         if(!is_dir(public_path("img/users/").Auth::id()."/trips/".$trip->id))
+            mkdir(public_path('img/users/').Auth::id()."/trips/".$trip->id);
+        $new_img=time(now()).'.png';
+         QrCode::format('png')->size(400)
+            ->generate($joinCode,$QR_code.'\img_'.$new_img );
+        userTrips::create([
+            'user_id'=>Auth::id(),
+            'trip_id'=>$request->trip_id,
+            'joinCode'=>$joinCode,
+            'QR_code'=>"img/users/$user_id/trips/$trip->id/img_$new_img",
+        ]);
+        return view('payment',['price'=>$price,'trip_id'=>$trip->id]);
         if($request->has('code'))
         return redirect()->back()->with('success',__('frontEnd.joined_with_code').' : '.$request->code);
         return redirect()->back()->with('success','you are joined successfully ');
@@ -68,7 +94,10 @@ class usersController extends Controller
         ])->delete();
 
         $usedBefore=voucherUsers::where([['user_id',Auth::id()],['trip_id',$trip->id]])->delete();
-
+        $QR_code=public_path(
+            "img/users/".Auth::id()."/trips/$trip->id"
+        );
+        Controller::deleteDirectory($QR_code);
         if($tripJoined == null){
             return redirect()->back()->with('alert','you are not joined to this trip!!');
         }
@@ -384,12 +413,17 @@ class usersController extends Controller
             $trip->rated = false;
         }
         $trip->img=gallary::where('trip_id','=',$trip->id)->get();
-        $trip->joiners=userTrips::where('trip_id','=',$trip->id)->get()->count();
+        $trip->joiners=userTrips::where('trip_id','=',$trip->id)->count();
         $ratedCount = trip_rate::calcRate($trip->id);
 
         $trip->comapnyName=Company::find($trip->company_id)->name;
-        $joined=userTrips::where([['user_id',\auth()->id()],['trip_id',$trip->id]])->get()->first();
-        $trip->joined = $joined != null;
+        $joined=userTrips::where([['user_id',\auth()->id()],['trip_id',$trip->id]])->first();
+        if($joined){
+            $trip->joined = $joined;
+        }
+        else{
+            $trip->joined = false;
+        }
         //return $trip;
         return view('tripDetails',['trip'=>$trip]);
     }

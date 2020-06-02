@@ -110,6 +110,7 @@ Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied
     Route::get('/tripDetails/joiners/{action}/{trip_id}/{user_id}','company\companyController@controlJoiners')->name('company.trip.control.joiner');
     Route::get('/edit-profile/', 'company\companyController@editProfile')->name('company.editProfile');
     Route::post('/edit-profile/', 'company\companyController@updateProfile')->name('company.updateProfile');
+    Route::post('/check-QR-code/', 'company\companyController@readQRcod')->name('company.checkQRCode');
 
 });
 

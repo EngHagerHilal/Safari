@@ -17,7 +17,8 @@ class CreateUserTripsTable extends Migration
             $table->id();
             $table->bigInteger("trip_id")->unsigned();
             $table->bigInteger("user_id")->unsigned();
-
+            $table->string("joinCode");
+            $table->string("QR_code");
             $table->foreign("trip_id")->references("id")->on("trips")->onDelete("cascade")->onUpdate("cascade");
             $table->foreign("user_id")->references("id")->on("users")->onDelete("cascade")->onUpdate("cascade");
 

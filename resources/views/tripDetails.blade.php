@@ -74,8 +74,8 @@
 
             </div>
             <div class="col-4 panner-right post-full-details">
-                <div class="panner bg-light box-shadow">
-                    <h3 style="padding-top: 70px" class="text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
+                <div style="max-height: 700px" class="panner bg-light box-shadow">
+                    <h3 style="padding-top: 20px" class="text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
                     <div class="{{$text}} full-details">
                         <p class="text-dark font-weight-bold">{{$trip->description}}</p>
 
@@ -100,6 +100,13 @@
                         <p>
                             <i class="fas fa-suitcase-rolling font-1-2 main-text-green"></i> {{__('frontEnd.you_are_joined')}}
                         </p>
+                        <p>
+                            <i class="fas fa-ad font-1-2 main-text-green"></i>
+                            {{__('frontEnd.join_code')}} : {{$trip->joined->joinCode}}
+                        </p>
+                        <div class="trip_code">
+                            <img width="130" height="130" src="{{asset($trip->joined->QR_code) }}" class="d-block m-auto img-fluid">
+                        </div>
                         @else
                             <p>
                                 <i aria-hidden="true" class="fas fa-money-bill-alt font-1-2 main-text-green"></i>

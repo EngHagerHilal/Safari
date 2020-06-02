@@ -98,8 +98,14 @@
                             {{__('frontEnd.joiners')}} : <strong>{{$joinersNumber}}</strong>
                         </p>
 
+
+
+
                     </div>
                     <div class="aply-now">
+                        <a href="!#" class="btn btn-success input-group aply-button" data-toggle="modal" data-target="#checkQRCode">
+                            {{__('frontEnd.check_QR_user')}}
+                        </a>
                         @switch($trip->status)
                             @case('active')
                             <a href="!#" class="btn btn-success input-group aply-button" data-toggle="modal" data-target="#modalRegisterForm">
@@ -230,6 +236,78 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="checkQRCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title w-100 font-weight-bold">{{__('frontEnd.check_QR_user')}}</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="checkQR" method="post" action="{{route('company.checkQRCode')}}">
+                        @csrf
+                        <div class="modal-body mx-3">
+                            <div class="md-form mb-5 row">
+                                <div class="col-2 text-center">
+                                    <i class="fas fa-qr-code font-1-6 main-text-green"></i>
+                                </div>
+                                <input id="QR_code" placeholder="{{__('frontEnd.upload_QR_img')}}" type="file" class="col-10 form-control">
+                                <input type="hidden" value="{{$trip->id}}" name="trip_id">
+                                <input id="QR_CODE" type="hidden" value="" name="QR_code">
+                            </div>
+                            <div class="md-form mb-5 row">
+                                <div class="col-2 text-center">
+                                    <i class="fas fa-qr-code font-1-6 main-text-green"></i>
+                                </div>
+                                <input id="content" name="code" type="text" placeholder="{{__('frontEnd.join_code')}}" class="col-10 form-control">
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button id="form-sub" type="submit" class="btn btn-success">{{__('frontEnd.check')}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
+@section('ajaxCode')
+    <script>
+        $( "#content" ).change(function() {
+            $('#QR_CODE').val($( "#content" ).val());
+        });
+        $(document).on('submit','#checkQR',function (event) {
+            event.preventDefault();
+            var token   = '{{csrf_token()}}';
+            $.ajax({
+                    type: "POST",
+                    url: "{{route('company.checkQRCode')}}" ,
+                    data: {'QR_code': $( "#content" ).val(), '_token': token,'trip_id' : {{$trip->id}} },
+                    dataType: "json",
+                    success: function (data) {
+                        document.getElementById("checkQR").reset();
+
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'user joined to this trip',
+                                text: 'User name : '+data.user_name,
+                            });
+                        }
+                        else{
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'code incorrect',
+                                text: 'this code invalid ',
+                            });
+                        }
+                    }
+                });
+
+        });
+
+    </script>
+@endsection

@@ -143,7 +143,14 @@ class companyController extends Controller
         );
         return redirect()->back()->with('trip_message','the trip status udated ')->with('status',$trip->status);
     }
-
+    public function readQRcod(Request $request){
+        $valide=userTrips::checkCode($request->QR_code,$request->trip_id);
+        if ($valide){
+            $user=User::find($valide->user_id)->name;
+            return \Response::json(['success'=>'QR valid','user_name'=>$user]);
+        }
+        return \Response::json(['error'=>'QR','message'=>'QR code invalid']);
+    }
 
 
     public function editProfile(){

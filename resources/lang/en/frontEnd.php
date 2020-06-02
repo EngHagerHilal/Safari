@@ -144,4 +144,10 @@ return [
     'disabled_voucher'   => 'disabled voucher',
     'joined_with_code'   => 'you are joined with discount code',
 
+
+    'check'           => 'check code',
+    'check_QR_user'   => 'check join code',
+    'join_code'       => 'join code',
+
+
 ];

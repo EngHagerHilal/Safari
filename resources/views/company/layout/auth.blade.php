@@ -15,8 +15,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/jquery-3.4.1.min.js') }}" defer></script>
+    <script src="{{ asset('js/jquery-3.4.1.min.js') }}" ></script>
+    <script src="{{ asset('js/app.js') }}" ></script>
+    <script src="{{ asset('js/sweetalert2@9.js') }}" ></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -104,6 +105,9 @@
     </main>
 </div>
 
+<script src="{{ asset('js/qrReader.js') }}" ></script>
+
+@yield('ajaxCode')
 <script src="https://kit.fontawesome.com/8aaad534d4.js" crossorigin="anonymous"></script>
 </body>
 </html>
