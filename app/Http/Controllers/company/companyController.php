@@ -12,7 +12,7 @@ use App\userTrips;
 use App\voucher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use \Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
 class companyController extends Controller
@@ -221,7 +221,7 @@ class companyController extends Controller
             return \Response::json(['errors'=>$error->errors()->all()]);
         }
         $data=[
-            'company_id'     => $user->id,
+            'company_id'    => $user->id,
             'title'         => $request->title,
             'description'   => $request->description,
             'trip_from'     => $request->trip_from,
@@ -252,6 +252,39 @@ class companyController extends Controller
             return redirect()->back()->withErrors('img','one image required at least');
         }*/
     }
+    public function newVoucherAPI(Request $request){
+        $user=Company::isLoggedIn($request->api_token);
+        if($user==null){
+            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
+        }
+        $validateRules=[
+            'api_token'     => 'required',
+            'discount'      => 'required',
+            'trip_id'       => 'required',
+            'expire_at'     => 'required',
+        ];
+        $error= Validator::make($request->all(),$validateRules);
+        if($error->fails()){
+            return \Response::json(['errors'=>$error->errors()->all()]);
+        }
+
+        $voucherCode=mt_rand(100000,999999);
+        $voucherCode=implode('-',str_split(str_shuffle($voucherCode.time(now())),4));
+        $newVoucher=voucher::create([
+            'trip_id'=>$request->trip_id,
+            'discount'=>$request->discount,
+            'expire_at'=>$request->expire_at,
+            'code'=>$voucherCode,
+        ]);
+        if($newVoucher){
+            return \Response::json(['success'=>'voucher created','voucher'=>$newVoucher]);
+
+        }
+        else{
+            return \Response::json(['errors'=>'error happened']);
+        }
+    }
+
     public function controlTripAPI(Request $request){
         $user=Company::isLoggedIn($request->api_token);
         if($user==null){
@@ -261,11 +294,18 @@ class companyController extends Controller
         if($trip==null){
             return \Response::json(['error'=>'trip not found']);
         }
-        $trip->status=$request->action;
+
+        $controlArray=['active','disabled','completed'];
+        $control = $request->action;
+        if (!in_array($control, $controlArray)) {
+            return \Response::json(['error'=>'not valid','message'=>'the control action not correct']);
+        }
+        $trip->status=$control;
         $trip->save();
-        return \Response::json(['success'=>'trip status updated success']);
+        return \Response::json(['success'=>'trip status updated success','status'=>$control]);
     }
     public function homeAPI(Request $request){
+
         $user=Company::isLoggedIn($request->api_token);
         if($user==null){
             return \Response::json(['error'=>'login','message'=>'please login to access this data']);
@@ -292,7 +332,84 @@ class companyController extends Controller
         }
         return $data=['trip'=>$trip,'joiners'=>$joiners];
     }
+    public function checkUser_QR_API(Request $request){
+        $user=Company::isLoggedIn($request->api_token);
+        if($user==null){
+            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
+        }
+        $validateRules=[
+            'api_token'     => 'required',
+            'QR_code'       => 'required',
+            'trip_id'       => 'required',
+        ];
+        $error= Validator::make($request->all(),$validateRules);
+        if($error->fails()){
+            return \Response::json(['errors'=>$error->errors()->all()]);
+        }
+        $valide=userTrips::checkCode($request->QR_code,$request->trip_id);
+        if ($valide){
+            $user=User::find($valide->user_id)->name;
+            return \Response::json(['success'=>'QR valid','user_name'=>$user]);
+        }
+        return \Response::json(['errors'=>'QR','message'=>'QR code invalid']);
+    }
+    public function updateProfileAPI(Request $request){
+        $user=Company::isLoggedIn($request->api_token);
+        if($user==null){
+            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
+        }
+        $validateRules=[
+            'name'              => 'required',
+            'email'             => 'required|email',
+            'current_password'  => 'required',
+        ];
+        $error= Validator::make($request->all(),$validateRules);
+        if($error->fails()){
+            return \Response::json(['errors'=>$error->errors()->all()]);
+        }
 
+        $other_user=Company::where([
+            ['email','=',$request->email],
+            ['id','!=',$user->id]
+        ])->first();
+        if(!$other_user){
+            $other_user=User::where('email','=',$request->email)->first();
+        }
+        if($other_user){
+            return \Response::json(['errors'=>['email'=>'duplicated email']]);
+        }
+        if($request->has('new_password')){
+            $validateRules=[
+                'new_password'               => 'required',
+                'new_password_confirmation'  => 'required|same:new_password',
+            ];
+            $error= Validator::make($request->all(),$validateRules);
+            if($error->fails()){
+                return \Response::json(['errors'=>$error->errors()->all()]);
+            }
+        }
+        if(Auth::guard('company')->attempt(['email'=>$request->email,'password'=>$request->current_password])){
+            $user=Company::where('email',$request->email)->first();
+            $user->name=$request->name;
+            $user->email=$request->email;
+            if($request->has('new_password')){
+                $user->password=Hash::make($request->new_password);
+            }
+            $user->save();
+            return \Response::json(['success'=>'profile updated']);
+
+        }
+        else{
+            return \Response::json(['error'=> 'incorrect email or password']);
+        }
+    }
+    public function editProfileAPI(Request $request){
+        $user=Company::isLoggedIn($request->api_token);
+        if($user==null){
+            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
+        }
+        return \Response::json(['success'=>'profile founded','profileData'=>$user]);
+    }
     public function controlJoinersAPI(Request $request){
         $user=Company::isLoggedIn($request->api_token);
         if($user==null){

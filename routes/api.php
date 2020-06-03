@@ -19,28 +19,51 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/login','Auth\LoginController@ApiLogin')->name('user.login.api');
 Route::post('/register','Auth\RegisterController@APIregister')->name('user.register.api');
-Route::post('/home','users\usersController@indexAPI')->name('user.home.api');
+Route::post('/forgotPassword', 'Auth\loginController@resendEmail')->name('user.sendEmailReset');
+
+Route::get('/home','users\usersController@indexAPI')->name('user.home.api');
+Route::get('/search','users\usersController@searchAPI')->name('user.search.api');
 Route::post('/trip_datails/','users\usersController@tripDetailsAPI')->name('trips.details.api');
+Route::post('/voucher/check', 'users\usersController@checkVoucher');
 Route::post('/join','users\usersController@joinToTripAPI')->name('user.join.trip.api');
 Route::post('/cancel','users\usersController@cancleToTripAPI')->name('user.cancel.trip.api');
-Route::post('/search','users\usersController@searchAPI')->name('user.search.api');
 Route::post('/tripDetails/rate/', 'users\usersController@rateTripAPI')->name('users.RateTrip.api');
+Route::post('/myTrips','users\usersController@myJoinedTRipsAPI')->name('user.myTrips.api');
+Route::post('/edit-profile/', 'users\usersController@editProfileAPI');//done
+Route::post('/update-profile/', 'users\usersController@updateProfileAPI');//done
 
-Route::post('/admin/login','AdminAuth\LoginController@ApiLogin')->name('admin.login.api');
-Route::post('/admin/register','AdminAuth\RegisterController@APIregister')->name('admin.register.api');
-Route::post('/admin/home','Admin\AdminController@APIhome')->name('admin.home.api');
-Route::post('/admin/companies','Admin\AdminController@APIpartnersControl')->name('admin.companies.api');
-Route::post('/admin/companies/accept/','Admin\AdminController@APIacceptCompant')->name('admin.companies.accept.api');
-Route::post('/admin/companies/reject/','Admin\AdminController@APIrejectCompant')->name('admin.companies.reject.api');
 
-Route::post('/admin/users','Admin\AdminController@APIusersControl')->name('admin.users.api');
-Route::post('/admin/users/accept/','Admin\AdminController@APIacceptCompant')->name('admin.companies.accept.api');
-Route::post('/admin/users/reject/','Admin\AdminController@APIrejectCompant')->name('admin.companies.reject.api');
+Route::group(['prefix' => 'admin'], function () {
+    Route::post('/login', 'AdminAuth\LoginController@ApiLogin')->name('admin.login.api');
+    Route::post('/register', 'AdminAuth\RegisterController@APIregister')->name('admin.register.api');
 
-Route::post('/company/login','CompanyAuth\LoginController@ApiLogin')->name('company.login.api');
-Route::post('/company/register','CompanyAuth\RegisterController@APIregister')->name('company.register.api');
-Route::post('/company/my_trips/','company\companyController@homeAPI')->name('company.myTrips.api');
-Route::post('/company/trips/create','company\CompanyController@insertNewTripAPI')->name('company.create.trip.api');
-Route::post('/company/trips/control/','company\companyController@controlTripAPI')->name('company.trips.control.api');
-Route::post('/company/trips/trip_datails/','company\companyController@tripDetailsAPI')->name('company.trips.details.api');
-Route::post('/company/tripDetails/joiners/control','company\companyController@controlJoiners')->name('company.trip.control.joiner');
+    Route::post('/forgotPassword', 'AdminAuth\loginController@resendEmail')->name('admin.sendEmailReset');
+    Route::post('/home', 'Admin\AdminController@APIhome')->name('admin.home.api');
+    Route::post('/partners', 'Admin\AdminController@APIpartnersControl')->name('admin.companies.api');
+    Route::post('/partner/accept/', 'Admin\AdminController@APIacceptCompant')->name('admin.companies.accept.api');
+    Route::post('/partner/reject/', 'Admin\AdminController@APIrejectCompant')->name('admin.companies.reject.api');
+    //Route::get('/partner/{partner_id}', 'Admin\AdminController@activePartner')->name('admin.active.partner');
+
+    Route::post('/users', 'Admin\AdminController@APIusersControl')->name('admin.users.api');
+    Route::post('/users/accept/', 'Admin\AdminController@APIacceptCompant')->name('admin.companies.accept.api');
+    Route::post('/users/reject/', 'Admin\AdminController@APIrejectCompant')->name('admin.companies.reject.api');
+    Route::post('/edit-profile/', 'Admin\AdminController@editProfileAPI');//done
+    Route::post('/update-profile/', 'Admin\AdminController@updateProfileAPI');//done
+
+});
+Route::group(['prefix' => 'company'], function () {
+    Route::post('/login', 'CompanyAuth\LoginController@ApiLogin')->name('company.login.api');
+    Route::post('/register', 'CompanyAuth\RegisterController@APIregister')->name('company.register.api');
+    Route::post('/forgotPassword', 'CompanyAuth\loginController@resendEmail')->name('company.sendEmailReset');
+
+    Route::post('/my_trips/', 'company\companyController@homeAPI')->name('company.myTrips.api');
+    Route::post('/trips/create', 'company\CompanyController@insertNewTripAPI')->name('company.create.trip.api');
+    Route::post('/trips/trip_datails/', 'company\companyController@tripDetailsAPI')->name('company.trips.details.api');
+
+    Route::post('/trips/control/', 'company\companyController@controlTripAPI')->name('company.trips.control.api');
+    Route::post('/tripDetails/joiners/control', 'company\companyController@controlJoiners')->name('company.trip.control.joiner');
+    Route::post('/edit-profile/', 'company\companyController@editProfileAPI')->name('company.editProfile.api');//done
+    Route::post('/update-profile/', 'company\companyController@updateProfileAPI')->name('company.updateProfile.api');//done
+    Route::post('/new-voucher', 'company\companyController@newVoucherAPI');//done
+    Route::post('/check-QR-code/', 'company\companyController@checkUser_QR_API');//done
+});

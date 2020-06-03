@@ -10,6 +10,8 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Compound;
 
 class AdminController extends Controller
@@ -124,6 +126,65 @@ class AdminController extends Controller
         return redirect()->back()->with('trip_message','the user status udated ')->with('status',$user->status);
 
     }
+
+    public function updateProfileAPI(Request $request){
+        $user=Admin::isLoggedIn($request->api_token);
+        if($user==null){
+            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
+        }
+        $validateRules=[
+            'name'              => 'required',
+            'email'             => 'required|email',
+            'current_password'  => 'required',
+        ];
+        $error= Validator::make($request->all(),$validateRules);
+        if($error->fails()){
+            return \Response::json(['errors'=>$error->errors()->all()]);
+        }
+
+        $other_user=Admin::where([
+            ['email','=',$request->email],
+            ['id','!=',$user->id]
+        ])->first();
+        /*if(!$other_user){
+            $other_user=User::where('email','=',$request->email)->first();
+        }
+        if($other_user){
+            return \Response::json(['errors'=>['email'=>'duplicated email']]);
+        }*/
+        if($request->has('new_password')){
+            $validateRules=[
+                'new_password'               => 'required',
+                'new_password_confirmation'  => 'required|same:new_password',
+            ];
+            $error= Validator::make($request->all(),$validateRules);
+            if($error->fails()){
+                return \Response::json(['errors'=>$error->errors()->all()]);
+            }
+        }
+        if(Auth::guard('admin')->attempt(['email'=>$request->email,'password'=>$request->current_password])){
+            $user=Admin::where('email',$request->email)->first();
+            $user->name=$request->name;
+            $user->email=$request->email;
+            if($request->has('new_password')){
+                $user->password=Hash::make($request->new_password);
+            }
+            $user->save();
+            return \Response::json(['success'=>'profile updated']);
+
+        }
+        else{
+            return \Response::json(['error'=> 'incorrect email or password']);
+        }
+    }
+    public function editProfileAPI(Request $request){
+        $user=Admin::isLoggedIn($request->api_token);
+        if($user==null){
+            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
+        }
+        return \Response::json(['success'=>'profile founded','profileData'=>$user]);
+    }
+
 
 
 

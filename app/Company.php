@@ -25,7 +25,7 @@ class Company extends Authenticatable // implements MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token','url','verfiy_code','email_title','email_message'
+        'password', 'remember_token','url','verfiy_code','email_title','email_message',
     ];
 
     /**

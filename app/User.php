@@ -41,12 +41,11 @@ class User extends Authenticatable //implements MustVerifyEmail
         return $data=User::where('status','=',$statusFilter)->get();
     }
     public static function isLoggedIn($api_token){
-        $user=User::where('api_token','=',$api_token)->get()->first();
+        $user=User::where('api_token','=',$api_token)->first();
         if($user==null){
             return null;
         }
         return $user;
-
     }
 
     public function myTrips($user_id)

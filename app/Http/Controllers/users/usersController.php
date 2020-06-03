@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Symfony\Component\Mime\Encoder\QpEncoder;
 
 class usersController extends Controller
 {
@@ -513,54 +513,56 @@ class usersController extends Controller
 
 
     /*api*/
+    public function myJoinedTRipsAPI(Request $request){
+        if($request->has('api_token')) {
+            $user = User::isLoggedIn($request->api_token);
+            if ($user == null) {
+                return \Response::json(['error' => 'login', 'message' => 'please login to access this data']);
+            }
+            $myTrips = $user->myTrips($user->id);
+            foreach ($myTrips as $availableTrip) {
+                $availableTrip->ratedCount = trip_rate::calcRate($availableTrip->id);
+                $availableTrip->img=$img=gallary::where('trip_id','=',$availableTrip->id)->get();
+                if(count($img)<1)
+                    $availableTrip->img='/img/no-img.png';
+            }
+            return $myTrips;
+        }
+    }
     public function indexAPI(Request $request){
         $joinedTripsID=[];
-        $myTrips=[];
         if($request->has('api_token')){
             $user = User::isLoggedIn($request->api_token);
             if ($user == null) {
                 return \Response::json(['error' => 'login', 'message' => 'please login to access this data']);
             }
             $user = User::find($user->id);
-            $myTrips = $user->myTrips($user->id);
             $joinedTripsID=$user->myTripsIds($user->id);
         }
         $availableTrips= DB::table('trips')
             ->whereNotIn('id', $joinedTripsID)
             ->where('status', 'active')
-            ->get();
+            ->paginate(10);;
         foreach ($availableTrips as $availableTrip) {
-            $ratedCount = trip_rate::where([
-                ['trip_id','=',$availableTrip->id],
-            ])->get()->count();
-            if($ratedCount >0 ){
-                $availableTrip->rate=(trip_rate::where([
-                        ['trip_id','=',$availableTrip->id],
-                    ])->sum('rate')) / ($ratedCount);
-            }
-            else{
-                $availableTrip->rate=0;
-            }
+            $availableTrip->ratedCount = trip_rate::calcRate($availableTrip->id);
+            $availableTrip->img= $img =gallary::where('trip_id','=',$availableTrip->id)->get();
+            if(count($img)<1)
+                $availableTrip->img='/img/no-img.png';
         }
-        foreach ($myTrips as $availableTrip) {
-            $ratedCount = trip_rate::where([
-                ['trip_id','=',$availableTrip->id],
-            ])->get()->count();
-            if($ratedCount >0 ){
-                $availableTrip->rate=(trip_rate::where([
-                        ['trip_id','=',$availableTrip->id],
-                    ])->sum('rate')) / ($ratedCount);
-            }
-            else{
-                $availableTrip->rate=0;
-            }
-        }
-        return $data=['myTrips'=>$myTrips,'available'=>$availableTrips];
+        return $data=['available trips'=>$availableTrips];
     }
     public function joinToTripAPI(Request $request){
         $user = User::isLoggedIn($request->api_token);
         if ($user == null) {
             return \Response::json(['error' => 'login', 'message' => 'please login to access this data']);
+        }
+        $validateRules=[
+            'api_token'     => 'required',
+            'trip_id'       => 'required',
+        ];
+        $error= Validator::make($request->all(),$validateRules);
+        if($error->fails()){
+            return \Response::json(['errors'=>$error->errors()->all()]);
         }
         $trip = trips::find($request->trip_id);
         if($trip->status !='active'){
@@ -573,10 +575,61 @@ class usersController extends Controller
         if($tripJoined != null){
             return \Response::json(['alert' => 'already joined', 'message' => 'you are already joined to this trip before !']);
         }
-        userTrips::create(['user_id'=>$user->id,
-            'trip_id'=>$request->trip_id]);
-        return \Response::json(['success' => 'joined', 'message' => 'you are now joined to this trip']);
-
+        if($request->has('code')){
+            $voucher=voucher::where([['trip_id',$request->trip_id],['code',$request->code],['status','active']])->first();
+            if($voucher){
+                $usedBefore=voucherUsers::where([['user_id',$user->id],['voucher_id',$voucher->id]])->first();
+                if($usedBefore){
+                    return \Response::json(['alert' => 'used before', 'message' => 'you are used this voucher before !']);
+                }
+                $newUserVoucher=voucherUsers::create([
+                    'voucher_id'=>$voucher->id,
+                    'user_id'   =>$user->id,
+                    'trip_id'   =>$request->trip_id,
+                ]);
+                if(!$newUserVoucher){
+                    return \Response::json(['error' => 'error happened']);
+                }
+            }
+            else{
+                return \Response::json(['alert' => 'invalid', 'message' => 'this voucher invalid !']);
+            }
+            $price=$trip->price*$voucher->discount/100;
+        }
+        $joinCode=mt_rand(100000,999999);
+        $joinCode=implode('-',str_split(str_shuffle($joinCode.time(now())),4));
+        $user_id=$user->id;
+        $QR_code=public_path(
+            "img/users/$user_id/trips/$trip->id"
+        );
+        if(!is_dir(public_path("img/users/")))
+            mkdir(public_path('img/users/'));
+        if(!is_dir(public_path("img/users/").$user_id))
+            mkdir(public_path('img/users/').$user_id);
+        if(!is_dir(public_path("img/users/").$user_id."/trips/"))
+            mkdir(public_path('img/users/').$user_id."/trips/");
+        if(!is_dir(public_path("img/users/").$user_id."/trips/".$trip->id))
+            mkdir(public_path('img/users/').$user_id."/trips/".$trip->id);
+        $new_img=time(now()).'.png';
+        QrCode::format('png')->size(400)
+            ->generate($joinCode,$QR_code.'\img_'.$new_img );
+        $join=userTrips::create([
+            'user_id'=>$user->id,
+            'trip_id'=>$request->trip_id,
+            'joinCode'=>$joinCode,
+            'QR_code'=>"img/users/$user_id/trips/$trip->id/img_$new_img",
+        ]);
+        if($join)
+        return \Response::json([
+            'success' => 'joined',
+            'your data' =>[
+                'joinCode'=>$joinCode,
+                'QR_code'=>asset("/img/users/$user_id/trips/$trip->id/img_$new_img")
+            ]
+        ]);
+        return \Response::json([
+            'error' => 'join','message'=>'sorry error happened '
+        ]);
     }
     public function cancleToTripAPI(Request $request){
         $user = User::isLoggedIn($request->api_token);
@@ -594,7 +647,11 @@ class usersController extends Controller
         if($tripJoined == null){
             return \Response::json(['alert' => 'not joined', 'message' => 'you are not joined to this trip before !']);
         }
-        return \Response::json(['success' => 'joined', 'message' => 'you are canceled this trip']);
+        $usedBefore=voucherUsers::where([['user_id',Auth::id()],['trip_id',$trip->id]])->delete();
+        $QR_code= "img/users/".$user->id."/trips/$trip->id";
+        Controller::deleteDirectory($QR_code);
+
+        return \Response::json(['success' => 'canceled', 'message' => 'you are canceled this trip']);
     }
     public function searchAPI(Request $request){
         $param=[];
@@ -611,33 +668,45 @@ class usersController extends Controller
         if(count($param)>0){
             return $availableTrips = trips::where(
                     $param
-            )->get();
-            return $param;
+            )->paginate(5);
 
+            return $param;
         }
         else{
-            return $availableTrips = trips::where('status','=','active')->get();
-
+            return $availableTrips = trips::where('status','=','active')->paginate(10);
         }
     }
     public function tripDetailsAPI(Request $request){
-        $trip=trips::where([['id','=',$request->trip_id],['status','!=','disabled']])->get()->first();
+        $trip=trips::where([['id','=',$request->trip_id],['status','!=','disabled']])->first();
         if($trip==null){
             return \Response::json(['error'=>'trip not found']);
         }
+        if($request->has('api_token')){
+            $user = User::isLoggedIn($request->api_token);
+            if ($user == null) {
+                return \Response::json(['error' => 'login', 'message' => 'please login to access this data']);
+            }
+            $rated = trip_rate::where([
+                ['trip_id', '=', $trip->id],
+                ['user_id', '=', $user->id],
+            ])->get()->first();
+            if ($rated) {
+                $trip->rated = true;
+            } else {
+                $trip->rated = false;
+            }
+            $joined=userTrips::where([['user_id',$user->id],['trip_id',$trip->id]])->first();
+            if($joined){
+                $trip->joinCode = $joined->joinCode;
+                $trip->QR_Code = $joined->QR_Code;
+            }
+        }
         $trip->img=gallary::where('trip_id','=',$trip->id)->get();
-        $trip->joiners=userTrips::where('trip_id','=',$trip->id)->get()->count();
-        $ratedCount = trip_rate::where([
-            ['trip_id','=',$trip->id],
-        ])->get()->count();
-        if($ratedCount >0 ){
-            $trip->rate=(trip_rate::where([
-                    ['trip_id','=',$trip->id],
-                ])->sum('rate')) / ($ratedCount);
-        }
-        else{
-            $trip->rate=0;
-        }
+        $trip->joiners=userTrips::where('trip_id','=',$trip->id)->count();
+        $trip->rateCount = trip_rate::calcRate($trip->id);
+
+        $trip->comapnyName=Company::find($trip->company_id)->name;
+
         return $trip;
     }
     public function rateTripAPI(Request $request){
@@ -649,15 +718,84 @@ class usersController extends Controller
         if($trip ==null){
             return \Response::json(['error' => 'not found', 'message' => 'sorry trip not found!']);
         }
-        $tripRated=trip_rate::updateOrCreate([
-            'trip_id'=>$trip->id,
-            'user_id'=>Auth::id(),
-            'rate'=>$request->rate
-        ]);
-        if($tripRated != null){
-            return \Response::json(['success' => 'rated', 'message' => 'trip rated successfully ']);
-        }
-        return \Response::json(['error' => 'error', 'message' => 'error hapend']);
-    }
 
+        $tripRated=trip_rate::where([
+            'trip_id'=>$trip->id,
+            'user_id'=>$user->id,
+        ])->first();
+        if($tripRated==null){
+            $tripRated= trip_rate::create([
+                'trip_id'=>$trip->id,
+                'user_id'=>$user->id,
+                'rate'=>$request->rate,
+            ]);
+            if($tripRated != null){
+                $newRate=trip_rate::calcRate($request->trip_id);
+                return \Response::json(['success' => 'rated', 'message' => 'trip rated successfully ','newRate'=>$newRate]);
+            }
+            return response()->json(['error' =>'rate errors',]);
+        }
+        else{
+            $newRate=trip_rate::calcRate($request->trip_id);
+            return \Response::json(['alert' =>'rated before','newRate'=>$newRate]);
+        }
+    }
+    public function updateProfileAPI(Request $request){
+        $user=User::isLoggedIn($request->api_token);
+        if($user==null){
+            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
+        }
+        $validateRules=[
+            'name'              => 'required',
+            'email'             => 'required|email',
+            'current_password'  => 'required',
+        ];
+        $error= Validator::make($request->all(),$validateRules);
+        if($error->fails()){
+            return \Response::json(['errors'=>$error->errors()->all()]);
+        }
+
+        $other_user=User::where([
+            ['email','=',$request->email],
+            ['id','!=',$user->id]
+        ])->first();
+        if(!$other_user){
+            $other_user=Company::where('email','=',$request->email)->first();
+        }
+        if($other_user){
+            return \Response::json(['errors'=>['email'=>'duplicated email']]);
+
+        }
+        if($request->has('new_password')){
+            $validateRules=[
+                'new_password'               => 'required',
+                'new_password_confirmation'  => 'required|same:new_password',
+            ];
+            $error= Validator::make($request->all(),$validateRules);
+            if($error->fails()){
+                return \Response::json(['errors'=>$error->errors()->all()]);
+            }
+        }
+        if(Auth::attempt(['email'=>$request->email,'password'=>$request->current_password])){
+            $user=User::where('email',$request->email)->first();
+            $user->name=$request->name;
+            $user->email=$request->email;
+            if($request->has('new_password')){
+                $user->password=Hash::make($request->new_password);
+            }
+            $user->save();
+            return \Response::json(['success'=>'profile updated']);
+
+        }
+        else{
+            return \Response::json(['error'=> 'incorrect email or password']);
+        }
+    }
+    public function editProfileAPI(Request $request){
+        $user=User::isLoggedIn($request->api_token);
+        if($user==null){
+            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
+        }
+        return \Response::json(['success'=>'profile founded','profileData'=>$user]);
+    }
 }

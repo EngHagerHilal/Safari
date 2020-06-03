@@ -66,9 +66,27 @@ class LoginController extends Controller
         return Auth::guard('company');
     }
     public function resendEmail(Request $request){
+        if($request->wantsJson()){
+            //validate json
+            $validateRules=[
+                'email'         =>  'required',
+            ];
+            $error= Validator::make($request->all(),$validateRules);
+            if($error->fails()){
+                return \Response::json(['errors'=>$error->errors()->all()]);
+            }
+        }
+        else{
+            $dataValidated=$request->validate([
+                'email'         => 'required',
+            ]);
+        }
         $verfiyCode=Str::random(70);
-        $user=Company::where('email',$request->email)->get()->first();
+        $user=Company::where('email',$request->email)->first();
         if($user==null){
+            if($request->wantsJson()) {
+                return \Response::json(['error'=>'user not found with this email!']);
+            }
             return redirect()->back()->withErrors('email','user not found with this email!');
         }
         $user->verfiy_code=$verfiyCode;
@@ -76,6 +94,9 @@ class LoginController extends Controller
         $message='reset your password please click link below';
         $url=url('/company/resetPassword/'.$request->email.'/'.$verfiyCode);
         MailController::sendEmail($user,$url,'reset password',$message);
+        if($request->wantsJson()) {
+            return \Response::json(['success'=>'email sent success please check your inbox mail!']);
+        }
         return redirect()->back()->with('success','email sent success please check your inbox mail!');
     }
 

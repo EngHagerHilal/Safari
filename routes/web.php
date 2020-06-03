@@ -99,6 +99,9 @@ Route::group(['prefix' => 'admin',  'middleware' => ['admin','adminVerfied']], f
     Route::get('/active/partner/{partner_id}', 'Admin\AdminController@activePartner')->name('admin.active.partner');
     Route::get('/users', 'Admin\AdminController@usersControl');
     Route::get('/users/{control}/{user_id}/', 'Admin\AdminController@blockUser')->name('users.control');
+    Route::get('/edit-profile/', 'Admin\AdminController@editProfile')->name('company.editProfile');
+    Route::post('/edit-profile/', 'Admin\AdminController@updateProfile')->name('company.updateProfile');
+
 });
 Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied','guest']], function(){
     Route::get('/home', 'company\CompanyController@home')->name('home');
@@ -110,7 +113,7 @@ Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied
     Route::get('/tripDetails/joiners/{action}/{trip_id}/{user_id}','company\companyController@controlJoiners')->name('company.trip.control.joiner');
     Route::get('/edit-profile/', 'company\companyController@editProfile')->name('company.editProfile');
     Route::post('/edit-profile/', 'company\companyController@updateProfile')->name('company.updateProfile');
-    Route::post('/check-QR-code/', 'company\companyController@readQRcod')->name('company.checkQRCode');
+    Route::post('/check-QR-code/', 'company\companyController@readQRcod')->name('company.checkQRCode');//check joiners code
 
 });
 
