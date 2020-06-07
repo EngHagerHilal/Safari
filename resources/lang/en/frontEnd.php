@@ -103,7 +103,7 @@ return [
     'active_partner'     => 'active partner',
     'accept_partner'     => 'accept partner',
     'reject_partner'     => 'reject partner',
-    'travel_partner'     => 'travel partner',
+    'travel_partner'     => 'partner',
 
     'partner_login'      => 'partner login',
     'login'              => 'login',
@@ -148,6 +148,8 @@ return [
     'check'           => 'check code',
     'check_QR_user'   => 'check join code',
     'join_code'       => 'join code',
+
+    'partner_register'=> 'partner register',
 
 
 ];

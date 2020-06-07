@@ -33,18 +33,21 @@
     @yield('homePageSlider')
     <nav style="background-color: #00AA6C;box-shadow: 0 0 8px rgba(0,0,0,.6)" class="navbar navbar-expand-sm sticky-top navbar-light ">
         <div class="container">
-            <a class="navbar-brand font-weight-bold text-uppercase" href="{{url('/company/home/')}}">Safari</a>
+            <a class="navbar-brand font-weight-bold text-uppercase"
+               href="@guest('company'){{url('/')}}@else{{url('/company/home/')}}@endguest">Safari</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar1">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbar1">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
+                    @guest('company')@else
+                    <li class="nav-item">
                         <a class="nav-link" href="{{route('company.trips.new')}}">{{__('frontEnd.new_trip')}}</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('/company/home/')}}">{{__('frontEnd.my_trips')}}</a>
                     </li>
+                    @endguest
                 </ul>
                 <ul class="navbar-nav {{$margin}}">
 

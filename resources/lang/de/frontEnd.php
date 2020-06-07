@@ -144,4 +144,10 @@ return [
     'expired_voucher'    => 'abgelaufene Codes',
     'disabled_voucher'   => 'Gutschein für Behinderte',
     'joined_with_code'   => 'Sie sind mit Rabattcode verbunden',
+
+    'check'           => 'Code überprüfen',
+    'check_QR_user'   => 'Überprüfen Sie den Join-Code',
+    'join_code'       => 'Code verbinden',
+    'partner_register'=> 'Partnerregister',
+
 ];

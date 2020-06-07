@@ -312,6 +312,11 @@ class usersController extends Controller
     }
     public function search(Request $request){
         $param=[];
+
+        if($request->text!=null){
+            $param[]=['title', 'LIKE', "%$request->text%"];
+            $param[]=['description', 'LIKE', "%$request->text%"];
+        }
         if($request->city!=null){
             $param[]=['trip_to','like','%'.$request->city.'%'];
         }
@@ -321,6 +326,7 @@ class usersController extends Controller
         if($request->category!=null) {
             $param[]=['category','=',$request->category];
         }
+        $param[]=['status','=','active'];
 
         if(count($param)>0){
             $availableTrips = trips::where(
@@ -334,7 +340,7 @@ class usersController extends Controller
         else{
             $availableTrips = trips::where('status','=','active')->paginate(10);
             $totalFounded = trips::where(
-                $param
+                'status','=','active'
             )->count();
         }
         foreach ($availableTrips as $availableTrip) {
@@ -342,9 +348,7 @@ class usersController extends Controller
                 ['trip_id','=',$availableTrip->id],
             ])->get()->count();
             if($ratedCount >0 ){
-                $availableTrip->rate=(trip_rate::where([
-                        ['trip_id','=',$availableTrip->id],
-                    ])->sum('rate')) / ($ratedCount);
+                $availableTrip->rate=trip_rate::calcRate($availableTrip->id);
             }
             else{
                 $availableTrip->rate=0;
@@ -374,21 +378,21 @@ class usersController extends Controller
             $rated = trip_rate::where([
                 ['trip_id', '=', $availableTrip->id],
                 ['user_id', '=', Auth::id()],
-            ])->get()->first();
+            ])->first();
             if ($rated) {
                 $availableTrip->rated = true;
             } else {
                 $availableTrip->rated = false;
             }
             $img = gallary::where('trip_id', '=', $availableTrip->id)->get()->first();//->img_url;
-            if ($img == null) {
+            if (!$img ) {
                 $availableTrip->mainIMG = 'img/no-img.png';
             } else {
                 $availableTrip->mainIMG = $img->img_url;
             }
             $availableTrip->companyName = Company::find($availableTrip->company_id)->name;
             $img = gallary::where('trip_id', '=', $availableTrip->id)->get()->first();//->img_url;
-            if ($img == null) {
+            if (!$img ) {
                 $availableTrip->mainIMG = 'img/no-img.png';
             } else {
                 $availableTrip->mainIMG = $img->img_url;
@@ -657,6 +661,12 @@ class usersController extends Controller
         $param=[];
         if($request->city!=null){
             $param[]=['trip_to','like','%'.$request->city.'%'];
+        }if($request->text!=null){
+            $param[]=['title', 'LIKE', "%$request->text%"];
+
+        }
+        if($request->city!=null){
+            $param[]=['trip_to','like','%'.$request->city.'%'];
         }
         if($request->date!=null){
             $param[]=['start_at','=',$request->date];
@@ -664,17 +674,44 @@ class usersController extends Controller
         if($request->category!=null) {
             $param[]=['category','=',$request->category];
         }
+        $param[]=['status','=','active'];
 
         if(count($param)>0){
-            return $availableTrips = trips::where(
+            $availableTrips = trips::where(
                     $param
-            )->paginate(5);
-
-            return $param;
+            )->paginate(10);
+            $availableTrips->totalAvailable = trips::where(
+                $param
+            )->count();
         }
         else{
-            return $availableTrips = trips::where('status','=','active')->paginate(10);
+            $availableTrips = trips::where('status','=','active')->paginate(10);
+            $availableTrips->totalAvailable = trips::where(
+                'status','=','active'
+            )->count();
         }
+        foreach ($availableTrips as $availableTrip) {
+            $ratedCount = trip_rate::where([
+                ['trip_id','=',$availableTrip->id],
+            ])->get()->count();
+            if($ratedCount >0 ){
+                $availableTrip->rate=trip_rate::calcRate($availableTrip->id);
+            }
+            else{
+                $availableTrip->rate=0;
+            }
+            $availableTrip->companyName=Company::find($availableTrip->company_id)->name;
+            $img=gallary::where('trip_id','=',$availableTrip->id)->get()->first();//->img_url;
+            if($img==null){
+                $availableTrip->mainIMG='/img/no-img.png';
+            }
+            else{
+                $availableTrip->mainIMG=$img->img_url;
+            }
+        }
+
+
+        return $availableTrips;
     }
     public function tripDetailsAPI(Request $request){
         $trip=trips::where([['id','=',$request->trip_id],['status','!=','disabled']])->first();

@@ -143,7 +143,11 @@ return [
     'disabled_voucher'   => 'cupón deshabilitado',
     'joined_with_code'   => 'estás unido con el código de descuento',
 
+    'check'           => 'Código de verificación',
+    'check_QR_user'   => 'compruebe el código de unión',
+    'join_code'       => 'código de unión',
 
+    'partner_register'=> 'registro de socios',
 
 
 

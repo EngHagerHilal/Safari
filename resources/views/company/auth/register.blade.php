@@ -8,7 +8,7 @@
                     <form class="login100-form validate-form p-l-55 p-r-55 p-t-178"method="POST" action="{{ url('/company/register') }}">
                         @csrf
                         <span class="login100-form-title text-uppercase">
-                        {{__('frontEnd.register')}}
+                        {{__('frontEnd.partner_register')}}
                         </span>
 
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
@@ -52,7 +52,7 @@
                         <div class="text-right p-t-13 p-b-23">
                         <span class="txt1">
                         </span>
-                            <a href="{{route('login')}}" class="txt2">
+                            <a href="{{route('company.login')}}" class="txt2">
                                 {{__('frontEnd.have_account')}}
                             </a>
                         </div>

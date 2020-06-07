@@ -37,24 +37,25 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbar1">
                     <ul class="navbar-nav">
-                        <li class="nav-item active">
+                        <li class="nav-item {{request()->category=='air flights'?'active':''}}">
                             <a class="nav-link" href="{{url('/trips/search?category=air+flights')}}">{{__('frontEnd.air_flights')}}</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{request()->category=='sea trips'?'active':''}}">
                             <a class="nav-link" href="{{url('/trips/search?category=sea+trips')}}">{{__('frontEnd.sea_trips')}}</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item {{request()->category=='land trips'?'active':''}}">
                             <a class="nav-link" href="{{url('/trips/search?category=land+trips')}}">{{__('frontEnd.land_trips')}}</a>
                         </li>
-                        @guest()
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url('/company/login/')}}">{{__('frontEnd.travel_partner')}}</a>
-                        </li>
-                        @endguest
+
                     </ul>
                     <ul class="navbar-nav {{$margin}}">
 
                         @guest
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{url('/company/login/')}}">{{__('frontEnd.travel_partner')}}</a>
+                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('frontEnd.login') }}</a>
                             </li>

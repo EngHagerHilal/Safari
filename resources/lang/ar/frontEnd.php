@@ -142,5 +142,9 @@ return [
     'joined_with_code'   => 'تم الاشتراك بكود الخصم ',
 
 
+    'check'           => 'فحص الكود',
+    'check_QR_user'   => 'التأكد من كود الاشتراك',
+    'join_code'       => 'كود الاشتراك',
 
+    'partner_register'=> 'حساب شركة جديد',
 ];

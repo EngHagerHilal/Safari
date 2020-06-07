@@ -142,6 +142,10 @@ return [
     'disabled_voucher'   => 'buono per disabili',
     'joined_with_code'   => 'sei iscritto con il codice sconto',
 
+    'check'           => 'codice di controllo',
+    'check_QR_user'   => 'controlla il codice di iscrizione',
+    'join_code'       => 'unisci il codice',
 
+    'partner_register'=> 'registro dei partner',
 
 ];

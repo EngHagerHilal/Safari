@@ -143,7 +143,11 @@ return [
     'disabled_voucher'   => 'bon pour handicapés',
     'joined_with_code'   => 'vous êtes rejoint avec le code de réduction',
 
+    'check'           => 'vérifier le code',
+    'check_QR_user'   => 'vérifier le code de jointure',
+    'join_code'       => 'joindre le code',
 
+    'partner_register'=> 'registre des partenaires',
 
 
 
