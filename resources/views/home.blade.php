@@ -6,7 +6,7 @@
 @extends('layouts.app')
 @section('homePageSlider')
     <div dir="ltr" class="mains-lider position-relative">
-        <h1 class="text-center text-uppercase safari-text">safari charge your live!</h1>
+        <h1 class="text-center text-uppercase safari-text">safaregy charge your live!</h1>
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -139,7 +139,7 @@
             </div>
             <div class="col-3 panner-right ">
                 <div class="panner bg-light box-shadow" >
-                    <h3 class="text-uppercase text-center">{{__('frontEnd.special_trips')}}</h3>
+                    <h3 class="text-uppercase text-center">@guest{{__('frontEnd.special_trips')}}@else{{__('frontEnd.my_joined_trips')}}@endguest</h3>
                     <div class="special-posts" style="overflow: auto;max-height: 475px">
                         @foreach($myTrips as $trip)
                             <div class="post-item bg-light box-shadow">

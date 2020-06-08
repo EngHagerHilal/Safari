@@ -83,7 +83,7 @@ h1.safari-text{
 .panner-left>.panner{
     position: -webkit-sticky;
     position: sticky;
-    top: 65px;
+    top: 110px;
     padding: 5px;
     min-height: 500px;
     max-height: 500px;

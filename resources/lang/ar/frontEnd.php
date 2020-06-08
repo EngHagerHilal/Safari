@@ -32,7 +32,7 @@ return [
     'departure_date'=> 'تاريخ المغادرة :',
     'date'          => 'تاريخ',
     'rate'          => 'تقييم',
-    'special_trips' => 'الرحلات المحجوزة',
+    'special_trips' => 'المميزة',
 
     'from'          => 'من :',
     'to'            => 'إلي :',

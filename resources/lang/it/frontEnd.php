@@ -34,7 +34,7 @@ return [
     'departure_date'=> 'data di partenza :',
     'date'          => 'Data',
     'rate'          => 'Vota',
-    'special_trips' => 'viaggi uniti',
+    'special_trips' => 'speciale',
 
     'from'          => 'a partire dal :',
     'to'            => 'per :',

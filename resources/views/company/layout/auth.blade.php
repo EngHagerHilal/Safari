@@ -8,6 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{{asset('img/logo.png')}}" type="image/x-icon">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -34,7 +35,7 @@
     <nav style="background-color: #00AA6C;box-shadow: 0 0 8px rgba(0,0,0,.6)" class="navbar navbar-expand-sm sticky-top navbar-light ">
         <div class="container">
             <a class="navbar-brand font-weight-bold text-uppercase"
-               href="@guest('company'){{url('/')}}@else{{url('/company/home/')}}@endguest">Safari</a>
+               href="@guest('company'){{url('/')}}@else{{url('/company/home/')}}@endguest"><img src="{{asset('img/logo.png')}}" width="140" height="75" alt="safare"></a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar1">
                 <span class="navbar-toggler-icon"></span>
             </button>

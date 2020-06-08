@@ -35,7 +35,7 @@ return [
     'departure_date'=> 'departure date :',
     'date'          => 'date',
     'rate'          => 'Rate',
-    'special_trips' => 'joined trips',
+    'special_trips' => 'special',
 
     'from'          => 'from :',
     'to'            => 'to :',

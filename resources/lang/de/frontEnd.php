@@ -35,7 +35,7 @@ return [
     'departure_date'=> 'Abreisedatum :',
     'date'          => 'Datum',
     'rate'          => 'Bewertung',
-    'special_trips' => 'gemeinsame Reisen',
+    'special_trips' => 'Besondere',
 
     'from'          => 'von :',
     'to'            => 'zu :',

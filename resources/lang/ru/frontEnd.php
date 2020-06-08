@@ -35,7 +35,7 @@ return [
     'departure_date'=> 'Дата отбытия :',
     'date'          => 'свидание',
     'rate'          => 'Ставка',
-    'special_trips' => 'совместные поездки',
+    'special_trips' => 'специальный',
 
     'from'          => 'от :',
     'to'            => 'в :',
