@@ -75,78 +75,82 @@
             </div>
             <div class="col-4 panner-right post-full-details">
                 <div style="max-height: 700px" class="panner bg-light box-shadow">
-                    <h3 style="padding-top: 20px" class="text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
-                    <div class="{{$text}} full-details">
-                        <p class="text-dark font-weight-bold">{{$trip->description}}</p>
+                    <form method="POST" action="{{route('users.joinTrip')}}">
+                        @csrf
+                        <input type="hidden" name="trip_id" value="{{$trip->id}}">
+                        <h3 style="padding-top: 20px" class="text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
+                        <div class="{{$text}} full-details">
+                            <p class="text-dark font-weight-bold">{{$trip->description}}</p>
 
-                        <p>
-                            <i class="fas fa-location-arrow font-1-2 main-text-green"></i>
-                            {{__('frontEnd.from')}}
-                            <strong class="text-uppercase">{{$trip->trip_from}}</strong>
-                            {{__('frontEnd.to')}}
-                            <strong class="text-uppercase">{{$trip->trip_to}}</strong>
-                        </p>
-
-                        <p>
-                            <i class="fas fa-money-bill-wave font-1-2 main-text-green"></i>
-                            {{__('frontEnd.price')}} <strong class="text-uppercase" id="tripPrice">{{$trip->price}}</strong> $
-                        </p>
-                        <p>
-                            <i class="fas fa-calendar-alt font-1-2 main-text-green"></i>
-                            {{__('frontEnd.duration_from')}} <strong class="text-uppercase">{{$trip->start_at}}</strong> {{__('frontEnd.to')}} <strong>{{$trip->end_at}}</strong>
-                        </p>
-                        @if($trip->joined ==true)
-
-                        <p>
-                            <i class="fas fa-suitcase-rolling font-1-2 main-text-green"></i> {{__('frontEnd.you_are_joined')}}
-                        </p>
-                        <p>
-                            <i class="fas fa-ad font-1-2 main-text-green"></i>
-                            {{__('frontEnd.join_code')}} : {{$trip->joined->joinCode}}
-                        </p>
-                        <div class="trip_code">
-                            <img width="130" height="130" src="{{asset($trip->joined->QR_code) }}" class="d-block m-auto img-fluid">
-                        </div>
-                        @else
                             <p>
-                                <i aria-hidden="true" class="fas fa-money-bill-alt font-1-2 main-text-green"></i>
-                                <input type="text" placeholder="{{__('frontEnd.enter_voucher')}}" id="voucherCode">
-                            <p class="alert alert-danger text-danger" style="display: none" id="codeInvalid"><i class="fas fa-ban text-danger font-1-6"></i>  {{__('frontEnd.code_invalid')}}</p>
-                            <p class="alert alert-success " style="display: none" id="codeValid"><i class="fas fa-check-circle main-text-green font-1-6"></i> {{__('frontEnd.code_valid')}}</p>
+                                <i class="fas fa-location-arrow font-1-2 main-text-green"></i>
+                                {{__('frontEnd.from')}}
+                                <strong class="text-uppercase">{{$trip->trip_from}}</strong>
+                                {{__('frontEnd.to')}}
+                                <strong class="text-uppercase">{{$trip->trip_to}}</strong>
                             </p>
-                        @endif
+
+                            <p>
+                                <i class="fas fa-money-bill-wave font-1-2 main-text-green"></i>
+                                {{__('frontEnd.price')}} <strong class="text-uppercase" id="tripPrice">{{$trip->price}}</strong> $
+                            </p>
+                            <p>
+                                <i class="fas fa-calendar-alt font-1-2 main-text-green"></i>
+                                {{__('frontEnd.duration_from')}} <strong class="text-uppercase">{{$trip->start_at}}</strong> {{__('frontEnd.to')}} <strong>{{$trip->end_at}}</strong>
+                            </p>
+                            @if($trip->joined ==true)
+
+                            <p>
+                                <i class="fas fa-suitcase-rolling font-1-2 main-text-green"></i> {{__('frontEnd.you_are_joined')}}
+                            </p>
+                            <p>
+                                <i class="fas fa-ad font-1-2 main-text-green"></i>
+                                {{__('frontEnd.join_code')}} : {{$trip->joined->joinCode}}
+                            </p>
+                            <div class="trip_code">
+                                <img width="130" height="130" src="{{asset($trip->joined->QR_code) }}" class="d-block m-auto img-fluid">
+                            </div>
+                            @else
+                                <p>
+                                    <i aria-hidden="true" class="fas fa-money-bill-alt font-1-2 main-text-green"></i>
+                                    <input type="text" name="code" placeholder="{{__('frontEnd.enter_voucher')}}" id="voucherCode">
+                                <p class="alert alert-danger text-danger" style="display: none" id="codeInvalid"><i class="fas fa-ban text-danger font-1-6"></i>  {{__('frontEnd.code_invalid')}}</p>
+                                <p class="alert alert-success " style="display: none" id="codeValid"><i class="fas fa-check-circle main-text-green font-1-6"></i> {{__('frontEnd.code_valid')}}</p>
+                                </p>
+                            @endif
 
 
-                    </div>
-                    @if($trip->rated==false)
-                        @php
-                            $rated='rate-it';
-                        @endphp
-                    @else
-                        @php
-                            $rated='';
-                        @endphp
-                    @endif
-                    <div rate="{{$trip->rate}}" id="rate-trip-id_{{$trip->id}}" class="{{$text}} main-rate {{$rated}}">
-                        <div {{$animate='pop'}}></div>
-                        @for($i=1;$i<=$trip->rate;$i++)
-                            <i trip-id="{{$trip->id}}" data-micron="{{$animate=''}}" class="fa fa-star gold-color font-1-6" rate-value={{$i}}></i>
-                        @endfor
-                        @for($y=1;$y<=(5 - $trip->rate);$y++)
-                            <i trip-id="{{$trip->id}}" data-micron="{{$animate}}" class="far fa-star gold-color font-1-6" rate-value="{{$y+$trip->rate}}"></i>
-                        @endfor
-
-                    </div>
-                    <div class="aply-now">
-                        @if($trip->joined ==true)
-                        <a href="{{route('users.cancleTrip',['trip_id'=>$trip->id])}}" class="btn btn-danger input-group aply-button"><i class="fas fa-window-close"></i>
-                            {{__('frontEnd.cancel_trip')}}
-                        </a>
+                        </div>
+                        @if($trip->rated==false)
+                            @php
+                                $rated='rate-it';
+                            @endphp
                         @else
-                         <a id="join-trip" href="{{route('users.joinTrip',['trip_id'=>$trip->id])}}" class="btn btn-success input-group aply-button"><i class="fas fa-user-plus"></i>
-                             {{__('frontEnd.join_trip')}}</a>
+                            @php
+                                $rated='';
+                            @endphp
                         @endif
-                    </div>
+                        <div rate="{{$trip->rate}}" id="rate-trip-id_{{$trip->id}}" class="{{$text}} main-rate {{$rated}}">
+                            <div {{$animate='pop'}}></div>
+                            @for($i=1;$i<=$trip->rate;$i++)
+                                <i trip-id="{{$trip->id}}" data-micron="{{$animate=''}}" class="fa fa-star gold-color font-1-6" rate-value={{$i}}></i>
+                            @endfor
+                            @for($y=1;$y<=(5 - $trip->rate);$y++)
+                                <i trip-id="{{$trip->id}}" data-micron="{{$animate}}" class="far fa-star gold-color font-1-6" rate-value="{{$y+$trip->rate}}"></i>
+                            @endfor
+
+                        </div>
+                        <div class="aply-now">
+                            @if($trip->joined ==true)
+                            <a href="{{route('users.cancleTrip',['trip_id'=>$trip->id])}}" class="btn btn-danger input-group aply-button"><i class="fas fa-window-close"></i>
+                                {{__('frontEnd.cancel_trip')}}
+                            </a>
+                            @else
+                             <button type="submit" id="join-trip" class="btn btn-success input-group aply-button"><i class="fas fa-user-plus"></i>
+                                 {{__('frontEnd.join_trip')}}</button>
+                            @endif
+                        </div>
+                    </form>
                 </div>
 
             </div>
@@ -179,7 +183,8 @@
                         success: function (data) {
                             if (data.success) {
                                 if(data.valid){
-                                    $('#tripPrice').text($('#tripPrice').text() * (data.discount/100) );
+                                    $('#tripPrice').text(originalPrice * (data.discount/100) );
+                                    $('#InputTripPrice').val(originalPrice * (data.discount/100) );
                                     $('#codeValid').show();
                                     var newLink=$('#join-trip').attr('href')+'?code='+code;
                                     $('#join-trip').attr('href',newLink);originalLink
@@ -187,14 +192,15 @@
                                 else{
                                     $('#codeInvalid').show();
                                     $('#tripPrice').text(originalPrice );
+                                    $('#InputTripPrice').val(originalPrice );
                                     $('#join-trip').attr('href',originalLink);
-
-
                                 }
                             }
                             else{
                                 $('#codeInvalid').show();
                                 $('#tripPrice').text(originalPrice );
+                                $('#InputTripPrice').val(originalPrice );
+
                                 $('#join-trip').attr('href',originalLink);
 
                             }

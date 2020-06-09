@@ -54,7 +54,8 @@ Route::middleware('company.guest')->group(function (){
 
 Route::middleware(['auth','verified'])->group(function(){
     Route::get('/myTrips', 'users\usersController@myTrips')->name('myJoinedTrips');
-    Route::get('/trips/join/{trip_id}/{voucher?}', 'users\usersController@joinToTrip')->name('users.joinTrip');
+    Route::post('/trips/join', 'paypalController@payWithPayPal')->name('users.joinTrip');
+    Route::get('/paypal/status/{trip_id}/{voucher_code?}', 'paypalController@joinToTrip')->name('paypal.status');
     Route::get('/trips/cancle/{trip_id}', 'users\usersController@cancleToTrip')->name('users.cancleTrip');
     Route::get('/tripDetails/rate/{trip_id}/{rate}', 'users\usersController@rateTrip')->name('users.RateTrip');
     Route::get('/voucher/check', 'users\usersController@checkVoucher')->name('users.check.voucher');
@@ -76,7 +77,7 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::group(['prefix' => 'company','middleware'=>'guest'], function () {
-  Route::get('/login', 'CompanyAuth\LoginController@showLoginForm')->name('company.login');
+  Route::get('/login', 'CompanyAuth\LoginController@showLoginForm')->name('company.joinTrip');
   Route::post('/login', 'CompanyAuth\LoginController@login');
   Route::post('/logout', 'CompanyAuth\LoginController@logout')->name('company.logout');
 

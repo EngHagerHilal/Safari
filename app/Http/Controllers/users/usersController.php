@@ -16,12 +16,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class usersController extends Controller
 {
 
     public function joinToTrip(Request $request){
+
+        //////////////////////
         $trip = trips::find($request->trip_id);
         if($trip->status !='active'){
             return redirect()->back()->with('alert','you can not join this trip now!');
