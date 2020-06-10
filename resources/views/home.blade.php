@@ -6,7 +6,9 @@
 @extends('layouts.app')
 @section('homePageSlider')
     <div dir="ltr" class="mains-lider position-relative">
-        <h1 class="text-center text-uppercase safari-text">safaregy charge your live!</h1>
+        <div class="safari-header text-center">
+            <h1 class="text-center text-uppercase safari-text">safaregy charge your live!</h1>
+        </div>
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -57,7 +59,7 @@
             </div>
         @endif
         <div class="row">
-            <div class="col-3 panner-left ">
+            <div class="col-lg-3 d-none d-lg-block panner-left ">
                 <div class="panner bg-light box-shadow">
                     <h3 class="text-uppercase text-center">{{__('frontEnd.search')}}</h3>
                     <form method="get" action="{{route('user.trips.search')}}">
@@ -87,7 +89,7 @@
                     </form>
                 </div>
             </div>
-            <div class="col-6 posts-container" id="posts-container">
+            <div class="col-lg-6 col-12 posts-container" id="posts-container">
                 @foreach($available as $trip)
                 <div class="post-item bg-light box-shadow">
                     <div class="post-header {{$text}}">
@@ -98,7 +100,7 @@
                             <a class="d-block" href="#">
                                 <strong class="text-uppercase text-dark">{{$trip->companyName}}</strong>
                             </a>
-                            <span class="d-block">{{$trip->created_at}}</span>
+                            <span class="d-block">{{date('d/m/Y',strtotime($trip->created_at))}}</span>
 
                         </div>
                     </div>
@@ -137,7 +139,7 @@
                 @endforeach
 
             </div>
-            <div class="col-3 panner-right ">
+            <div class="col-lg-3 d-none d-lg-block panner-right ">
                 <div class="panner bg-light box-shadow" >
                     <h3 class="text-uppercase text-center">@guest{{__('frontEnd.special_trips')}}@else{{__('frontEnd.my_joined_trips')}}@endguest</h3>
                     <div class="special-posts" style="overflow: auto;max-height: 475px">
@@ -176,7 +178,7 @@
             </div>
         </div>
 
-            <div class="ajax-load text-center" style="display:none;position: fixed; left: 0;right: 0;bottom: 30%;z-index: 1000">
+            <div class="ajax-load text-center" style="">
                 <p class="d-inline-block text-center rounded-circle bg-glass"><img src="{{asset('img/loading.gif')}}" height="100" width="100" class="d-block m-auto"></p>
             </div>
 
@@ -245,7 +247,6 @@
                                     console.log(data.pageNumber);
                                     $('.ajax-load').hide();
                                     scroll_enabled = true;
-
                                     return;
                                 }
                                 //alert('no more');
@@ -254,6 +255,8 @@
 
                             } else {
                                 alert('server not responding...');
+                                $('.ajax-load').hide();
+
                             }
                         }
                     });

@@ -22,7 +22,7 @@
             </div>
         @endif
         <div class="row">
-            <div class="col-8 post-details-container">
+            <div class="col-lg-8 col-12 post-details-container py-2">
                 <div class="post-details bg-light box-shadow">
                     <div class="{{$text}} post-header">
                         <div class="text-center creater-logo d-inline-block">
@@ -32,7 +32,7 @@
                             <a class="d-block" href="#">
                                 <strong class="text-uppercase text-dark">{{$trip->comapnyName}}</strong>
                             </a>
-                            <span class="d-block">{{$trip->created_at}}</span>
+                            <span class="d-block">{{date('d/m/Y',strtotime($trip->created_at))}}</span>
 
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                 </div>
 
             </div>
-            <div class="col-4 panner-right post-full-details">
+            <div class="col-lg-4 col-12 panner-right post-full-details py-2">
                 <div style="max-height: 700px" class="panner bg-light box-shadow">
                     <form method="POST" action="{{route('users.joinTrip')}}">
                         @csrf

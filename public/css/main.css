@@ -52,7 +52,7 @@ body{
     padding-top: 60px;
     margin: 2rem;
 }
-h1.safari-text{
+.safari-header{
     position: absolute;
     left: 50%;
     margin-left: -20%;
@@ -60,6 +60,8 @@ h1.safari-text{
     z-index: 1;
     color: #eee;
     text-shadow: 2px 2px 13px #111;
+    transform: translate(-28%, 0px);
+    width: 100%;
 }
 .post-item{
     padding: 5px 0;
@@ -381,7 +383,9 @@ input[type='range']:nth-child(1)::-webkit-slider-thumb{
 
 
 
-
+.ajax-load{
+    display:none;position: fixed; left: 0;right: 0;bottom: 30%;z-index: 1000;
+}
 
 /*bg glass important*/
 .bg-glass{

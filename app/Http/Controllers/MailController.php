@@ -17,6 +17,6 @@ class MailController extends Controller
         $user->url=$url;
         $user->email_title=$title;
         $user->email_message=$message;
-        Mail::to($user->email)->send(new activeAccount($user));
+        return Mail::to($user->email)->send(new activeAccount($user));
     }
 }

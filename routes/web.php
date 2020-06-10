@@ -42,6 +42,9 @@ Route::post('updatePassword', 'AdminAuth\loginController@updateNewPassword')->na
 Route::middleware('company.guest')->group(function (){
     Auth::routes(['verify' => true]);
     Route::get('/trips/search', 'users\usersController@search')->name('user.trips.search')->middleware('company.guest');
+    Route::get('/trips/searching', function (){
+        return view('searching');
+    })->name('user.trips.search.mobile')->middleware('company.guest');
     Route::get('/trips/searchPagination', 'users\usersController@searchPagination')->name('user.trips.search.Pagination')->middleware('company.guest');
     Route::get('/home', 'users\usersController@index')->name('home')->middleware('company.guest');
     Route::get('/pagination', 'users\usersController@pagination')->name('paginatePosts')->middleware('company.guest');
@@ -77,13 +80,11 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 Route::group(['prefix' => 'company','middleware'=>'guest'], function () {
-  Route::get('/login', 'CompanyAuth\LoginController@showLoginForm')->name('company.joinTrip');
+  Route::get('/login', 'CompanyAuth\LoginController@showLoginForm')->name('company.login');
   Route::post('/login', 'CompanyAuth\LoginController@login');
   Route::post('/logout', 'CompanyAuth\LoginController@logout')->name('company.logout');
-
   Route::get('/register', 'CompanyAuth\RegisterController@showRegistrationForm')->name('company.register');
   Route::post('/register', 'CompanyAuth\RegisterController@register');
-
   Route::post('/password/email', 'CompanyAuth\ForgotPasswordController@sendResetLinkEmail')->name('company.password.request');
   Route::post('/password/reset', 'CompanyAuth\ResetPasswordController@reset')->name('company.password.email');
   Route::get('/password/reset', 'CompanyAuth\ForgotPasswordController@showLinkRequestForm')->name('company.password.reset');

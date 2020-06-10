@@ -149,6 +149,7 @@ return [
 
     'partner_register'=> 'registro de socios',
 
-
+    'resetPassword'   => 'Restablecer su contraseña',
+    'sendEmail'       => 'enviar correo electrónico',
 
 ];

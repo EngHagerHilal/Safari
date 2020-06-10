@@ -148,4 +148,6 @@ return [
 
     'partner_register'=> 'registro dei partner',
 
+    'resetPassword'   => 'reimposta la tua password',
+    'sendEmail'       => 'invia una email',
 ];

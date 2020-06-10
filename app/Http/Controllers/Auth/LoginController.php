@@ -64,9 +64,9 @@ class LoginController extends Controller
         $user=User::where('email',$request->email)->first();
         if($user==null){
             if($request->wantsJson()) {
-                return \Response::json(['error'=>'user not found with this email!']);
+                return \Response::json(['error'=>'user not found with this email !']);
             }
-            return redirect()->back()->withErrors('email','user not found with this email!');
+            return redirect()->back()->with('alert','user not found with this email !');
         }
         $user->verfiy_code=$verfiyCode;
         $user->save();

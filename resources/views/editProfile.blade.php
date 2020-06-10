@@ -30,7 +30,7 @@
                     @endif
                     <div class="panel-body">
                         <div class="row">
-                            <div class="{{$text}} col-8 offset-2">
+                            <div class="{{$text}} col-10 col-md-8 offset-lg-2">
                                 <form style="background-color: rgba(211,211,211,0.53);border-radius: 15px"
                                       class="overflow-hidden login100-form validate-form p-l-55 p-r-55 p-t-178 mb-3"
                                       method="POST" action="{{ route('users.updateProfile') }}">

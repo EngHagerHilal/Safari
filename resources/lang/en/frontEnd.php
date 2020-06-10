@@ -151,5 +151,8 @@ return [
 
     'partner_register'=> 'partner register',
 
+    'resetPassword'   => 'reset your password',
+    'sendEmail'       => 'send email',
+
 
 ];

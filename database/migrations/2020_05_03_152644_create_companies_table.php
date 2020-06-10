@@ -17,7 +17,7 @@ class CreateCompaniesTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->timestamp('email_verified_at')/*->nullable()*/->default('2020-05-08 00:00:00');
+            $table->timestamp('email_verified_at')->nullable();
             $table->enum('status',['pending','rejected','active','blocked'])->default('pending');
             $table->rememberToken();
             $table->char('api_token',60)->nullable();

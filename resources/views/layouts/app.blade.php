@@ -48,6 +48,10 @@
                             <a class="nav-link" href="{{url('/trips/search?category=land+trips')}}">{{__('frontEnd.land_trips')}}</a>
                         </li>
 
+                        <li class="nav-item d-inline-block d-lg-none">
+                            <a class="nav-link" href="{{route('user.trips.search.mobile')}}">{{__('frontEnd.search')}}</a>
+                        </li>
+
                     </ul>
                     <ul class="navbar-nav {{$margin}}">
 

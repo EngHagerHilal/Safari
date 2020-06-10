@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')/*->nullable()*/->default('2020-05-08 00:00:00');
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('status',['active','blocked'])->default('active');
             $table->rememberToken();

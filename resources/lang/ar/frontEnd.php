@@ -146,5 +146,9 @@ return [
     'check_QR_user'   => 'التأكد من كود الاشتراك',
     'join_code'       => 'كود الاشتراك',
 
-    'partner_register'=> 'حساب شركة جديد',
+    'partner_register'  => 'حساب شركة جديد',
+
+    'resetPassword'     => 'اعادة تعيين كلمة المرور',
+    'sendEmail'         => 'ارسل الرابط',
+
 ];

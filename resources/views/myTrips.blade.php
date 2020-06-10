@@ -4,41 +4,7 @@
     $text= str_replace('_', '-', app()->getLocale()) =='ar' ? 'text-right' : 'text-left';
 @endphp
 @extends('layouts.app')
-@section('homePageSlider')
-    <div dir="ltr" class="mains-lider position-relative">
-        <h1 class="text-center text-uppercase safari-text">safari charge your live!</h1>
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" height="640" src="{{asset('/')}}img/slide-1.jpg" alt="First slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" height="640" src="{{asset('/')}}img/slide-6.webp" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" height="640" src="{{asset('/')}}img/slide-2.jpg" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" height="640" src="{{asset('/')}}img/slide-3.jpg" alt="Third slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" height="640" src="{{asset('/')}}img/slide-4.jpg" alt="Third slide">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" height="640" src="{{asset('/')}}img/slide-5.jpg" alt="Third slide">
-                </div>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-    </div>
-@endsection
+
 @section('content')
     <div class="first-main-container" style="min-height: 600px;">
         @if (session('status'))
@@ -56,8 +22,10 @@
                 {{ session('alert') }}
             </div>
         @endif
-        <div class="row">
-            <div class="col-3 panner-left ">
+            <h3 class="text-center py-3">{{__('frontEnd.my_joined_trips')}} [{{$allCount}}]</h3>
+
+            <div class="row">
+            <div class="col-lg-3 d-none d-lg-block panner-left ">
                 <div class="panner bg-light box-shadow">
                     <h3 class="text-uppercase text-center">{{__('frontEnd.search')}}</h3>
                     <form method="get" action="{{route('user.trips.search')}}">
@@ -87,8 +55,7 @@
                     </form>
                 </div>
             </div>
-            <div class="col-6 posts-container"  id="posts-container">
-                <h3 class="text-center">{{__('frontEnd.my_joined_trips')}} [{{$allCount}}]</h3>
+            <div class="col-lg-6 col-12 posts-container"  id="posts-container">
             @foreach($myTrips as $trip)
                     <div class="post-item bg-light box-shadow">
                         <div class="post-header {{$text}}">
@@ -99,7 +66,7 @@
                                 <a class="d-block" href="#">
                                     <strong class="text-uppercase text-dark">{{$trip->companyName}}</strong>
                                 </a>
-                                <span class="d-block">{{$trip->created_at}}</span>
+                                <span class="d-block">{{date('d/m/Y',strtotime($trip->created_at))}}</span>
 
                             </div>
                         </div>
@@ -138,9 +105,9 @@
                 @endforeach
 
             </div>
-            <div class="col-3 panner-right ">
+            <div class="col-lg-3 d-none d-lg-block panner-right">
                 <div class="panner bg-light box-shadow" >
-                    <h3 class="text-uppercase text-center">{{__('frontEnd.special_trips')}}</h3>
+                    <h3 class="text-uppercase text-center">@guest{{__('frontEnd.special_trips')}}@else{{__('frontEnd.my_joined_trips')}}@endguest</h3>
                     <div class="special-posts" style="overflow: auto;max-height: 475px">
                         @foreach($specialTrips as $trip)
                             <div class="post-item bg-light box-shadow">
@@ -176,7 +143,7 @@
 
             </div>
         </div>
-            <div class="ajax-load text-center" style="display:none;position: fixed; left: 0;right: 0;bottom: 30%;z-index: 1000">
+            <div class="ajax-load text-center" >
                 <p class="d-inline-block text-center rounded-circle bg-glass"><img src="{{asset('img/loading.gif')}}" height="100" width="100" class="d-block m-auto"></p>
             </div>
 
@@ -237,28 +204,24 @@
 
                     $.ajax({
                         type: "GET",
-                                        url: "{{url('/tripDetails/rate')}}/"+trip_id+"/"+rate,
+                        url: "{{ route('myJoinedTrips') }}?page="+page,
                         dataType: "json",
                         success: function (data) {
                             if (data.success) {
-                                data.newRate;
-                                $('#rate-trip-id_' + trip_id).removeClass('rate-it');
-
-                                $('#rate-trip-id_' + trip_id).children('i').removeClass('fa').addClass('far');
-                                $('#rate-trip-id_' + trip_id + ' i:nth-child(' + 3 + ')').attr('data-micron', '').siblings().attr('data-micron', '');
-                                /*if(!data.already){
-                                    $('<audio id="chatAudio"> ' +
-                                        '<source src="{{asset('sounds/star1.mp3')}}" type="audio/mpeg"> ' +
-                                '</audio>').appendTo('body');
-                            // play sound
-                            $('#chatAudio')[0].play();
-                        }*/
-                                for (var i = 1; i <= (data.newRate + 1); i++) {
-                                    $('#rate-trip-id_' + trip_id + ' i:nth-child(' + i + ')').addClass('fa');
+                                if(data.posts.length >0){
+                                    $("#posts-container").append(data.posts);
+                                    console.log(data.pageNumber);
+                                    $('.ajax-load').hide();
+                                    scroll_enabled = true;
+                                    return;
                                 }
+                                //alert('no more');
 
+                                $('.ajax-load').hide();
 
                             } else {
+                                alert('server not responding...');
+                                $('.ajax-load').hide();
 
                             }
                         }

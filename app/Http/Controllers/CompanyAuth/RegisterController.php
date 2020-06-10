@@ -80,7 +80,7 @@ class RegisterController extends Controller
 
         $message='you need to verfy your account please click link below';
         $url=url('/company/verfiy/'.$data->email.'/'.$verfiyCode);
-        //MailController::sendEmail($data,$url,'verfy your account',$message);
+        MailController::sendEmail($data,$url,'verfy your account',$message);
         $data->message='email created successfully check your email address to active your account';
         return $data;
     }

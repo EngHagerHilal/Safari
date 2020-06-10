@@ -150,4 +150,7 @@ return [
     'join_code'       => 'Code verbinden',
     'partner_register'=> 'Partnerregister',
 
+    'resetPassword'     => 'Setze dein Passwort zurück',
+    'sendEmail'         => 'E-Mail senden',
+
 ];

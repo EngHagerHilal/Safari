@@ -16,17 +16,17 @@
                     </div>
                 @endif
                 @if (session('alert'))
-                    <div class="alert alert-info" role="alert">
+                    <div class="alert alert-danger" role="alert">
                         {{ session('alert') }}
                     </div>
                 @endif
                 <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" method="POST" action="{{ route('user.sendEmailReset') }}">
                     @csrf
                         <span class="login100-form-title">
-                        reset your password
+                        {{__('frontEnd.resetPassword')}}
                         </span>
                     <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                        <input class="input100 @error('email') is-invalid @enderror" type="text" name="email" placeholder="your email">
+                        <input class="input100 @error('email') is-invalid @enderror" type="email" required name="email" placeholder="your email">
                         <span class="focus-input100"></span>
                         @error('email')
                         <span class="px-4 invalid-feedback" role="alert">
@@ -36,7 +36,7 @@
                     </div>
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn">
-                            send email
+                            {{__('frontEnd.sendEmail')}}
                         </button>
                     </div>
 
