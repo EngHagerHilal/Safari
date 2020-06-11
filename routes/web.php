@@ -55,12 +55,13 @@ Route::middleware('company.guest')->group(function (){
     Route::get('/pagination', 'users\usersController@pagination')->name('paginatePosts')->middleware('company.guest');
     Route::get('/', 'users\usersController@index')->name('home')->middleware('company.guest');
     Route::get('/tripDetails/{trip_id}/', 'users\usersController@tripDetails')->name('users.tripDetails');
-    Route::get('/edit-profile/', 'users\usersController@editProfile')->name('users.editProfile')->middleware(['auth','verified']);
-    Route::post('/edit-profile/', 'users\usersController@updateProfile')->name('users.updateProfile')->middleware(['auth','verified']);
 
 });
 
-Route::middleware(['auth','verified'])->group(function(){
+Route::middleware(['auth','usersVerfied'])->group(function(){
+    Route::get('/edit-profile/', 'users\usersController@editProfile')->name('users.editProfile')->middleware(['auth','verified']);
+    Route::post('/edit-profile/', 'users\usersController@updateProfile')->name('users.updateProfile')->middleware(['auth','verified']);
+
     Route::get('/myTrips', 'users\usersController@myTrips')->name('myJoinedTrips');
     Route::post('/trips/join', 'paypalController@payWithPayPal')->name('users.joinTrip');
     Route::get('/paypal/status/{trip_id}/{voucher_code?}', 'paypalController@joinToTrip')->name('paypal.status');
