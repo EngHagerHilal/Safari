@@ -39,5 +39,6 @@ class checkExpiredVoucher extends Command
     public function handle()
     {
         voucher::checkExpiredVoucher();
+
     }
 }

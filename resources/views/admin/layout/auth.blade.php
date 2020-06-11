@@ -39,7 +39,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbar1">
                 <ul class="navbar-nav">
-                    <li class="nav-item active">
+                    <li class="nav-item ">
                         <a class="nav-link" href="{{url('/admin/partners')}}">{{__('frontEnd.partners')}}</a>
                     </li>
                     <li class="nav-item">
@@ -55,9 +55,9 @@
                             <a class="nav-link" href="{{ route('admin.login') }}">admin {{ __('Login') }}</a>
                         </li>
                         @if (Route::has('register'))
-                            <li class="nav-item">
+                            <!--li class="nav-item">
                                 <a class="nav-link" href="{{ route('admin.register') }}">admin {{ __('Register') }}</a>
-                            </li>
+                            </li -->
                         @endif
                     @else
                         <li class="nav-item dropdown">

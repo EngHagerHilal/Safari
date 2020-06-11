@@ -163,6 +163,7 @@ class companyController extends Controller
             'name'              => 'required',
             'email'             => 'required|email',
             'current_password'  => 'required',
+            'current_email'     => 'required',
         ]);
         $other_user=Company::where([
             ['email','=',$request->email],
@@ -180,7 +181,7 @@ class companyController extends Controller
                 'new_password_confirmation'  => 'required|same:new_password',
             ]);
         }
-        if(Auth::guard('company')->attempt(['email'=>$request->email,'password'=>$request->current_password])){
+        if(Auth::guard('company')->attempt(['email'=>$request->current_email,'password'=>$request->current_password])){
             $user=Company::where('email',$request->email)->first();
             $user->name=$request->name;
             $user->email=$request->email;
@@ -189,10 +190,10 @@ class companyController extends Controller
             }
             $user->save();
 
-            return redirect()->back()->with('success',__('fontEnd.profileUpdated'));
+            return redirect()->back()->with('success',__('profile Updated'));
         }
         else{
-            return redirect()->back()->withErrors(['current_password' => __('frontEnd.pass_failed')]);
+            return redirect()->back()->withErrors(['current_password' => __('password failed')]);
         }
     }
 

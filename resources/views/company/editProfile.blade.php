@@ -34,6 +34,8 @@
                                       class="overflow-hidden login100-form validate-form p-l-55 p-r-55 p-t-178 mb-3"
                                       method="POST" action="{{ route('company.updateProfile') }}">
                                     @csrf
+                                    <input required type="hidden" name="current_email" value="{{$user->email}}" >
+
                                     <span class="login100-form-title text-uppercase">
                                         <strong>
                                             {{__('frontEnd.Edit_profile')}}

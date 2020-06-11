@@ -16,6 +16,7 @@
 
                             <div class="col-md-6">
                                 <input id="name" required type="name" class="form-control" name="name" value="{{ Auth::guard('company')->user()->name }}" autofocus>
+                                <input required type="hidden" name="current_email" value="{{$user->email}}" >
 
                                 @if ($errors->has('name'))
                                     <span class="help-block alert-danger">

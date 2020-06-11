@@ -30,7 +30,7 @@ class activeAccount extends Mailable
      */
     public function build()
     {
-        return $this->from('safari@safari.com')
+        return $this->from('safari@safari.com')->subject($this->user->email_title)
             ->view('mails.active_account')
             ->with(
                 [

@@ -488,6 +488,7 @@ class usersController extends Controller
             'name'              => 'required',
             'email'             => 'required|email',
             'current_password'  => 'required',
+            'current_email'     => 'required',
         ]);
         $other_user=User::where([['email','=',$request->email],['id','!=',Auth::id()]])->first();
         if(!$other_user){
@@ -497,13 +498,13 @@ class usersController extends Controller
             return 'error email';
             return redirect()->back()->with('email',__('frontEnd.repeatedEmail'));
         }
-        if($request->has('new_password')){
+        if($request->new_password!=''){
             $dataValidated=$request->validate([
                 'new_password'               => 'required',
                 'new_password_confirmation'  => 'required|same:new_password',
             ]);
         }
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->current_password])){
+        if(Auth::attempt(['email' => $request->current_email, 'password' => $request->current_password])){
             $user=Auth::user();
             $user->name=$request->name;
             $user->email=$request->email;
@@ -515,7 +516,7 @@ class usersController extends Controller
             return redirect()->back()->with('success',__('fontEnd.profileUpdated'));
         }
         else{
-            return redirect()->back()->withErrors(['current_password' => __('frontEnd.pass_failed')]);
+            return redirect()->back()->withErrors(['current_password' => __('password not correct')]);
         }
     }
 

@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\checkExpiredVoucher::class,
+        Commands\SendMailToTraveler::class,
     ];
 
     /**
@@ -25,7 +26,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('voucher:expired')->everyMinute();
+        //check voucher expired
+        $schedule->command('voucher:expired')->everyMinute()->withoutOverlapping();
+        //send mail to traveler
+        $schedule->command('trips:sendToTravelers')->everyMinute()->withoutOverlapping();
+
     }
 
     /**
