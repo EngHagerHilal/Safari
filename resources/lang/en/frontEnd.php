@@ -154,5 +154,19 @@ return [
     'resetPassword'   => 'reset your password',
     'sendEmail'       => 'send email',
 
-
+    'your_phone'      => 'your phone number',
+    'advertisement'   => 'advertisements',
+    'active_ads'      => 'visible ads',
+    'disactive_ads'   => 'Hidden ads',
+    'hide_ads'        => 'Hide',
+    'show_ads'        => 'show',
+    'new_ads'         => 'new ads',
+    'ads_title'       => 'ads title',
+    'ads_company'     => 'ads owner',
+    'ads_link'        => 'link',
+    'ads'             => 'advertisements',
+    'all_ads'         => 'all ads',
+    'hided_ads'       => 'hided ads',
+    'show_ads'        => 'active ads',
+    'acceptTerms'     => 'I agree to the Terms and Conditions',
 ];

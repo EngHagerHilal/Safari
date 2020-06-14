@@ -153,4 +153,21 @@ return [
     'resetPassword'     => 'Setze dein Passwort zurück',
     'sendEmail'         => 'E-Mail senden',
 
+
+
+    'your_phone'      => 'deine Telefonnummer',
+    'advertisement'   => 'Anzeige',
+    'active_ads'      => 'sichtbare Anzeigen',
+    'disactive_ads'   => 'Versteckte Anzeigen',
+    'hide_ads'        => 'Ausblenden',
+    'show_ads'        => 'Show',
+    'new_ads'         => 'neue Anzeigen',
+    'ads_title'       => 'Anzeigen Titel',
+    'ads_company'     => 'Anzeigeninhaber',
+    'ads_link'        => 'Verknüpfung',
+    'ads'             => 'Anzeige',
+    'all_ads'         => 'alle Anzeigen',
+    'hided_ads'       => 'versteckte Anzeigen',
+    'show_ads'        => 'aktive Anzeigen',
+    'acceptTerms'     => 'Ich stimme den AGB zu',
 ];

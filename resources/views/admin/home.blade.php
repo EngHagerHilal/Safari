@@ -34,21 +34,28 @@
                                 {{__('frontEnd.partners')}}
                             </a></h3>
                             <div dir="{{$dir}}" class="row">
-                                <div class="border col-md-4">
+                                <div class="border col-md-3">
                                     <h3 class="text-center font-weight-bolder">
                                         <a href="{{url('/admin/partners/')}}" class="text-dark">
                                             {{__('frontEnd.all_partners')}} [{{$partners}}]
                                         </a>
                                     </h3>
                                 </div>
-                                <div class="border col-md-4">
+                                <div class="border col-md-3">
+                                    <h3 class="text-center font-weight-bolder">
+                                        <a href="{{url('/admin/partners/')}}" class="text-dark">
+                                            {{__('frontEnd.pending_partners')}} [{{$pending_partners}}]
+                                        </a>
+                                    </h3>
+                                </div>
+                                <div class="border col-md-3">
                                     <h3 class="text-center font-weight-bolder">
                                         <a href="{{url('/admin/partners/')}}" class="text-dark">
                                             {{__('frontEnd.active_partners')}} [{{$active_partners}}]
                                         </a>
                                     </h3>
                                 </div>
-                                <div class="border col-md-4">
+                                <div class="border col-md-3">
                                     <h3 class="text-center font-weight-bolder">
                                         <a href="{{url('/admin/partners/')}}" class="text-dark">
                                             {{__('frontEnd.blocked_partners')}} [{{$blocked_partners}}]
@@ -86,6 +93,32 @@
                             </div>
                             <hr>
 
+                            <h3 class="font-weight-bolder text-center">
+                                {{__('frontEnd.ads')}}
+                            </a></h3>
+                            <div dir="{{$dir}}" class="row">
+                                <div class="border col-md-4">
+                                    <h3 class="text-center font-weight-bolder">
+                                        <a href="{{route('advertisement')}}" class="text-dark">
+                                            {{__('frontEnd.all_ads')}} [{{$ads}}]
+                                        </a>
+                                    </h3>
+                                </div>
+                                <div class="border col-md-4">
+                                    <h3 class="text-center font-weight-bolder">
+                                        <a href="{{route('advertisement')}}" class="text-dark">
+                                            {{__('frontEnd.show_ads')}} [{{$show_ads}}]
+                                        </a>
+                                    </h3>
+                                </div>
+                                <div class="border col-md-4">
+                                    <h3 class="text-center font-weight-bolder">
+                                        <a href="{{route('advertisement')}}" class="text-dark">
+                                            {{__('frontEnd.hided_ads')}} [{{$hide_ads}}]
+                                        </a>
+                                    </h3>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

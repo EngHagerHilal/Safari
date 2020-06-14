@@ -109,10 +109,13 @@ Route::group(['prefix' => 'admin',  'middleware' => ['admin','adminVerfied']], f
     Route::get('/users/{control}/{user_id}/', 'Admin\AdminController@blockUser')->name('users.control');
     Route::get('/edit-profile/', 'Admin\AdminController@editProfile')->name('company.editProfile');
     Route::post('/edit-profile/', 'Admin\AdminController@updateProfile')->name('company.updateProfile');
-
+    Route::get('/advertisement','Admin\AdminController@allAdvertisement')->name('advertisement');
+    Route::get('/advertisement/new','Admin\AdminController@newADS')->name('ads.new');
+    Route::post('/advertisement/insert','Admin\AdminController@insertNewADS')->name('admin.insert.new.ads');
+    Route::get('/ads/control/{control}/{ads_id}','Admin\AdminController@controlADS')->name('ads.control');
 });
-Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied','guest']], function(){
-    Route::get('/home', 'company\CompanyController@home')->name('home');
+Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied','guest','companyAccepted']], function(){
+    Route::get('/home', 'company\companyController@home')->name('home');
     Route::get('/trips/new','company\companyController@newTrip')->name('company.trips.new');
     Route::post('/trips/new','company\companyController@insertNewTrip')->name('company.trips.insert');
     Route::get('/trips/{action}/{trip_id}','company\companyController@controlTrip')->name('company.trips.control');

@@ -150,4 +150,21 @@ return [
 
     'resetPassword'   => 'reimposta la tua password',
     'sendEmail'       => 'invia una email',
+
+
+    'your_phone'      => 'il tuo numero di telefono',
+    'advertisement'   => 'annunci',
+    'active_ads'      => 'annunci visibili',
+    'disactive_ads'   => 'Annunci nascosti',
+    'hide_ads'        => 'Nascondere',
+    'show_ads'        => 'mostrare',
+    'new_ads'         => 'nuovi annunci',
+    'ads_title'       => 'titolo degli annunci',
+    'ads_company'     => 'proprietario annunci',
+    'ads_link'        => 'collegamento',
+    'ads'             => 'annunci',
+    'all_ads'         => 'tutti gli annunci',
+    'hided_ads'       => 'annunci nascosti',
+    'show_ads'        => 'annunci attivi',
+    'acceptTerms'     => 'Accetto i Termini e Condizioni',
 ];

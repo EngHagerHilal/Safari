@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Admin;
+use App\advertisement;
 use App\Company;
+use App\gallary;
 use App\Http\Controllers\Controller;
 use App\trips;
 use App\User;
@@ -48,14 +50,22 @@ class AdminController extends Controller
         $users=User::all()->count();
         $active_users=User::filterBy('active')->count();
         $blocked_users=User::filterBy('blocked')->count();
+        $ads=advertisement::all()->count();
+        $show_ads=advertisement::where('status','show')->count();
+        $hide_ads=advertisement::where('status','hide')->count();
         $companies=Company::all()->count();
+        $pending_companies=Company::filterBy('pending')->count();
         $active_companies=Company::filterBy('active')->count();
         $blocked_companies=Company::filterBy('blocked')->count();
         return view('admin.home',[
+            'ads'               => $ads,
+            'show_ads'          => $show_ads,
+            'hide_ads'          => $hide_ads,
             'users'             => $users,
             'active_users'      => $active_users,
             'blocked_users'     => $blocked_users,
             'partners'          => $companies,
+            'pending_partners'  => $pending_companies,
             'active_partners'   => $active_companies,
             'blocked_partners'  => $blocked_companies,
             ]);
@@ -106,6 +116,7 @@ class AdminController extends Controller
             return redirect()->back()->with('partner_message_error', 'partner <strong>' . $patrner->name . '</strong> not found');
         }
     }
+
     public function usersControl(){
         $users=User::all()->count();
         $active=User::filterBy('active');
@@ -126,6 +137,52 @@ class AdminController extends Controller
         return redirect()->back()->with('trip_message','the user status udated ')->with('status',$user->status);
 
     }
+    public function allAdvertisement(){
+        //return '<img src="http://localhost/saf_rest/Safari/public/img/ads/3/1592145614.png" class="">';
+
+        $active=advertisement::where('status','show')->get();
+        $disactive=advertisement::where('status','!=','show')->get();
+        return view('admin.advertisement',['active'=>$active,'disactive'=>$disactive]);
+    }
+    public function newADS(){
+        return view('admin.new_ads');
+    }
+    public function insertNewADS(Request $request){
+        $dataValidated=$request->validate([
+            'title'         => 'required|max:255',
+            'desc'          => 'required',
+            'company_name'  => 'required',
+            'img'           => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+        unset($dataValidated['img']);
+        $ads=advertisement::create($dataValidated);
+        if($ads){
+            $newFile = 'img' . time().rand(1,100) . '.' . $request->file('img')->getClientOriginalExtension();
+            $imgUrl='img/ads_img/'.$ads->id.'/'.$newFile;
+            $ads->img=$imgUrl;
+            $request->img->move(public_path('/img/ads_img/'.$ads->id), $newFile);
+            $ads->save();
+            return redirect(route('advertisement'))->with('success','new ads inserted');
+        }
+        return redirect()->back()->with('error','error happened');
+
+    }
+    public function controlADS (Request $request){
+        if(!in_array($request->control,['show','hide'])){
+            return view('error');
+        }
+        $ads=advertisement::find($request->ads_id);
+        if($ads==null){
+            return view('error');
+        }
+
+        $ads->status=$request->control;
+        $ads->save();
+        return redirect()->back()->with('success','the ADS is '.$ads->status.' now! ');
+
+    }
+
 
     public function updateProfileAPI(Request $request){
         $user=Admin::isLoggedIn($request->api_token);
@@ -184,17 +241,6 @@ class AdminController extends Controller
         }
         return \Response::json(['success'=>'profile founded','profileData'=>$user]);
     }
-
-
-
-
-
-
-
-
-
-
-
     ////////////////////////////api //////////////////////////
     public function APIhome(Request $request){
             Admin::isLoggedIn($request->api_token);
@@ -204,14 +250,6 @@ class AdminController extends Controller
             $users['allCount']=User::all()->count();
             $users['activeCount']=User::filterBy('active')->count();
             $users['blockedCount']=User::filterBy('blocked')->count();
-            /*
-            $users['active']=User::filterBy('active');
-            $users['blocked']=User::filterBy('blocked');
-            $companies['active']=Company::filterBy('active');
-            $companies['blocked']=Company::filterBy('blocked');
-            $companies['pending']=Company::filterBy('pending');
-            $companies['rejected']=Company::filterBy('rejected');
-            */
             $companies['allCount']=Company::all()->count();
             $companies['activeCount']= Company::filterBy('active')->count();
             $companies['blockedCount']=Company::filterBy('blocked')->count();

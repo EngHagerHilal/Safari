@@ -16,7 +16,7 @@ class Company extends Authenticatable // implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','verfiy_code','api_token','status',
+        'name', 'email', 'password','verfiy_code','api_token','status','phone',
     ];
 
     /**

@@ -85,7 +85,7 @@ return [
 
     'blocked_partners'  => 'الشركات المحظورة',
     'active_partners'   => 'الشركات النشطة',
-    'all_partners'      => 'كل الشركات',
+    'all_partners'      => 'جميع الشركات',
     'partners'          => 'الشركات',
     'users'             => 'المستخدمين',
     'blocked_users'     => 'المستخدمين المحظورين',
@@ -151,4 +151,21 @@ return [
     'resetPassword'     => 'اعادة تعيين كلمة المرور',
     'sendEmail'         => 'ارسل الرابط',
 
+
+
+    'your_phone'      => 'رقم الهاتف',
+    'advertisement'   => 'اعلانات',
+    'active_ads'      => 'اعلانات نشطة',
+    'disactive_ads'   => 'اعلانات مخفية',
+    'hide_ads'        => 'اخفاء',
+    'show_ads'        => 'تنشيط',
+    'new_ads'         => 'اعلان جديد',
+    'ads_title'       => 'عنوان الاعلان',
+    'ads_company'     => 'جهة الاعلان',
+    'ads_link'        => 'رابط الاعلان',
+    'ads'             => 'اعلانات',
+    'all_ads'         => 'جميع الاعلانات',
+    'hided_ads'       => 'الاعلانات متوقفة',
+    'show_ads'        => 'اعلانات نشطة',
+    'acceptTerms'     => 'انا اوافق علي الشروط والاحكام',
 ];

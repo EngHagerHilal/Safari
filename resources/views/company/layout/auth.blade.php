@@ -13,23 +13,23 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'safari') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery-3.4.1.min.js') }}" ></script>
-    <script src="{{ asset('js/app.js') }}" ></script>
-    <script src="{{ asset('js/sweetalert2@9.js') }}" ></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@800&family=Cairo&display=swap" rel="stylesheet">
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/main.css')}}"></head>
-<body dir="{{$dir}}">
+    <link rel="stylesheet" href="{{asset('css/main.css')}}">
+    <link href="https://unpkg.com/webkul-micron@1.1.6/dist/css/micron.min.css" type="text/css" rel="stylesheet">
+
+</head>
+<body dir="{{$dir}}" style="overflow-x: hidden">
 <div id="app">
     @yield('homePageSlider')
     <nav style="background-color: #00AA6C;box-shadow: 0 0 8px rgba(0,0,0,.6)" class="navbar navbar-expand-sm sticky-top navbar-light ">
@@ -108,8 +108,25 @@
         @yield('content')
     </main>
 </div>
+<footer>
+    <div style="background-color: rgb(0,170,108)" class="footer">
+        <div class="row py-5">
+            <div class="col-12 col-md-6">
+                <img style="height: 100px" class="pl-3 pr-3 img-fluid" src="{{asset('img/logo.png')}}">
+            </div>
+            <div class="col-12 col-md-3">
+                <h4>user terms</h4>
+            </div>
+            <div class="col-12 col-md-3">
+                <h4>partner terms</h4>
+            </div>
+        </div>
+    </div>
+</footer>
 
+<script src="{{ asset('js/bootstrap.min.js') }}" ></script>
 <script src="{{ asset('js/qrReader.js') }}" ></script>
+<script src="{{ asset('js/main.js') }}" ></script>
 
 @yield('ajaxCode')
 <script src="https://kit.fontawesome.com/8aaad534d4.js" crossorigin="anonymous"></script>

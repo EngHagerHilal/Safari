@@ -1,0 +1,15 @@
+your_phone
+advertisement
+active_ads
+disactive_ads
+hide_ads
+show_ads
+new_ads
+ads_title
+ads_company
+ads_link
+ads
+all_ads
+hided_ads
+show_ads
+acceptTerms

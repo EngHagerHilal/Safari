@@ -19,6 +19,7 @@
                         </span>
                             @enderror
                         </div>
+
                         <div class="wrap-input100 validate-input" data-validate="Please enter password">
                             <input class="input100 @error('password') is-invalid @enderror" type="password" name="password" placeholder="{{__('frontEnd.password')}}">
                             <span class="focus-input100"></span>

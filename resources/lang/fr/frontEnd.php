@@ -152,4 +152,21 @@ return [
     'resetPassword'   => 'réinitialisez votre mot de passe',
     'sendEmail'       => 'envoyer un e-mail',
 
+
+
+    'your_phone'      => 'votre numéro de téléphone',
+    'advertisement'   => 'annonces',
+    'active_ads'      => 'annonces visibles',
+    'disactive_ads'   => 'Annonces cachées',
+    'hide_ads'        => 'Cacher',
+    'show_ads'        => 'spectacle',
+    'new_ads'         => 'nouvelles annonces',
+    'ads_title'       => 'titre des annonces',
+    'ads_company'     => 'propriétaire des annonces',
+    'ads_link'        => 'lien',
+    'ads'             => 'annonces',
+    'all_ads'         => 'toutes les publicités',
+    'hided_ads'       => 'annonces cachées',
+    'show_ads'        => 'annonces actives',
+    'acceptTerms'     => "J'accepte les termes et conditions",
 ];

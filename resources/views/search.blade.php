@@ -104,24 +104,26 @@
                 @endforeach
 
             </div>
-            <div class="col-lg-3 d-none d-lg-block panner-right">
+            <div class="col-lg-3 d-none d-lg-block panner-right ">
                 <div class="panner bg-light box-shadow" >
-                    <h3 class="text-uppercase text-center">@guest{{__('frontEnd.special_trips')}}@else{{__('frontEnd.my_joined_trips')}}@endguest</h3>
+                    <h3 class="text-uppercase text-center">{{__('frontEnd.ads')}}</h3>
                     <div class="special-posts" style="overflow: auto;max-height: 475px">
-                        @foreach($myTrips as $trip)
+                        @foreach($ads as $ads_item)
                             <div class="post-item bg-light box-shadow">
                                 <div class="post-body">
                                     <div class="image-container">
-                                        <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
+                                        <img src="{{asset($ads_item->img)}}" class="img-fluid" style="width: 100%!important;" height="300">
                                     </div>
                                     <div class="px-2 more-details {{$text}}">
-                                        <a href="{{route('users.tripDetails',['trip_id'=>$trip->id])}}">
-                                            <h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
-                                        </a>
-                                        <p class="text-dark">
-                                            <i class="fas fa-calendar-alt font-1-2 main-text-green"></i>
-                                            {{__('frontEnd.travel_day')}} : {{$trip->start_at}}
-                                        </p>
+                                        <h3 class="font-weight-bold text-dark text-uppercase">{{$ads_item->title}}</h3>
+                                        <div class="card bg-transparent {{$text}}">
+                                            <ul class="list-group list-group-flush bg-transparent p-0">
+                                                <li class="list-group-item bg-transparent"><i class="fab fa-discourse font-1-2 main-text-green"></i>
+                                                    {{$ads_item->desc}}</li>
+                                                <li class="list-group-item bg-transparent"><i class="fas fa-sitemap font-1-2 main-text-green"></i> {{$ads_item->company_name}}</li>
+                                                @if($ads_item->link)<li class="list-group-item bg-transparent"><a href="{{$ads_item->link}}"><i class="fas fa-globe font-1-2 main-text-green"></i>{{$ads_item->link}}</a></li>@endif
+                                            </ul>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -129,15 +131,6 @@
 
                         @endforeach
                     </div>
-
-                    @guest
-                    @else
-                    <div class=" position-relative">
-                        <a href="{{route('myJoinedTrips')}}" style="bottom: 0;width: 80%; left: 0;right: 0" class="btn btn-success d-block m-auto position-absolute">
-                            <i class="fas fa-suitcase-rolling"></i> {{__('frontEnd.my_joined_trips')}}
-                        </a>
-                    </div>
-                    @endguest
                 </div>
 
             </div>

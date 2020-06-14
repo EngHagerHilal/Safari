@@ -55,9 +55,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255|unique:companies',
-            'email' => 'required|email|max:255|unique:companies|unique:users',
-            'password' => 'required|min:6|confirmed',
+            'name'      => 'required|max:255|unique:companies',
+            'email'     => 'required|email|max:255|unique:companies|unique:users',
+            'password'  => 'required|min:6|confirmed',
+            'phone'     => 'required',
         ]);
     }
 
@@ -73,6 +74,7 @@ class RegisterController extends Controller
         $data=Company::create([
             'name'=>$data['name'],
             'email'=>$data['email'],
+            'phone'=>$data['phone'],
             'api_token'=>Str::random(60),
             'verfiy_code'=>$verfiyCode,
             'password'=>bcrypt($data['password']),
@@ -110,6 +112,7 @@ class RegisterController extends Controller
             'name'          =>  'required|unique:companies',
             'email'         =>  'required|unique:companies',
             'password'      =>  'required|min:8',
+            'phone'         =>  'required',
 
         ];
         $error= \Illuminate\Support\Facades\Validator::make($request->all(),$validateRules);
@@ -120,6 +123,7 @@ class RegisterController extends Controller
         $data=Company::create([
             'name'=>$request->name,
             'email'=>$request->email,
+            'phone'=>$request->phone,
             'api_token'=>Str::random(60),
             'verfiy_code'=>$verfiyCode,
             'password'=>Hash::make($request->password)

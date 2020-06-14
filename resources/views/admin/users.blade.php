@@ -9,11 +9,11 @@
     <div class="main-bg-safary">
         <div class="container bg-glass">
             <div dir="ltr" class="row">
-                <div class="col-md-10 offset-1">
+                <div class="col-md-10 offset-md-1">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <div class="panel-heading text-center">
-                                <strong>{{__('frontEnd.all_users')}}</strong>
+                                <h3><strong>{{__('frontEnd.all_users')}}</strong></h3>
                             </div>
 
                 <div class="panel-body text-center">
@@ -34,24 +34,25 @@
                         <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
                             <div dir="{{$dir}}" class="py-3 row">
                                 @foreach($active as $user)
-                                    <div class="col-4 border">
-                                        <img src="{{asset('/img/user.png')}}" class="img-fluid">
-                                        <a class="d-block" href="#"> {{$user->name}}</a>
-                                        <span>
-                                        <i class="far fa-calendar-check font-1-2"></i>
-                                        {{$user->created_at}}
-                                            <div class="">
-                                                @if($user->status=='active')
-                                                    <a class="btn btn-danger " href="{{route('users.control',['control'=>'blocked','user_id'=>$user->id])}}">
-                                                       <i class="fas fa-window-close font-1-6"></i> {{__('frontEnd.block_user')}}
-                                                    </a>
-                                                @else
-                                                    <a class="btn btn-success " href="{{route('users.control',['control'=>'active','user_id'=>$user->id])}}">
-                                                        <i class="fas fa-check-square font-1-6"></i> {{__('frontEnd.active_user')}}
-                                                    </a>
-                                                @endif
+                                    <div class="col-md-4 col-sm-6 col-12 py-3">
+                                        <div style="border-radius: 10px" class="bg-white border">
+                                            <img style="height: 130px!important;" src="{{asset('/img/user.png')}}" class="img-fluid py-2">
+                                            <a class="d-block" href="#"><h4> {{$user->name}} </h4></a>
+                                            <div class="card bg-transparent {{$text}}">
+                                                <ul class="list-group list-group-flush bg-transparent">
+                                                    <li class="list-group-item bg-transparent"><i class="fas fa-envelope font-1-2 main-text-green"></i>
+                                                        {{$user->email}}</li>
+                                                    <li class="list-group-item bg-transparent"><i class="fas fa-phone font-1-2 main-text-green"></i> {{$user->phone}}</li>
+                                                    <li class="list-group-item bg-transparent"><i class="far fa-calendar-check font-1-2 main-text-green"></i>
+                                                        {{date('d-m-Y',strtotime($user->created_at))}}</li>
+                                                </ul>
                                             </div>
-                                        <span/>
+                                            <div class="">
+                                                <a class="btn my-2 btn-danger " href="{{route('users.control',['control'=>'blocked','user_id'=>$user->id])}}">
+                                                    <i class="fas fa-user-slash font-1-6"></i> {{__('frontEnd.block_user')}}
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
@@ -59,26 +60,26 @@
                         <div class="tab-pane fade" id="blocked" role="tabpanel" aria-labelledby="blocked-tab">
                             <div dir="{{$dir}}" class="py-3 row">
                                 @foreach($blocked as $user)
-                                    <div class="col-4 border">
-                                        <img src="{{asset('/img/user.png')}}" class="img-fluid">
-                                        <a class="d-block" href="#"> {{$user->name}}</a>
-                                        <span>
-                                        <i class="far fa-calendar-check font-1-2"></i>
-                                        {{$user->created_at}}
-                                            <div class="">
-                                                @if($user->status=='active')
-                                                    <a class="btn btn-danger " href="{{route('users.control',['control'=>'blocked','user_id'=>$user->id])}}">
-                                                       <i class="fas fa-window-close font-1-6"></i> {{__('frontEnd.block_user')}}
-                                                    </a>
-                                                @else
-                                                    <a class="btn btn-success " href="{{route('users.control',['control'=>'active','user_id'=>$user->id])}}">
-                                                        <i class="fas fa-check-square font-1-6"></i> {{__('frontEnd.active_user')}}
-                                                    </a>
-                                                @endif
+                                    <div class="col-md-4 col-sm-6 col-12 py-3">
+                                        <div style="border-radius: 10px" class="bg-white border">
+                                            <img style="height: 130px!important;" src="{{asset('/img/user.png')}}" class="img-fluid py-2">
+                                            <a class="d-block" href="#"><h4> {{$user->name}} </h4></a>
+                                            <div class="card bg-transparent {{$text}}">
+                                                <ul class="list-group list-group-flush bg-transparent">
+                                                    <li class="list-group-item bg-transparent"><i class="fas fa-envelope font-1-2 main-text-green"></i>
+                                                        {{$user->email}}</li>
+                                                    <li class="list-group-item bg-transparent"><i class="fas fa-phone font-1-2 main-text-green"></i> {{$user->phone}}</li>
+                                                    <li class="list-group-item bg-transparent"><i class="far fa-calendar-check font-1-2 main-text-green"></i>
+                                                        {{date('d-m-Y',strtotime($user->created_at))}}</li>
+                                                </ul>
                                             </div>
-                                        <span/>
+                                            <div class="">
+                                                <a class="btn my-2 btn-success " href="{{route('users.control',['control'=>'active','user_id'=>$user->id])}}">
+                                                    <i class="fas fa-user-check font-1-6"></i> {{__('frontEnd.active_user')}}
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 @endforeach
                             </div>
                         </div>

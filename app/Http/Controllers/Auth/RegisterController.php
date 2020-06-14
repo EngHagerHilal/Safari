@@ -57,6 +57,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'unique:companies'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'phone' => ['required', ],
         ]);
     }
 
@@ -72,6 +73,7 @@ class RegisterController extends Controller
         $data=User::create([
             'name'=>$data['name'],
             'email'=>$data['email'],
+            'phone'=>$data['phone'],
             'api_token'=>Str::random(60),
             'verfiy_code'=>$verfiyCode,
             'password'=>bcrypt($data['password']),
@@ -89,6 +91,7 @@ class RegisterController extends Controller
             'name'          =>  'required|unique:users',
             'email'         =>  'required|unique:users',
             'password'      =>  'required|min:8',
+            'phone'         =>  'required',
 
         ];
         $error= \Illuminate\Support\Facades\Validator::make($request->all(),$validateRules);
@@ -99,6 +102,7 @@ class RegisterController extends Controller
         $data=User::create([
             'name'=>$request->name,
             'email'=>$request->email,
+            'phone'=>$request->phone,
             'api_token'=>Str::random(60),
             'verfiy_code'=>$verfiyCode,
             'password'=>Hash::make($request->password)

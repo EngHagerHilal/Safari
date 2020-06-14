@@ -29,6 +29,15 @@
                             </span>
                             @enderror
                         </div>
+                        <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter mobile number">
+                            <input id="email" class="@error('phone') is-invalid @enderror input100" type="tel" name="phone" placeholder="{{__('frontEnd.your_phone')}}" required="required" >
+                            <span class="focus-input100"></span>
+                            @error('phone')
+                            <span class="px-4 invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter password">
                             <input class="@error('password') is-invalid @enderror input100" placeholder="{{__('frontEnd.password')}}" id="password" type="password" name="password" required="required" autocomplete="new-password" aria-autocomplete="list">
                             <span class="focus-input100"></span>
@@ -38,6 +47,7 @@
                             </span>
                             @enderror
                         </div>
+
                         <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter password">
                             <input class="@error('password_confirmation') is-invalid @enderror input100" id="password-confirm" placeholder="{{__('frontEnd.confirm_pass')}}" type="password" name="password_confirmation" required="required" autocomplete="new-password" aria-autocomplete="list">
 
@@ -47,6 +57,10 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
+                        </div>
+                        <div class="wrap-input100 validate-input m-b-16 p-2" data-validate="Please enter password">
+                            <input required type="checkbox" id="accept" name="accept" value="yes">
+                            <label for="accept"> {{__('frontEnd.acceptTerms')}}</label>
                         </div>
 
                         <div class="text-right p-t-13 p-b-23">
