@@ -65,7 +65,7 @@
                             </div>
                         </div>
                         <div class="more-details">
-                            <a href="#"><h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3></a>
+                            <h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
 
                         </div>
                     </div>
@@ -78,7 +78,8 @@
                     <form method="POST" action="{{route('users.joinTrip')}}">
                         @csrf
                         <input type="hidden" name="trip_id" value="{{$trip->id}}">
-                        <h3 style="padding-top: 20px" class="text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
+                        <h3 style="padding-top: 20px" class="d-none d-md-block font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
+
                         <div class="{{$text}} full-details">
                             <p class="text-dark font-weight-bold">{{$trip->description}}</p>
 

@@ -30,7 +30,20 @@ class activeAccount extends Mailable
      */
     public function build()
     {
-        return $this->from('safari@safari.com')->subject($this->user->email_title)
+        if($this->user->message_from_user){
+            $email_from=$this->user->message_from_user;
+            return $this->from($email_from)->subject('new message from user')
+                ->view('mails.message_from_user')
+                ->with(
+                    [
+                        'email' => $email_from,
+                        'username' => $this->user->name,
+                        'email_title ' => 'new message from : '.$this->user->name,
+                        'email_message' => $this->user->email_message,
+                    ]);
+        }
+        $email_from=env('MAIL_FROM_ADDRESS');
+        return $this->from($email_from)->subject($this->user->email_title)
             ->view('mails.active_account')
             ->with(
                 [

@@ -1,5 +1,6 @@
 
 $(document).ready(function() {
+    $('.modal-dialog').css({'padding-top':($(window).height()*16/100)});
     $('.main-rate>i').on('click',function(e){
         var trip_id = $(this).attr('trip-id');
         var rate    = $(this).attr('rate-value');

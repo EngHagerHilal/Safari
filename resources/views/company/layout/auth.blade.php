@@ -25,6 +25,8 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
     <link href="https://unpkg.com/webkul-micron@1.1.6/dist/css/micron.min.css" type="text/css" rel="stylesheet">
 
@@ -108,25 +110,91 @@
         @yield('content')
     </main>
 </div>
-<footer>
-    <div style="background-color: rgb(0,170,108)" class="footer">
-        <div class="row py-5">
-            <div class="col-12 col-md-6">
-                <img style="height: 100px" class="pl-3 pr-3 img-fluid" src="{{asset('img/logo.png')}}">
-            </div>
-            <div class="col-12 col-md-3">
-                <h4>user terms</h4>
-            </div>
-            <div class="col-12 col-md-3">
-                <h4>partner terms</h4>
-            </div>
-        </div>
-    </div>
-</footer>
+<!-- Footer -->
+<footer class="page-footer font-small blue pt-4">
 
+    <!-- Footer Links -->
+    <div class="container-fluid text-center text-md-left">
+
+        <!-- Grid row -->
+        <div class="row {{$text}}">
+
+            <!-- Grid column -->
+            <div class="img-container col-md-6 mt-md-0 mt-3 text-center">
+
+                <!-- Content -->
+                <img src="{{asset('img/logo.png')}}" style="width: 150px;height: 120px;">
+                <p class="text-uppercase font-1-2">SAFAREGY CHARGE YOUR LIVE</p>
+
+            </div>
+            <!-- Grid column -->
+
+            <hr class="clearfix w-100 d-md-none pb-3">
+
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+
+                <!-- Links -->
+                <h5 class="text-uppercase font-weight-bolder">{{__('frontEnd.support')}}</h5>
+
+                <ul dir="ltr" class="list-unstyled">
+                    <li>
+                        <a class="" href="{{route('about-us')}}">{{__('frontEnd.about_us')}}</a>
+                    </li>
+                    <li>
+                        <a href="{{route('new-message')}}">{{__('frontEnd.message_admin')}}</a>
+                    </li>
+                    <li>
+                        <a target="_blank" href="https://api.whatsapp.com/send?phone=01001494049">{{__('frontEnd.message_whats')}}</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+
+                <!-- Links -->
+                <h5 class="text-uppercase font-weight-bolder">{{__('frontEnd.customers_and_partners')}}</h5>
+
+                <ul dir="ltr" class="list-unstyled">
+                    <li>
+                        <a href="{{route('terms')}}">{{__('frontEnd.customer_terms')}}</a>
+                    </li>
+                    <li>
+                        <a href="{{route('terms')}}">{{__('frontEnd.partner_terms')}}</a>
+                    </li>
+                    <li>
+                        <a href="{{url('/register')}}">{{__('frontEnd.sign_as_customer')}}</a>
+                    </li>
+                    <li>
+                        <a href="{{url('/company/register')}}">{{__('frontEnd.sign_as_partner')}}</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
+    </div>
+    <!-- Footer Links -->
+
+    <!-- Copyright -->
+    <div style="background-color: rgba(1,171,110,.8)" class="footer-copyright text-center py-3">© 2020 Copyright:
+        leen.com.eg
+    </div>
+    <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
 <script src="{{ asset('js/bootstrap.min.js') }}" ></script>
 <script src="{{ asset('js/qrReader.js') }}" ></script>
 <script src="{{ asset('js/main.js') }}" ></script>
+<script src="http://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
 @yield('ajaxCode')
 <script src="https://kit.fontawesome.com/8aaad534d4.js" crossorigin="anonymous"></script>

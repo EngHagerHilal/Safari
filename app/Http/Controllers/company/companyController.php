@@ -122,23 +122,32 @@ class companyController extends Controller
             return redirect()->back()->with('trip_message','the joiner status updated ')->with('status',$control);
     }
     public function tripDetails(Request $request){
-
         $trip=trips::where([['id','=',$request->trip_id],['company_id','=',Auth::guard('company')->user()->id]])->get()->first();
         if($trip==null){
             return view('error');
         }
         $trip->img=gallary::where('trip_id','=',$trip->id)->get();
-        $joinersNumber=userTrips::where('trip_id',$trip->id)->count();
+        $allJoiners=userTrips::where('trip_id',$trip->id)->get();
+        $joinersArray=[];
+        foreach ($allJoiners as $joiner){
+            $user=User::find($joiner->user_id);
+            $user->join_date=$joiner->created_at;
+            $user->joinCode=$joiner->joinCode;
+            $user->QR_code=$joiner->QR_code;
+            $joinersArray[]=$user;
+        }
+        $joinersNumber=$allJoiners->count();
         $activeVouchers=voucher::where([['trip_id',$trip->id],['status','active']])->get();
         $disableVouchers=voucher::where([['trip_id',$trip->id],['status','disable']])->get();
         $expiredVouchers=voucher::where([['trip_id',$trip->id],['status','expired']])->get();
         return view('company.tripDetails',
             [
                 'trip'=>$trip,
-                'joinersNumber'=>$joinersNumber,
-                'activeVoucher'=>$activeVouchers,
+                'joinersNumber' =>$joinersNumber,
+                'activeVoucher' =>$activeVouchers,
                 'disabledVoucher'=>$disableVouchers,
                 'expiredVoucher'=>$expiredVouchers,
+                'joinersArray'  =>$joinersArray,
             ]
         );
         return redirect()->back()->with('trip_message','the trip status udated ')->with('status',$trip->status);

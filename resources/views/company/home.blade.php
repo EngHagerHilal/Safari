@@ -10,7 +10,7 @@
 <div class="main-bg-safary">
     <div class="container bg-glass">
         <div dir="ltr" class="row">
-            <div class="col-md-10 offset-1">
+            <div class="col-md-10 offset-md-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h2 class="font-weight-bolder text-center py-5">
@@ -52,33 +52,36 @@
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
-                                <div dir="{{$dir}}" class="row py-3">
+                                <div dir="{{$dir}}" class="row py-3 mx-0">
                                 @foreach($active as $trip)
-                                    <div style="{{$offset_1}}" class="col-md-3 post-item bg-light box-shadow">
-                                            <div class="post-body">
-                                                <div class="image-container">
-                                                    <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
+                                        <div class="col-md-3 col-sm-6 ">
+                                            <div class="post-item bg-light box-shadow">
+                                                <div class="post-body">
+                                                    <div class="image-container">
+                                                        <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
+                                                    </div>
+                                                    <div class="{{$text}} px-2 more-details">
+                                                        <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}">
+                                                            <h4 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h4>
+                                                        </a>
+                                                        <p>{{__('frontEnd.status')}}: <strong>{{$trip->status}}</strong></p>
+                                                        <p class="font-weight-bolder">
+                                                            <i class="fas fa-user-check font-1-2 main-text-green"></i>
+                                                            {{__('frontEnd.joiners')}} [{{$trip->joinersNumber}}]
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div class="{{$text}} px-2 more-details">
-                                                    <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}">
-                                                        <h4 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h4>
-                                                    </a>
-                                                    <p>{{__('frontEnd.status')}}: <strong>{{$trip->status}}</strong></p>
-                                                    <p class="font-weight-bolder">
-                                                        <i class="fas fa-user-check font-1-2 main-text-green"></i>
-                                                        {{__('frontEnd.joiners')}} [{{$trip->joinersNumber}}]
-                                                    </p>
-                                                     </div>
                                             </div>
-                                    </div>
-                                @endforeach
+                                        </div>
+                                    @endforeach
                             </div>
                             </div>
                             <div class="tab-pane fade " id="disabled" role="tabpanel" aria-labelledby="disabled-tab">
                                 <div dir="{{$dir}}" class="row py-3">
                                     @foreach($disabled as $trip)
-                                    <div style="{{$offset_1}}" class="col-md-3 post-item bg-light box-shadow">
-                                        <div class="post-body">
+                                    <div class="col-md-3 col-sm-6 ">
+                                        <div class="post-item bg-light box-shadow">
+                                            <div class="post-body">
                                             <div class="image-container">
                                                 <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
                                             </div>
@@ -93,6 +96,7 @@
                                                 </p>
                                             </div>
                                         </div>
+                                        </div>
                                     </div>
                                     @endforeach
 
@@ -102,20 +106,23 @@
                                 <div dir="{{$dir}}" class="row">
                                     @foreach($completed as $trip)
 
-                                        <div style="{{$offset_1}}" class="col-md-3 post-item bg-light box-shadow">
-                                            <div class="post-body">
-                                                <div class="image-container">
-                                                    <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
-                                                </div>
-                                                <div class="{{$text}} px-2 more-details">
-                                                    <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}">
-                                                        <h4 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h4>
-                                                    </a>
-                                                    <p>{{__('frontEnd.status')}}: <strong>{{$trip->status}}</strong></p>
-                                                    <p class="font-weight-bolder">
-                                                        <i class="fas fa-user-check font-1-2 main-text-green"></i>
-                                                        {{__('frontEnd.joiners')}} [{{$trip->joinersNumber}}]
-                                                    </p>
+
+                                        <div class="col-md-3 col-sm-6 ">
+                                            <div class="post-item bg-light box-shadow">
+                                                <div class="post-body">
+                                                    <div class="image-container">
+                                                        <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
+                                                    </div>
+                                                    <div class="{{$text}} px-2 more-details">
+                                                        <a href="{{route('company.trips.details',['trip_id'=>$trip->id])}}">
+                                                            <h4 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h4>
+                                                        </a>
+                                                        <p>{{__('frontEnd.status')}}: <strong>{{$trip->status}}</strong></p>
+                                                        <p class="font-weight-bolder">
+                                                            <i class="fas fa-user-check font-1-2 main-text-green"></i>
+                                                            {{__('frontEnd.joiners')}} [{{$trip->joinersNumber}}]
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

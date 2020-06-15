@@ -22,7 +22,7 @@
             </div>
         @endif
         <div class="row">
-            <div class="col-8 post-details-container">
+            <div class="col-lg-8 col-12 post-details-container py-2">
                 <div class="post-details bg-light box-shadow">
                     <div class="{{$text}} post-header">
                         <div class="text-center creater-logo d-inline-block">
@@ -64,14 +64,14 @@
                             </div>
                         </div>
                         <div class="more-details">
-                            <a href="#"><h3 class="font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3></a>
+                            <h3 class="d-none d-md-block font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
                         </div>
                     </div>
 
                 </div>
 
             </div>
-            <div class="col-4 panner-right post-full-details">
+            <div class="col-lg-4 col-12 panner-right post-full-details py-2">
                 <div class="panner bg-light box-shadow">
                     <h3 class="py-3 text-uppercase text-center font-weight-bolder">{{$trip->title}}</h3>
                     <div class="{{$text}} full-details">
@@ -146,7 +146,12 @@
         <ul class="nav nav-tabs text-center" id="myTab" role="tablist">
 
             <li class="nav-item">
-                <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab" aria-controls="active" aria-selected="false">
+                <a class="nav-link active" id="joiners-tab" data-toggle="tab" href="#joiners" role="tab" aria-controls="joiners" aria-selected="false">
+                    {{__('frontEnd.joiners')}} [ <strong>{{$joinersNumber}}</strong> ]
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="active-tab" data-toggle="tab" href="#active" role="tab" aria-controls="active" aria-selected="false">
                     {{__('frontEnd.active_voucher')}} [ <strong>{{count($activeVoucher)}}</strong> ]
                 </a>
             </li>
@@ -162,7 +167,36 @@
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
+            <div class="tab-pane fade show active" id="joiners" role="tabpanel" aria-labelledby="joiners-tab">
+                <div class="joined_users p-3 overflow-auto">
+                    <table id="joined_users_table" dir="{{$dir}}" class="table table-success table-striped">
+                        <thead>
+                        <tr dir="{{$dir}}">
+                            <th class="font-1-2"><i class="fas fa-ad  main-text-green"></i> user name </th>
+                            <th class="font-1-2"><i class="fas fa-envelope main-text-green"></i> Email </th>
+                            <th class="font-1-2"><i class="fas fa-phone main-text-green"></i> phone </th>
+                            <th class="font-1-2"><i class="fas fa-list-ol main-text-green"></i> join Code </th>
+                            <th class="font-1-2"><i class="fas fa-qrcode main-text-green"></i> QR code </th>
+                            <th class="font-1-2"><i class="fas fa-calendar-alt main-text-green"></i> join date </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($joinersArray as $joiner)
+                            <tr>
+                                <td>{{$joiner->name}}</td>
+                                <td>{{$joiner->email}}</td>
+                                <td>{{$joiner->phone}}</td>
+                                <td>{{$joiner->joinCode}}</td>
+                                <td><img src="{{asset($joiner->QR_code)}}" width="50" height="50"> </td>
+                                <td>{{$joiner->join_date}}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="tab-pane fade " id="active" role="tabpanel" aria-labelledby="active-tab">
                 <div dir="{{$dir}}" class="row">
                     @foreach($activeVoucher as $voucher)
                         <div class="{{$text}} col-md-4 border">
@@ -276,6 +310,8 @@
 
 @section('ajaxCode')
     <script>
+        $('#joined_users_table').DataTable();
+
         $( "#content" ).change(function() {
             $('#QR_CODE').val($( "#content" ).val());
         });
@@ -308,6 +344,5 @@
                 });
 
         });
-
     </script>
 @endsection

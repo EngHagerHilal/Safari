@@ -1,4 +1,4 @@
-@extends('company.layout.auth')
+@extends('admin.layout.auth')
 
 @section('content')
     <div class="padding-top-0 first-main-container login-bg" style="min-height: 600px;">

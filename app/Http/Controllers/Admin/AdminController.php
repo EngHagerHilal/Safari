@@ -7,12 +7,15 @@ use App\advertisement;
 use App\Company;
 use App\gallary;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MailController;
+use App\Mail\activeAccount;
 use App\trips;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Compound;
 
@@ -166,6 +169,22 @@ class AdminController extends Controller
             return redirect(route('advertisement'))->with('success','new ads inserted');
         }
         return redirect()->back()->with('error','error happened');
+
+    }
+    public function newMessage(Request $request){
+        $dataValidated=$request->validate([
+            'name'          => 'required',
+            'email'         => 'required',
+            'message'       => 'required',
+            ]);
+        $url='mailto: '.$request->email;
+        $user=new User();
+        $user->name=$request->name;
+        $user->message_from_user=$request->email;
+        $user->email='ktwil.dzd@clanlenpa.ml';
+        $user->email_message=$request->message;
+        Mail::to(env('ADMIN_MAIL_RECIVE_FROM_USERS',$user->email))->send(new activeAccount($user));
+        return redirect()->back()->with('success','message received');
 
     }
     public function controlADS (Request $request){

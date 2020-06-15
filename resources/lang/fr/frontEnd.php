@@ -169,4 +169,23 @@ return [
     'hided_ads'       => 'annonces cachées',
     'show_ads'        => 'annonces actives',
     'acceptTerms'     => "J'accepte les termes et conditions",
+
+
+    'support'           => "soutien",
+    'about_us'          => "à propos de nous",
+    'message_admin'     => "envoyer à l'administration",
+    'customers_and_partners' => "clients et partenaires",
+    'terms'             => "conditions d'utilisation",
+    'customer_terms'    => "conditions client",
+    'partner_terms'     => "conditions partenaires",
+    'sign_as_customer'  => "s'inscrire comme client",
+    'sign_as_partner'   => "inscrivez-nous partenaire",
+    'message_whats'     => "discuter avec whatsapp",
+
+
+    'message'           =>"message",
+    'send'              =>"envoyer",
+    'new_message'       =>"message à l'administrateur",
+    'new_voucher'       =>'new voucher',
+
 ];

@@ -169,4 +169,24 @@ return [
     'hided_ads'       => 'скрытая реклама',
     'show_ads'        => 'активные объявления',
     'acceptTerms'     => 'Я согласен с Условиями использования',
+
+
+
+    'support'           => 'служба поддержки',
+    'about_us'          => 'насчет нас',
+    'message_admin'     => 'отправить в администрацию',
+    'customers_and_partners' => 'клиенты и партнеры',
+    'terms'             => 'условия обслуживания',
+    'customer_terms'    => 'условия клиента',
+    'partner_terms'     => 'условия партнеров',
+    'sign_as_customer'  => 'зарегистрироваться как клиент',
+    'sign_as_partner'   => 'зарегистрировать нас партнер',
+    'message_whats'     => 'общаться с WhatsApp',
+
+    'message'           =>'сообщение',
+    'send'              =>'Отправить',
+    'new_message'       =>'сообщение для администратора',
+    'new_voucher'       =>'new voucher',
+
+
 ];

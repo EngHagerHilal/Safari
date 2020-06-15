@@ -63,6 +63,10 @@ body{
     transform: translate(-28%, 0px);
     width: 100%;
 }
+.wrap-login100 .form-group.row{
+    margin-left: 0!important;
+    margin-right: 0!important;
+}
 .post-item{
     padding: 5px 0;
     margin-bottom: 14px;
@@ -88,7 +92,7 @@ body{
     top: 110px;
     padding: 5px;
     min-height: 500px;
-    max-height: 500px;
+    max-height: 700px;
 }
 .special-posts{
     max-height: 445px!important;
@@ -389,23 +393,20 @@ input[type='range']:nth-child(1)::-webkit-slider-thumb{
 
 /*bg glass important*/
 .bg-glass{
-    box-shadow: 0 0 1rem 0 rgba(77,151,228,.35);
-    border-radius: 5px;
-    position: relative;
-    z-index: 1;
-    background: inherit;
-    overflow: hidden;
+    background-color: rgba(255,255,255,0.48);
 }
-.bg-glass:before {
-    content: "";
-    position: absolute;
-    background: inherit;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5);
-    filter: blur(10px);
-    margin: -20px;
+.page-footer{
+    background-color: #119C68;
 }
+.page-footer a,.page-footer h5{
+    color: #000;
+}
+.page-footer .img-container{
+}
+.multiline {
+    white-space: pre-wrap;
+}
+.line-height-1-9{
+    line-height: 1.9em;
+}
+

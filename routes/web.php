@@ -44,6 +44,20 @@ Route::post('admin/forgotPassword', 'AdminAuth\loginController@resendEmail')->na
 Route::get('{type}/resetPassword/{email}/{verfiyCode}', 'AdminAuth\loginController@ViewResetForm')->name('newPassResetForm');
 Route::post('updatePassword', 'AdminAuth\loginController@updateNewPassword')->name('updatePassword');
 
+
+Route::get('/about-us', function (){
+    return view('admin.about-us');
+})->name('about-us');
+Route::get('/terms', function (){
+    return view('admin.terms');
+})->name('terms');
+
+Route::get('/new-message', function (){
+    return view('admin.message_to_admin');
+})->name('new-message');
+
+Route::post('/new-message','Admin\AdminController@newMessage')->name('insert.new_message');
+
 Route::middleware('company.guest')->group(function (){
     Auth::routes(['verify' => true]);
     Route::get('/trips/search', 'users\usersController@search')->name('user.trips.search')->middleware('company.guest');

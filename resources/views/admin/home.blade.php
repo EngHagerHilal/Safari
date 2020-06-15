@@ -10,8 +10,8 @@
     <div class="main-bg-safary">
         <div class="container bg-glass">
             <div dir="ltr" class="row">
-                <div class="col-md-10 offset-1">
-                    <div class="panel panel-default">
+                <div class="col-md-10 offset-md-1">
+                    <div class="panel panel-default px-2">
                         <div class="panel-heading">
                             <h2 class="font-weight-bolder text-center py-5">
                                 <strong>

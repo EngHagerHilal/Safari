@@ -170,4 +170,23 @@ return [
     'hided_ads'       => 'versteckte Anzeigen',
     'show_ads'        => 'aktive Anzeigen',
     'acceptTerms'     => 'Ich stimme den AGB zu',
+
+
+
+    'support'           => 'Unterstützung',
+    'about_us'          => 'Über uns',
+    'message_admin'     => 'an die Administration senden',
+    'customers_and_partners' => 'Kunden und Partner',
+    'terms'             => 'Nutzungsbedingungen',
+    'customer_terms'    => 'Kundenbedingungen',
+    'partner_terms'     => 'Partnerbedingungen',
+    'sign_as_customer'  => 'als Kunde registrieren',
+    'sign_as_partner'   => 'Registrieren Sie uns Partner',
+    'message_whats'     => 'chatte mit WhatsApp',
+
+    'message'           =>'Botschaft',
+    'send'              =>'senden',
+    'new_message'       =>'Neue Nachricht',
+    'new_voucher'       =>'Neue voucher',
+
 ];

@@ -1,5 +1,10 @@
 @extends('company.layout.auth')
-
+@php
+    $dir= str_replace('_', '-', app()->getLocale()) =='ar' ? 'rtl' : 'ltr';
+    $margin= str_replace('_', '-', app()->getLocale()) =='ar' ? 'mr-auto' : 'ml-auto';
+    $text= str_replace('_', '-', app()->getLocale()) =='ar' ? 'text-right' : 'text-left';
+    $text_inverse= str_replace('_', '-', app()->getLocale()) =='ar' ? 'text-left' : 'text-right';
+@endphp
 @section('content')
     <div class="padding-top-0 first-main-container login-bg" style="min-height: 600px;">
         <div class="limiter">
@@ -29,14 +34,20 @@
                         </span>
                             @enderror
                         </div>
-                        <div class="text-right p-t-13 p-b-23">
-                        <span class="txt1">
-                        </span>
-                            <a href="{{route('forgotPassword')}}" class="txt2">
-                                {{__('frontEnd.forgot_password')}}
-                            </a>
+                        <div class="p-t-13 p-b-23 position-relative py-4">
+                            <div style="right: 0" class="w-50 {{$text}} position-absolute">
+                                <a href="{{route('company.forgoYourPassword')}}" class="txt2 ">
+                                    {{__('frontEnd.forgot_password')}}
+                                </a>
+                            </div>
+                            <div style="left: 0" class="w-50 {{$text_inverse}} position-absolute">
+                                <a href="{{route('company.register')}}" class="txt2 ">
+                                    {{__('frontEnd.partner_register')}}
+                                </a>
+                            </div>
+
                         </div>
-                        <div class="container-login100-form-btn">
+                        <div class="container-login100-form-btn py-2">
                             <button class="login100-form-btn">
                                 {{__('frontEnd.login')}}
                             </button>

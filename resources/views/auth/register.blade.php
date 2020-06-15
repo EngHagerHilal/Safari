@@ -1,5 +1,9 @@
 @extends('layouts.app')
-
+@php
+    $dir= str_replace('_', '-', app()->getLocale()) =='ar' ? 'rtl' : 'ltr';
+    $margin= str_replace('_', '-', app()->getLocale()) =='ar' ? 'mr-auto' : 'ml-auto';
+    $text= str_replace('_', '-', app()->getLocale()) =='ar' ? 'text-right' : 'text-left';
+@endphp
 @section('content')
     <div class="padding-top-0 first-main-container login-bg" style="min-height: 600px;">
         <div class="limiter">
@@ -58,7 +62,7 @@
                             </span>
                             @enderror
                         </div>
-                        <div class="wrap-input100 validate-input m-b-16 p-2" data-validate="Please enter password">
+                        <div style="background-color: #ebebeb" class="{{$text}} wrap-input100 validate-input m-b-16 p-2" data-validate="Please enter password">
                             <input required type="checkbox" id="accept" name="accept" value="yes">
                             <label for="accept"> {{__('frontEnd.acceptTerms')}}</label>
                         </div>
