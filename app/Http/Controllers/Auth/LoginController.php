@@ -78,7 +78,6 @@ class LoginController extends Controller
         }
         return redirect()->back()->with('success','email sent success please check your inbox mail!');
     }
-
     public function ApiLogin(Request $request)
     {
         $validateRules=[

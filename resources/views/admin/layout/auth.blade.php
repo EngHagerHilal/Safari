@@ -93,6 +93,8 @@
                             <a class="dropdown-item" href="{{ url('locale/fr') }}" >{{__('frontEnd.fr')}}</a>
                             <a class="dropdown-item" href="{{ url('locale/es') }}" >{{__('frontEnd.es')}}</a>
                             <a class="dropdown-item" href="{{ url('locale/it') }}" >{{__('frontEnd.it')}}</a>
+                            <a class="dropdown-item" href="{{ url('locale/de') }}" >{{__('frontEnd.de')}}</a>
+                            <a class="dropdown-item" href="{{ url('locale/ru') }}" >{{__('frontEnd.ru')}}</a>
                         </div>
                     </li>
 
@@ -178,7 +180,7 @@
     <!-- Footer Links -->
 
     <!-- Copyright -->
-    <div style="background-color: rgba(1,171,110,.8)" class="footer-copyright text-center py-3">© 2020 Copyright:
+    <div style="background-color: #eee" class="footer-copyright text-center py-3">© 2020 Copyright:
         leen.com.eg
     </div>
     <!-- Copyright -->

@@ -194,7 +194,7 @@
     <!-- Footer Links -->
 
     <!-- Copyright -->
-    <div style="background-color: rgba(1,171,110,.8)" class="footer-copyright text-center py-3">© 2020 Copyright:
+    <div style="background-color: #eee" class="footer-copyright text-center py-3">© 2020 Copyright:
         leen.com.eg
     </div>
     <!-- Copyright -->

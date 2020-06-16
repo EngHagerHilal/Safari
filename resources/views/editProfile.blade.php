@@ -7,9 +7,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="main-bg-safary">
+<div class="main-bg-safary pb-3">
     <div class="container bg-glass ">
-        <div dir="ltr" class="row mb-5">
+        <div dir="ltr" class="row ">
             <div class="col-md-10 offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -55,6 +55,15 @@
                                         <input id="email" class="@error('email') is-invalid @enderror input100 {{$text}}" type="email" name="email" placeholder="{{__('frontEnd.your_email')}}" value="{{$user->email}}" required="required" autocomplete="email" >
                                         <span class="focus-input100"></span>
                                         @error('email')
+                                        <span class="px-4 invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
+                                        <input id="phone" class="@error('phone') is-invalid @enderror input100 {{$text}}" type="tel" name="phone" placeholder="{{__('frontEnd.your_phone')}}" value="{{$user->phone}}" required="required" autocomplete="phone" >
+                                        <span class="focus-input100"></span>
+                                        @error('phone')
                                         <span class="px-4 invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

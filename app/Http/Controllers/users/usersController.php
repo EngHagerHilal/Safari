@@ -6,6 +6,7 @@ use App\advertisement;
 use App\Company;
 use App\gallary;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MailController;
 use App\trip_rate;
 use App\trips;
 use App\User;
@@ -17,12 +18,46 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use PayPal\Api\Payment;
 use PayPal\Api\PaymentExecution;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class usersController extends Controller
 {
+    public function resendEmailActivation(Request $request){
+        if($request->wantsJson()){
+            //validate json
+            $validateRules=[
+                'email'         =>  'required',
+            ];
+            $error= Validator::make($request->all(),$validateRules);
+            if($error->fails()){
+                return \Response::json(['errors'=>$error->errors()->all()]);
+            }
+            $user=User::where('email',$request->email)->first();
+            if(!$user){
+                $user=Company::where('email',$request->email)->first();
+            }
+            if(!$user){
+                return \Response::json(['errors'=>'user not found']);
+            }
+        }
+        else{
+            if(!Auth::check()){
+                if(!Auth::guard('company')->check());
+                return redirect(route('login'));
+            }
+        }
+        $verfiyCode=Str::random(70);
+        $user->verfiy_code=$verfiyCode;
+        $user->save();
+        $message='you need to verfy your account please click link below';
+        $url=url('/user/verfiy/'.$user->email.'/'.$verfiyCode);
+        MailController::sendEmail($user,$url,'verfy your account',$message);
+        return redirect()->back()->with('success','activation email sent successfully check your email address to active your account');
+    }
+
 
     public function joinToTrip(Request $request){
 
@@ -370,7 +405,6 @@ class usersController extends Controller
     public function editProfile(){
         $user=Auth::user();
         return view('editProfile',['user'=>$user]);
-
     }
     public function updateProfile(Request $request){
         $dataValidated=$request->validate([
@@ -380,12 +414,20 @@ class usersController extends Controller
             'current_email'     => 'required',
         ]);
         $other_user=User::where([['email','=',$request->email],['id','!=',Auth::id()]])->first();
-        if(!$other_user){
-            $other_user=Company::where('email','=',$request->email)->first();
-        }
         if($other_user){
-            return 'error email';
             return redirect()->back()->with('email',__('frontEnd.repeatedEmail'));
+        }
+        $other_user=Company::where('email','=',$request->email)->first();
+        if($other_user){
+            return redirect()->back()->with('email',__('frontEnd.repeatedEmail'));
+        }
+        $other_user=User::where([['phone','=',$request->phone],['id','!=',Auth::id()]])->first();
+        if($other_user){
+            return redirect()->back()->with('phone',__('repeated field'));
+        }
+        $other_user=Company::where('phone','=',$request->phone)->first();
+        if($other_user){
+            return redirect()->back()->with('phone',__('repeated field'));
         }
         if($request->new_password!=''){
             $dataValidated=$request->validate([

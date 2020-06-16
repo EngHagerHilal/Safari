@@ -409,4 +409,6 @@ input[type='range']:nth-child(1)::-webkit-slider-thumb{
 .line-height-1-9{
     line-height: 1.9em;
 }
-
+.post-item.bg-light.box-shadow.control-panel{
+    height: 95%;
+}

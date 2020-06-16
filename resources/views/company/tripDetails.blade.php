@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         <div class="more-details">
-                            <h3 class="d-none d-md-block font-weight-bold text-dark text-uppercase">{{$trip->title}}</h3>
+                            <h3 class="d-none d-md-block font-weight-bold text-dark text-uppercase text-center">{{$trip->title}}</h3>
                         </div>
                     </div>
 

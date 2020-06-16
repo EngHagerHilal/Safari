@@ -21,6 +21,8 @@ Route::get('/locale/{locale}', function ($locale){
     Session::put('locale', $locale);
     return redirect()->back();
 });
+Route::get('/resendEmailActivation','users\usersController@resendEmailActivation')->name('resend.email.activation');
+
 Route::get('/{accountType}/verfiy/{email}/{verifyCode}', 'admin\AdminController@verifyEmail');
 Route::get('needToActive', function (){
     return view('needToActive');

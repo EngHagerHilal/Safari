@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login','Auth\LoginController@ApiLogin')->name('user.login.api');
 Route::post('/register','Auth\RegisterController@APIregister')->name('user.register.api');
 Route::post('/forgotPassword', 'Auth\loginController@resendEmail')->name('user.sendEmailReset');
+Route::get('/resendEmailActivation','users\usersController@resendEmailActivation')->name('resend.email.activation.api');
+Route::post('/new-message','Admin\AdminController@newMessage')->name('insert.new_message.api');
 
 Route::get('/home','users\usersController@indexAPI')->name('user.home.api');
 Route::get('/search','users\usersController@searchAPI')->name('user.search.api');

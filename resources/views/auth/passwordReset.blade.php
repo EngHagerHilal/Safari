@@ -4,7 +4,7 @@
 <div class="padding-top-0 first-main-container login-bg" style="min-height: 600px;">
     <div class="limiter">
         <div class="container-login100">
-            <div class="wrap-login100">
+            <div class="container">
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
@@ -20,6 +20,10 @@
                         {{ session('alert') }}
                     </div>
                 @endif
+            </div>
+
+            <div class="wrap-login100">
+
                 <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" method="POST" action="{{ route('user.sendEmailReset') }}">
                     @csrf
                         <span class="login100-form-title">

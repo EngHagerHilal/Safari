@@ -172,11 +172,24 @@ class AdminController extends Controller
 
     }
     public function newMessage(Request $request){
-        $dataValidated=$request->validate([
-            'name'          => 'required',
-            'email'         => 'required',
-            'message'       => 'required',
+        if($request->wantsJson()) {
+            //validate json
+            $validateRules = [
+                'name'          => 'required',
+                'email'         => 'required',
+                'message'       => 'required',
+                ];
+            $error = Validator::make($request->all(), $validateRules);
+            if ($error->fails()) {
+                return \Response::json(['errors' => $error->errors()->all()]);
+            }
+        }else{
+            $dataValidated=$request->validate([
+                'name'          => 'required',
+                'email'         => 'required',
+                'message'       => 'required',
             ]);
+        }
         $url='mailto: '.$request->email;
         $user=new User();
         $user->name=$request->name;

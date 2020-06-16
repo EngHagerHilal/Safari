@@ -298,6 +298,7 @@ return [
     'send'          =>'ارسال',
     'new_message'   =>'مراسلة الادارة',
     'new_voucher'   =>'اضافة كود خصم',
+    'profileUpdated'   =>'تم تحديث بيانات حسابك',
 
 
 ];

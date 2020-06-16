@@ -55,7 +55,7 @@
                                 <div dir="{{$dir}}" class="row py-3 mx-0">
                                 @foreach($active as $trip)
                                         <div class="col-md-3 col-sm-6 ">
-                                            <div class="post-item bg-light box-shadow">
+                                            <div class="post-item bg-light box-shadow control-panel">
                                                 <div class="post-body">
                                                     <div class="image-container">
                                                         <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
@@ -80,7 +80,7 @@
                                 <div dir="{{$dir}}" class="row py-3">
                                     @foreach($disabled as $trip)
                                     <div class="col-md-3 col-sm-6 ">
-                                        <div class="post-item bg-light box-shadow">
+                                        <div class="post-item bg-light box-shadow control-panel">
                                             <div class="post-body">
                                             <div class="image-container">
                                                 <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">
@@ -108,7 +108,7 @@
 
 
                                         <div class="col-md-3 col-sm-6 ">
-                                            <div class="post-item bg-light box-shadow">
+                                            <div class="post-item bg-light box-shadow control-panel">
                                                 <div class="post-body">
                                                     <div class="image-container">
                                                         <img src="{{asset($trip->mainIMG)}}" class="img-fluid" style="width: 100%!important;" height="500">

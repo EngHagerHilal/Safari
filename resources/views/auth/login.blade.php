@@ -34,12 +34,12 @@
                         @enderror
                     </div>
                     <div class="p-t-13 p-b-23 position-relative py-4">
-                        <div style="right: 0" class="w-50 {{$text}} position-absolute">
+                        <div style="right: 0" class="w-50 text-center position-absolute">
                             <a href="{{route('forgotPassword')}}" class="txt2 ">
                                 {{__('frontEnd.forgot_password')}}
                             </a>
                         </div>
-                        <div style="left: 0" class="w-50 {{$text_inverse}} position-absolute">
+                        <div style="left: 0" class="w-50 text-center position-absolute">
                             <a href="{{route('register')}}" class="txt2 ">
                                 {{__('frontEnd.register')}}
                             </a>

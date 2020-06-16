@@ -7,9 +7,9 @@
 @extends('company.layout.auth')
 
 @section('content')
-<div class="main-bg-safary">
+<div class="main-bg-safary pb-3">
     <div class="container bg-glass ">
-        <div dir="ltr" class="row mb-5">
+        <div dir="ltr" class="row">
             <div class="col-md-10 offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">

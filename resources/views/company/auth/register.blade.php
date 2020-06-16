@@ -62,7 +62,7 @@
                             </span>
                             @enderror
                         </div>
-                        <div style="background-color: #ebebeb" class="{{$text}} wrap-input100 validate-input m-b-16 p-2" data-validate="Please enter password">
+                        <div style="background-color: transparent" class="{{$text}} wrap-input100 validate-input m-b-16 p-2" data-validate="Please enter password">
                             <input required type="checkbox" id="accept" name="accept" value="yes">
                             <label for="accept"> {{__('frontEnd.acceptTerms')}}</label>
                         </div>

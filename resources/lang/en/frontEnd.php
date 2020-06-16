@@ -302,5 +302,6 @@ return [
     'send'              =>'send',
     'new_message'       =>'message to admin',
     'new_voucher'       =>'new voucher',
+    'profileUpdated'   =>'your profile updated',
 
 ];
