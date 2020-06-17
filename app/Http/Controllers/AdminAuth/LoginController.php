@@ -69,7 +69,7 @@ class LoginController extends Controller
         return Auth::guard('admin');
     }
     public function resendEmail(Request $request){
-        if($request->wantsJson()){
+        if( $request->is('api/*')){
             //validate json
             $validateRules=[
                 'email'         =>  'required',
@@ -87,7 +87,7 @@ class LoginController extends Controller
         $verfiyCode=Str::random(70);
         $user=Admin::where('email',$request->email)->first();
         if($user==null){
-            if($request->wantsJson()) {
+            if( $request->is('api/*')){
                 return \Response::json(['error'=>'user not found with this email!']);
             }
             return redirect()->back()->withErrors('email','user not found with this email!');
@@ -97,20 +97,20 @@ class LoginController extends Controller
         $message='reset your password please click link below';
         $url=url('/admin/resetPassword/'.$request->email.'/'.$verfiyCode);
         MailController::sendEmail($user,$url,'reset password',$message);
-        if($request->wantsJson()) {
+        if( $request->is('api/*')){
             return \Response::json(['success'=>'email sent success please check your inbox mail!']);
         }
         return redirect()->back()->with('success','email sent success please check your inbox mail!');
     }
     public function ViewResetForm(Request $request){
         if($request->type=='user'){
-            $user=User::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->get()->first();
+            $user=User::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->first();
         }
         elseif($request->type=='company'){
-            $user=Company::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->get()->first();
+            $user=Company::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->first();
         }
         elseif($request->type=='admin'){
-            $user=Admin::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->get()->first();
+            $user=Admin::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->first();
         }
         else{
             return view('error');

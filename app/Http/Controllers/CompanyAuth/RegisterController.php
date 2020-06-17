@@ -110,7 +110,7 @@ class RegisterController extends Controller
     {
         $validateRules=[
             'name'          =>  'required|unique:companies',
-            'email'         =>  'required|unique:companies',
+            'email'         =>  'required|unique:companies|unique:users',
             'password'      =>  'required|min:8',
             'phone'         =>  'required',
 

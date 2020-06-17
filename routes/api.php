@@ -17,13 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
 Route::post('/login','Auth\LoginController@ApiLogin')->name('user.login.api');
 Route::post('/register','Auth\RegisterController@APIregister')->name('user.register.api');
-Route::post('/forgotPassword', 'Auth\loginController@resendEmail')->name('user.sendEmailReset');
-Route::get('/resendEmailActivation','users\usersController@resendEmailActivation')->name('resend.email.activation.api');
+Route::post('/forgotPassword', 'users\usersController@resendEmailPasswordAPI')->name('user.sendEmailReset');
+Route::post('/resendEmailActivation','users\usersController@resendEmailActivation')->name('resend.email.activation.api');
 Route::post('/new-message','Admin\AdminController@newMessage')->name('insert.new_message.api');
 
-Route::get('/home','users\usersController@indexAPI')->name('user.home.api');
+Route::get('/home','users\usersController@index')->name('user.home.api');
 Route::get('/search','users\usersController@searchAPI')->name('user.search.api');
 Route::post('/trip_datails/','users\usersController@tripDetailsAPI')->name('trips.details.api');
 Route::post('/voucher/check', 'users\usersController@checkVoucher');
@@ -44,7 +46,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/partners', 'Admin\AdminController@APIpartnersControl')->name('admin.companies.api');
     Route::post('/partner/accept/', 'Admin\AdminController@APIacceptCompant')->name('admin.companies.accept.api');
     Route::post('/partner/reject/', 'Admin\AdminController@APIrejectCompant')->name('admin.companies.reject.api');
-    //Route::get('/partner/{partner_id}', 'Admin\AdminController@activePartner')->name('admin.active.partner');
+    Route::post('/partner/block/', 'Admin\AdminController@APIblockCompant')->name('admin.companies.block.api');
+    Route::post('/partner/active/', 'Admin\AdminController@APIactiveCompant')->name('admin.companies.active.api');
+
 
     Route::post('/users', 'Admin\AdminController@APIusersControl')->name('admin.users.api');
     Route::post('/users/accept/', 'Admin\AdminController@APIacceptCompant')->name('admin.companies.accept.api');
@@ -52,11 +56,15 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/edit-profile/', 'Admin\AdminController@editProfileAPI');//done
     Route::post('/update-profile/', 'Admin\AdminController@updateProfileAPI');//done
 
+    Route::post('/ads/all', 'Admin\AdminController@allAdvertisementAPI');//done
+    Route::post('/ads/new/', 'Admin\AdminController@insertNewADSAPI');//done
+    Route::post('/ads/control/', 'Admin\AdminController@controlADSAPI');//done
+
 });
 Route::group(['prefix' => 'company'], function () {
     Route::post('/login', 'CompanyAuth\LoginController@ApiLogin')->name('company.login.api');
     Route::post('/register', 'CompanyAuth\RegisterController@APIregister')->name('company.register.api');
-    Route::post('/forgotPassword', 'CompanyAuth\loginController@resendEmail')->name('company.sendEmailReset');
+    Route::post('/forgotPassword', 'company\companyController@resendEmail')->name('company.sendEmailReset.api');
 
     Route::post('/my_trips/', 'company\companyController@homeAPI')->name('company.myTrips.api');
     Route::post('/trips/create', 'company\CompanyController@insertNewTripAPI')->name('company.create.trip.api');

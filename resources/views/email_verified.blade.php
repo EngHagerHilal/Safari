@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div style="border-radius: 10px" class="panel-body text-center bg-white m-lg-3 p-2 p-lg-5">
-                            <h3 dir="{{$dir}}"><strong>wellcome {{\Illuminate\Support\Facades\Auth::user()->name}}</strong></h3>
+                            <h3 dir="{{$dir}}"><strong>wellcome {{$username}}</strong></h3>
 
                             <p dir="{{$dir}}" class="font-1-2 text-center">
                                 your account is activated now you can use our website <br>

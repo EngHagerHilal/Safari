@@ -89,7 +89,7 @@ class RegisterController extends Controller
     {
         $validateRules=[
             'name'          =>  'required|unique:users',
-            'email'         =>  'required|unique:users',
+            'email'         =>  'required|unique:users|unique:companies',
             'password'      =>  'required|min:8',
             'phone'         =>  'required',
 
@@ -109,7 +109,7 @@ class RegisterController extends Controller
         ]);
 
         $message='you need to verfy your account please click link below';
-        $url=url('/users/verfiy/'.$data->email.'/'.$verfiyCode);
+        $url=url('/user/verfiy/'.$data->email.'/'.$verfiyCode);
         MailController::sendEmail($data,$url,'verfy your account',$message);
         $data->message='email created successfully check your email address to active your account';
 

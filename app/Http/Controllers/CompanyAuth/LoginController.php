@@ -66,7 +66,7 @@ class LoginController extends Controller
         return Auth::guard('company');
     }
     public function resendEmail(Request $request){
-        if($request->wantsJson()){
+        if( $request->is('api/*')){
             //validate json
             $validateRules=[
                 'email'         =>  'required',

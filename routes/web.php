@@ -21,9 +21,9 @@ Route::get('/locale/{locale}', function ($locale){
     Session::put('locale', $locale);
     return redirect()->back();
 });
-Route::get('/resendEmailActivation','users\usersController@resendEmailActivation')->name('resend.email.activation');
+Route::any('/resendEmailActivation','users\usersController@resendEmailActivation')->name('resend.email.activation');
 
-Route::get('/{accountType}/verfiy/{email}/{verifyCode}', 'admin\AdminController@verifyEmail');
+Route::get('/{accountType}/verfiy/{email}/{verifyCode}', 'Admin\AdminController@verifyEmail');
 Route::get('needToActive', function (){
     return view('needToActive');
 });
@@ -43,8 +43,8 @@ Route::post('user/forgotPassword', 'Auth\loginController@resendEmail')->name('us
 Route::post('company/forgotPassword', 'CompanyAuth\loginController@resendEmail')->name('company.sendEmailReset');
 Route::post('admin/forgotPassword', 'AdminAuth\loginController@resendEmail')->name('admin.sendEmailReset');
 //to view reset new pass form
-Route::get('{type}/resetPassword/{email}/{verfiyCode}', 'AdminAuth\loginController@ViewResetForm')->name('newPassResetForm');
-Route::post('updatePassword', 'AdminAuth\loginController@updateNewPassword')->name('updatePassword');
+Route::get('{type}/resetPassword/{email}/{verfiyCode}', 'AdminAuth\LoginController@ViewResetForm')->name('newPassResetForm');
+Route::post('/updatePassword', 'AdminAuth\LoginController@updateNewPassword')->name('updatePassword');
 
 
 Route::get('/about-us', function (){
@@ -82,7 +82,7 @@ Route::middleware(['auth','usersVerfied'])->group(function(){
     Route::post('/trips/join', 'paypalController@payWithPayPal')->name('users.joinTrip');
     Route::get('/paypal/status/{trip_id}/{voucher_code?}', 'paypalController@joinToTrip')->name('paypal.status');
     Route::get('/trips/cancle/{trip_id}', 'users\usersController@cancleToTrip')->name('users.cancleTrip');
-    Route::get('/tripDetails/rate/{trip_id}/{rate}', 'users\usersController@rateTrip')->name('users.RateTrip');
+    Route::any('/tripDetails/rate/{trip_id}/{rate}', 'users\usersController@rateTrip')->name('users.RateTrip');
     Route::get('/voucher/check', 'users\usersController@checkVoucher')->name('users.check.voucher');
 
 });
@@ -123,8 +123,8 @@ Route::group(['prefix' => 'admin',  'middleware' => ['admin','adminVerfied']], f
     Route::get('/active/partner/{partner_id}', 'Admin\AdminController@activePartner')->name('admin.active.partner');
     Route::get('/users', 'Admin\AdminController@usersControl');
     Route::get('/users/{control}/{user_id}/', 'Admin\AdminController@blockUser')->name('users.control');
-    Route::get('/edit-profile/', 'Admin\AdminController@editProfile')->name('company.editProfile');
-    Route::post('/edit-profile/', 'Admin\AdminController@updateProfile')->name('company.updateProfile');
+    Route::get('/edit-profile/', 'Admin\AdminController@editProfile')->name('admin.editProfile');
+    Route::post('/edit-profile/', 'Admin\AdminController@updateProfile')->name('admin.updateProfile');
     Route::get('/advertisement','Admin\AdminController@allAdvertisement')->name('advertisement');
     Route::get('/advertisement/new','Admin\AdminController@newADS')->name('ads.new');
     Route::post('/advertisement/insert','Admin\AdminController@insertNewADS')->name('admin.insert.new.ads');

@@ -188,5 +188,6 @@ return [
     'send'              =>'senden',
     'new_message'       =>'Neue Nachricht',
     'new_voucher'       =>'Neue voucher',
+    'profileUpdated'   =>'profile Updated',
 
 ];

@@ -6,6 +6,7 @@ use App\Admin;
 use App\Company;
 use App\gallary;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\MailController;
 use App\trips;
 use App\User;
 use App\userTrips;
@@ -14,9 +15,44 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use \Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class companyController extends Controller
 {
+
+    public function resendEmail(Request $request){
+        if( $request->is('api/*')){
+            $validateRules=[
+                'email'         =>  'required',
+            ];
+            $error= Validator::make($request->all(),$validateRules);
+            if($error->fails()){
+                return \Response::json(['errors'=>$error->errors()->all()]);
+            }
+        }
+        else{
+            $dataValidated=$request->validate([
+                'email'         => 'required',
+            ]);
+        }
+        $verfiyCode=Str::random(70);
+        $user=Company::where('email',$request->email)->first();
+        if($user==null){
+            if( $request->is('api/*')){
+                return \Response::json(['error'=>'user not found with this email!']);
+            }
+            return redirect()->back()->withErrors('email','user not found with this email!');
+        }
+        $user->verfiy_code=$verfiyCode;
+        $user->save();
+        $message='reset your password please click link below';
+        $url=url('/company/resetPassword/'.$request->email.'/'.$verfiyCode);
+        MailController::sendEmail($user,$url,'reset password',$message);
+        if( $request->is('api/*')){
+            return \Response::json(['success'=>'email sent success please check your inbox mail!']);
+        }
+        return redirect()->back()->with('success','email sent success please check your inbox mail!');
+    }
     public function home(){
         $mytrips=trips::myTrips(Auth::guard('company')->id());
         //return $mytrips;
@@ -66,6 +102,9 @@ class companyController extends Controller
             'trip_id'       => 'required',
             'expire_at'     => 'required',
             ]);
+        if(0>=$request->discount || $request->discount > 99)
+            return redirect()->back()->with('alert','discount must be between 1 and 99');
+
         $voucherCode=mt_rand(100000,999999);
         $voucherCode=implode('-',str_split(str_shuffle($voucherCode.time(now())),4));
         $newVoucher=voucher::create([
@@ -277,6 +316,8 @@ class companyController extends Controller
         if($error->fails()){
             return \Response::json(['errors'=>$error->errors()->all()]);
         }
+        if(0>=$request->discount || $request->discount > 99)
+            return \Response::json(['errors'=>'discount must be between 1 and 99']);
 
         $voucherCode=mt_rand(100000,999999);
         $voucherCode=implode('-',str_split(str_shuffle($voucherCode.time(now())),4));
@@ -371,6 +412,7 @@ class companyController extends Controller
         $validateRules=[
             'name'              => 'required',
             'email'             => 'required|email',
+            'phone'             => 'required',
             'current_password'  => 'required',
         ];
         $error= Validator::make($request->all(),$validateRules);

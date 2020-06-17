@@ -26,7 +26,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class usersController extends Controller
 {
     public function resendEmailActivation(Request $request){
-        if($request->wantsJson()){
+        if( $request->is('api/*')){
             //validate json
             $validateRules=[
                 'email'         =>  'required',
@@ -42,11 +42,18 @@ class usersController extends Controller
             if(!$user){
                 return \Response::json(['errors'=>'user not found']);
             }
+            if($user->hasVerifiedEmail()){
+                return \Response::json(['errors','your account activated before']);
+            }
+
         }
         else{
-            if(!Auth::check()){
-                if(!Auth::guard('company')->check());
+            if(!$user=Auth::user()){
+                if(!$user=Auth::guard('company')->user());
                 return redirect(route('login'));
+            }
+            if($user->hasVerifiedEmail()){
+                return redirect()->back()->with('success','your account activated before');
             }
         }
         $verfiyCode=Str::random(70);
@@ -55,9 +62,44 @@ class usersController extends Controller
         $message='you need to verfy your account please click link below';
         $url=url('/user/verfiy/'.$user->email.'/'.$verfiyCode);
         MailController::sendEmail($user,$url,'verfy your account',$message);
+        if( $request->is('api/*')){
+            return \Response::json(['success'=>'activation email sent successfully check your email address to active your account']);
+        }
         return redirect()->back()->with('success','activation email sent successfully check your email address to active your account');
     }
-
+    public function resendEmailPasswordAPI(Request $request){
+        if( $request->is('api/*')){
+            $validateRules=[
+                'email'         =>  'required',
+            ];
+            $error= Validator::make($request->all(),$validateRules);
+            if($error->fails()){
+                return \Response::json(['errors'=>$error->errors()->all()]);
+            }
+        }
+        else{
+            $dataValidated=$request->validate([
+                'email'         => 'required',
+            ]);
+        }
+        $verfiyCode=Str::random(70);
+        $user=User::where('email',$request->email)->first();
+        if($user==null){
+            if( $request->is('api/*')){
+                return \Response::json(['error'=>'user not found with this email!']);
+            }
+            return redirect()->back()->withErrors('email','user not found with this email!');
+        }
+        $user->verfiy_code=$verfiyCode;
+        $user->save();
+        $message='reset your password please click link below';
+        $url=url('/user/resetPassword/'.$request->email.'/'.$verfiyCode);
+        MailController::sendEmail($user,$url,'reset password',$message);
+        if( $request->is('api/*')){
+            return \Response::json(['success'=>'email sent success please check your inbox mail!']);
+        }
+        return redirect()->back()->with('success','email sent success please check your inbox mail!');
+    }
 
     public function joinToTrip(Request $request){
 
@@ -145,23 +187,45 @@ class usersController extends Controller
     }
     public function index(Request $request){
         $myTrips=[];
-        if(Auth::check()){
-            $availableTrips= DB::table('trips')
-                ->whereNotIn('id', Auth::user()->myTripsIds(Auth::id()))
-                ->where('status', 'active')
-                ->paginate(10);
+        if($request->has('api_token')){
+            $user_id=User::where('api_token',$request->api_token)->first()->id;
+        }else{
+            $user_id=Auth::id();
+        }
+        if( $request->is('api/*')){
+            if($request->has('api_token')){
+                $user=User::where('api_token',$request->api_token)->first();
+                $availableTrips= DB::table('trips')
+                    ->whereNotIn('id', $user->myTripsIds($user->id))
+                    ->where('status', 'active')
+                    ->paginate(10);
+            }
+            else{
+                $availableTrips= DB::table('trips')
+                    ->where('status', 'active')
+                    ->paginate(10);
+            }
         }
         else{
-            $availableTrips= DB::table('trips')
-                ->where('status', 'active')
-                ->paginate(10);
+            if(Auth::check()){
+                $availableTrips= DB::table('trips')
+                    ->whereNotIn('id', Auth::user()->myTripsIds(Auth::id()))
+                    ->where('status', 'active')
+                    ->paginate(10);
+            }
+            else{
+                $availableTrips= DB::table('trips')
+                    ->where('status', 'active')
+                    ->paginate(10);
+            }
         }
+
         foreach ($availableTrips as $availableTrip) {
             $availableTrip->rate=trip_rate::calcRate($availableTrip->id);
             $rated=trip_rate::where([
                 ['trip_id','=',$availableTrip->id],
-                ['user_id','=',Auth::id()],
-            ])->get()->first();
+                ['user_id','=',$user_id],
+            ])->first();
             if($rated ){
                 $availableTrip->rated=true;
             }
@@ -169,23 +233,28 @@ class usersController extends Controller
                 $availableTrip->rated=false;
             }
              $availableTrip->companyName=Company::find($availableTrip->company_id)->name;
-             $img=gallary::where('trip_id','=',$availableTrip->id)->get()->first();//->img_url;
+             $img=gallary::where('trip_id','=',$availableTrip->id)->first();//->img_url;
             if($img==null){
-                $availableTrip->mainIMG='img/no-img.png';
+                $availableTrip->mainIMG='/img/no-img.png';
             }
             else{
                 $availableTrip->mainIMG=$img->img_url;
             }
-            $img=gallary::where('trip_id','=',$availableTrip->id)->get()->first();//->img_url;
+            $img=gallary::where('trip_id','=',$availableTrip->id)->first();//->img_url;
             if($img==null){
-                $availableTrip->mainIMG='img/no-img.png';
+                $availableTrip->mainIMG='/img/no-img.png';
             }
             else{
                 $availableTrip->mainIMG=$img->img_url;
             }
         }
-        $ads=advertisement::where('status','show')->orderByRaw('RAND()')->take(3)->get();
-        return view('home',['available'=>$availableTrips,'ads'=>$ads,]);
+        if(! $request->is('api/*')){
+            $ads=advertisement::where('status','show')->orderByRaw('RAND()')->take(3)->get();
+            return view('home',['available'=>$availableTrips,'ads'=>$ads,]);
+        }
+        else{
+            return \response(['available trips'=>$availableTrips]);
+        }
     }
     public function pagination(Request $request){
             $availableTrips= DB::table('trips')
@@ -412,6 +481,7 @@ class usersController extends Controller
             'email'             => 'required|email',
             'current_password'  => 'required',
             'current_email'     => 'required',
+            'phone'             => 'required',
         ]);
         $other_user=User::where([['email','=',$request->email],['id','!=',Auth::id()]])->first();
         if($other_user){
@@ -691,7 +761,14 @@ class usersController extends Controller
         if($trip ==null){
             return \Response::json(['error' => 'not found', 'message' => 'sorry trip not found!']);
         }
-
+        $validateRules=[
+            'trip_id'         =>  'required',
+            'rate'            =>  'required',
+        ];
+        $error= Validator::make($request->all(),$validateRules);
+        if($error->fails()){
+            return \Response::json(['errors'=>$error->errors()->all()]);
+        }
         $tripRated=trip_rate::where([
             'trip_id'=>$trip->id,
             'user_id'=>$user->id,

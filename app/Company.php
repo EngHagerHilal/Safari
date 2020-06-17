@@ -40,7 +40,7 @@ class Company extends Authenticatable // implements MustVerifyEmail
     }
     public static function filterBy($statusFilter)
     {
-        return $data=Company::where('status','=',$statusFilter)->get();
+        return $data=Company::where('status','=',$statusFilter)->get(['name','email','phone']);
     }
 
 

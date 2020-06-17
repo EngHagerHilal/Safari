@@ -43,11 +43,6 @@ class Admin extends Authenticatable //implements MustVerifyEmail
 
 
     public static function isLoggedIn($api_token){
-        $user=Admin::where('api_token','=',$api_token)->get()->first();
-        if($user==null){
-            return \Response::json(['error'=>'login','message'=>'please login to access this data']);
-        }
-        return $user;
-
+        return Admin::where('api_token','=',$api_token)->first();
     }
 }
