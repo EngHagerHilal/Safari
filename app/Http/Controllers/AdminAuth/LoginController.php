@@ -90,7 +90,7 @@ class LoginController extends Controller
             if( $request->is('api/*')){
                 return \Response::json(['error'=>'user not found with this email!']);
             }
-            return redirect()->back()->withErrors('email','user not found with this email!');
+            return redirect()->to(route('admin.forgotPassword'))->withErrors('email','user not found with this email!');
         }
         $user->verfiy_code=$verfiyCode;
         $user->save();

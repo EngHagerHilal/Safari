@@ -47,7 +47,7 @@ class AdminController extends Controller
         $accountUpdate=DB::table($type)->where(
             [['email','=',$request->email],['verfiy_code','=',$request->verifyCode]]
         )->update(['email_verified_at'=>now()]);
-        return view('email_verified',['username'=>$account->name,'message'=>'your email is verified now !.']);
+        return view('company.account_pending',['username'=>$account->name,'message'=>'your email is verified now !.']);
     }
     public function homeAdmin(){
         $users=User::all()->count();
@@ -80,7 +80,8 @@ class AdminController extends Controller
         $active=Company::filterBy('active');
         $blocked=Company::filterBy('blocked');
         $rejected=Company::filterBy('rejected');
-        return view('admin.partners',['patrners'=>$patrners,'pending'=>$pending,'active'=>$active,'blocked'=>$blocked,'rejected'=>$rejected]);
+        $result=['patrners'=>$patrners,'pending'=>$pending,'active'=>$active,'blocked'=>$blocked,'rejected'=>$rejected];
+        return view('admin.partners',$result);
     }
     public function acceptPartner(Request $request){
         $patrner=Company::find($request->partner_id);
@@ -202,8 +203,8 @@ class AdminController extends Controller
             'company_name'  => 'required',
             'img'           => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-
-        unset($dataValidated['img']);
+            $dataValidated['link']=$request->link;
+            unset($dataValidated['img']);
         $ads=advertisement::create($dataValidated);
         if($ads){
             $newFile = 'img' . time().rand(1,100) . '.' . $request->file('img')->getClientOriginalExtension();
@@ -270,7 +271,8 @@ class AdminController extends Controller
         }
         $validateRules=[
             'name'              => 'required',
-            'email'             => 'required|email',
+            'current_email'     => 'required|email',
+            'new_email'         => 'email',
             'current_password'  => 'required',
             'phone'             => 'required',
         ];
@@ -280,12 +282,10 @@ class AdminController extends Controller
         }
 
         $other_user=Admin::where([
-            ['email','=',$request->email],
+            ['email','=',$request->current_email],
             ['id','!=',$user->id]
         ])->first();
-        if(!$other_user){
-            $other_user=Admin::where('email','=',$request->email)->first();
-        }
+
         if($other_user){
             return \Response::json(['errors'=>['email'=>'duplicated email']]);
         }
@@ -299,16 +299,18 @@ class AdminController extends Controller
                 return \Response::json(['errors'=>$error->errors()->all()]);
             }
         }
-        if(Auth::guard('admin')->attempt(['email'=>$request->email,'password'=>$request->current_password])){
-            $user=Admin::where('email',$request->email)->first();
+        if(Auth::guard('admin')->attempt(['email'=>$request->current_email,'password'=>$request->current_password])){
+            $user=Admin::where('email',$request->current_email)->first();
             $user->name=$request->name;
-            $user->email=$request->email;
+            $user->email=$request->current_email;
             if($request->has('new_password')){
                 $user->password=Hash::make($request->new_password);
             }
+            if($request->has('new_email')){
+                $user->password=Hash::make($request->new_email);
+            }
             $user->save();
             return \Response::json(['success'=>'profile updated']);
-
         }
         else{
             return \Response::json(['error'=> 'incorrect email or password']);
@@ -386,7 +388,7 @@ class AdminController extends Controller
         $data->users=$users;
         return $data;
     }
-    public function APIacceptCompant(Request $request){
+    public function APIacceptCompany(Request $request){
         $user=Admin::isLoggedIn($request->api_token);
         if(!$user){
             return \Response::json(['error'=>'login','message'=>'please login to access this data']);
@@ -402,7 +404,7 @@ class AdminController extends Controller
             return \Response::json(['error'=>'not found','message'=>'company not found']);
         }
     }
-    public function APIrejectCompant(Request $request){
+    public function APIrejectCompany(Request $request){
         $user=Admin::isLoggedIn($request->api_token);
         if(!$user){
             return \Response::json(['error'=>'login','message'=>'please login to access this data']);
@@ -417,7 +419,7 @@ class AdminController extends Controller
             return \Response::json(['error'=>'not found','message'=>'company not found']);
         }
     }
-    public function APIblockCompant(Request $request){
+    public function APIblockCompany(Request $request){
         $user=Admin::isLoggedIn($request->api_token);
         if(!$user){
             return \Response::json(['error'=>'login','message'=>'please login to access this data']);
@@ -432,7 +434,7 @@ class AdminController extends Controller
             return \Response::json(['error'=>'not found','message'=>'company not found']);
         }
     }
-    public function APIactiveCompant(Request $request){
+    public function APIactiveCompany(Request $request){
         $user=Admin::isLoggedIn($request->api_token);
         if(!$user){
             return \Response::json(['error'=>'login','message'=>'please login to access this data']);

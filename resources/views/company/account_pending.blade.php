@@ -5,8 +5,8 @@
         <div class="limiter">
             <div class="container-login100">
                 <div class="wrap-login100">
-                    <h2 class="text-center">{{__('wellcome_back')}}</h2>
-                    <h4 class="text-center">{{__('account_pending')}}</h4>
+                    <h2 class="text-center">{{__('frontEnd.wellcome_back')}}</h2>
+                    <h4 class="text-center">{{__('frontEnd.account_pending')}}</h4>
                 </div>
             </div>
         </div>

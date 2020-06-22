@@ -16,7 +16,7 @@ class Company extends Authenticatable // implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','verfiy_code','api_token','status','phone',
+        'name', 'email', 'password','verfiy_code','api_token','status','phone','email_verified_at','created_at'
     ];
 
     /**
@@ -40,7 +40,7 @@ class Company extends Authenticatable // implements MustVerifyEmail
     }
     public static function filterBy($statusFilter)
     {
-        return $data=Company::where('status','=',$statusFilter)->get(['name','email','phone']);
+        return $data=Company::where('status','=',$statusFilter)->get(['name','email','phone','id','created_at']);
     }
 
 

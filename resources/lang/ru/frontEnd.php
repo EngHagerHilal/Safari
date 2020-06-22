@@ -12,8 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
-
     'ar'            => 'عربي',
     'en'            => 'english',
     'es'            => 'español',
@@ -21,7 +19,6 @@ return [
     'fr'            => 'français',
     'de'            => 'Deutsche',
     'ru'            => 'русский',
-
 
     'air_flights'   => 'Авиарейсы',
     'sea_trips'     => 'морские прогулки',
@@ -53,8 +50,6 @@ return [
     'search_for_trip'=> 'поиск поездки САФАРИ!',
     'trip_founded'   => 'поездка основана',
 
-
-    //company text
     'dashboard'      => 'Приборная панель',
     'my_trips'       => 'созданные поездки',
     'active_trips'   => 'активные поездки',
@@ -119,7 +114,6 @@ return [
     'rejected_partners'  => 'отвергнутые партнеры',
     'travel_day'         => 'день путешествия',
 
-
     'Edit_profile'       => 'Редактировать профиль',
     'current_password'   => 'текущий пароль',
     'new_password'       => 'Новый пароль',
@@ -147,12 +141,10 @@ return [
     'check'           => 'проверить код',
     'check_QR_user'   => 'проверьте код соединения',
     'join_code'       => 'присоединительный код',
-
     'partner_register'=> 'партнерский регистр',
 
     'resetPassword'   => 'сбросить пароль',
     'sendEmail'       => 'отправить письмо',
-
 
     'your_phone'      => 'ваш номер телефона',
     'advertisement'   => 'объявления',
@@ -170,8 +162,6 @@ return [
     'show_ads'        => 'активные объявления',
     'acceptTerms'     => 'Я согласен с Условиями использования',
 
-
-
     'support'           => 'служба поддержки',
     'about_us'          => 'насчет нас',
     'message_admin'     => 'отправить в администрацию',
@@ -186,7 +176,22 @@ return [
     'message'           =>'сообщение',
     'send'              =>'Отправить',
     'new_message'       =>'сообщение для администратора',
-    'new_voucher'       =>'new voucher',
+    'new_voucher'       =>'новый ваучер',
+    'profileUpdated'   =>"ваш профиль обновлен",
+
+    'sorry'             =>"Извините",
+    'needToActive'      =>"Ваш аккаунт должен быть активирован",
+    'sendActivation'    =>"Отправить письмо активации",
+    'wellcome_back'     =>"с возвращением",
+    'account_pending'   =>"Ваша учетная запись сейчас находится на стадии проверки",
+    'wellcome'          =>"Привет",
+    'profile_updated'   =>"Данные вашего аккаунта были обновлены",
+    'password_failed'   =>"Сбой пароля",
+    'account_blocked'   =>"Ваш аккаунт заблокирован",
+    'account_rejected'  =>"Ваш аккаунт был отклонен",
+    'account_activated'  =>"Аккаунт активирован, вы можете пользоваться всеми услугами",
+    'logout'  =>"выход",
+
 
 
 ];

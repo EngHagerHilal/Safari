@@ -53,6 +53,40 @@ class companyController extends Controller
         }
         return redirect()->back()->with('success','email sent success please check your inbox mail!');
     }
+    public function resendEmailPasswordAPI(Request $request){
+        if( $request->is('api/*')){
+            $validateRules=[
+                'email'         =>  'required',
+            ];
+            $error= Validator::make($request->all(),$validateRules);
+            if($error->fails()){
+                return \Response::json(['errors'=>$error->errors()->all()]);
+            }
+        }
+        else{
+            $dataValidated=$request->validate([
+                'email'         => 'required',
+            ]);
+        }
+        $verfiyCode=Str::random(70);
+        $user=Company::where('email',$request->email)->first();
+        if($user==null){
+            if( $request->is('api/*')){
+                return \Response::json(['error'=>'user not found with this email!']);
+            }
+            return redirect()->back()->withErrors('email','user not found with this email!');
+        }
+        $user->verfiy_code=$verfiyCode;
+        $user->save();
+        $message='reset your password please click link below';
+        $url=url('/user/resetPassword/'.$request->email.'/'.$verfiyCode);
+        MailController::sendEmail($user,$url,'reset password',$message);
+        if( $request->is('api/*')){
+            return \Response::json(['success'=>'email sent success please check your inbox mail!']);
+        }
+        return redirect()->back()->with('success','email sent success please check your inbox mail!');
+    }
+
     public function home(){
         $mytrips=trips::myTrips(Auth::guard('company')->id());
         //return $mytrips;
@@ -223,25 +257,24 @@ class companyController extends Controller
         if($other_user){
             return redirect()->back()->with(['email',__('frontEnd.repeatedEmail')]);
         }
-        if($request->has('new_password')){
+        if($request->new_password!=''){
             $dataValidated=$request->validate([
                 'new_password'               => 'required',
                 'new_password_confirmation'  => 'required|same:new_password',
             ]);
         }
         if(Auth::guard('company')->attempt(['email'=>$request->current_email,'password'=>$request->current_password])){
-            $user=Company::where('email',$request->email)->first();
+            $user=Company::where('email',$request->current_email)->first();
             $user->name=$request->name;
             $user->email=$request->email;
             if($request->has('new_password')){
                 $user->password=Hash::make($request->new_password);
             }
             $user->save();
-
-            return redirect()->back()->with('success',__('profile Updated'));
+            return redirect()->back()->with('success',__('profile_updated'));
         }
         else{
-            return redirect()->back()->withErrors(['current_password' => __('password failed')]);
+            return redirect()->back()->withErrors(['current_password' => __('password_failed')]);
         }
     }
 
@@ -320,7 +353,7 @@ class companyController extends Controller
             return \Response::json(['errors'=>'discount must be between 1 and 99']);
 
         $voucherCode=mt_rand(100000,999999);
-        $voucherCode=implode('-',str_split(str_shuffle($voucherCode.time(now())),4));
+        $voucherCode=implode('-',str_split(str_shuffle($voucherCode.time()),4));
         $newVoucher=voucher::create([
             'trip_id'=>$request->trip_id,
             'discount'=>$request->discount,
@@ -412,6 +445,7 @@ class companyController extends Controller
         $validateRules=[
             'name'              => 'required',
             'email'             => 'required|email',
+            'new_email'         => 'email',
             'phone'             => 'required',
             'current_password'  => 'required',
         ];
@@ -421,11 +455,11 @@ class companyController extends Controller
         }
 
         $other_user=Company::where([
-            ['email','=',$request->email],
+            ['email','=',$request->new_email],
             ['id','!=',$user->id]
         ])->first();
         if(!$other_user){
-            $other_user=User::where('email','=',$request->email)->first();
+            $other_user=User::where('email','=',$request->new_email)->first();
         }
         if($other_user){
             return \Response::json(['errors'=>['email'=>'duplicated email']]);
@@ -446,6 +480,9 @@ class companyController extends Controller
             $user->email=$request->email;
             if($request->has('new_password')){
                 $user->password=Hash::make($request->new_password);
+            }
+            if($request->has('new_email')){
+                $user->email=$request->new_email;
             }
             $user->save();
             return \Response::json(['success'=>'profile updated']);

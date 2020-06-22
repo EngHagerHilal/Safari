@@ -53,7 +53,7 @@
                                                                     {{$user->email}}</li>
                                                                 <li class="list-group-item bg-transparent"><i class="fas fa-phone font-1-2 main-text-green"></i> {{$user->phone}}</li>
                                                                 <li class="list-group-item bg-transparent"><i class="far fa-calendar-check font-1-2 main-text-green"></i>
-                                                                    {{date('d-m-Y',strtotime($user->created_at))}}</li>
+                                                                    {{$user->created_at}}</li>
                                                             </ul>
                                                         </div>
                                                         <div class="">

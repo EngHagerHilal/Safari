@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('company.layout.auth')
 @php
     $dir= str_replace('_', '-', app()->getLocale()) =='ar' ? 'rtl' : 'ltr';
     $margin= str_replace('_', '-', app()->getLocale()) =='ar' ? 'mr-auto' : 'ml-auto';

@@ -60,6 +60,16 @@
                                         </span>
                                         @enderror
                                     </div>
+                                    <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
+                                        <input id="phone" class="@error('phone') is-invalid @enderror input100 {{$text}}" type="tel" name="phone" placeholder="{{__('frontEnd.your_phone')}}" value="{{$user->phone}}" required="required" autocomplete="phone" >
+                                        <span class="focus-input100"></span>
+                                        @error('phone')
+                                        <span class="px-4 invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+
                                     <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter password">
                                         <input class="@error('current_password') is-invalid @enderror input100 {{$text}}" placeholder="{{__('frontEnd.current_password')}}" id="current_password" type="password" name="current_password" required="required" autocomplete="new-password" aria-autocomplete="list">
                                         <span class="focus-input100"></span>
@@ -70,7 +80,7 @@
                                         @enderror
                                     </div>
                                     <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter password">
-                                        <input class="@error('new_password') is-invalid @enderror input100 {{$text}}" placeholder="{{__('frontEnd.new_password')}}" id="new_password" type="password" name="new_password" required="required" autocomplete="new-password" aria-autocomplete="list">
+                                        <input class="@error('new_password') is-invalid @enderror input100 {{$text}}" placeholder="{{__('frontEnd.new_password')}}" id="new_password" type="password" name="new_password"  autocomplete="new-password" aria-autocomplete="list">
                                         <span class="focus-input100"></span>
                                         @error('new_password')
                                         <span class="px-4 invalid-feedback" role="alert">
@@ -79,7 +89,7 @@
                                         @enderror
                                     </div>
                                     <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter password">
-                                        <input class="@error('new_password_confirmation') is-invalid @enderror input100 {{$text}}" id="new_password_confirmation" placeholder="{{__('frontEnd.new_password_confirmation')}}" type="password" name="new_password_confirmation" required="required" autocomplete="new-password" aria-autocomplete="list">
+                                        <input class="@error('new_password_confirmation') is-invalid @enderror input100 {{$text}}" id="new_password_confirmation" placeholder="{{__('frontEnd.new_password_confirmation')}}" type="password" name="new_password_confirmation" autocomplete="new-password" aria-autocomplete="list">
 
                                         <span class="focus-input100"></span>
                                         @error('new_password_confirmation')

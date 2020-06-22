@@ -12,8 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
-
     'ar'            => 'عربي',
     'en'            => 'english',
     'es'            => 'español',
@@ -21,7 +19,6 @@ return [
     'fr'            => 'français',
     'de'            => 'Deutsche',
     'ru'            => 'русский',
-
 
     'air_flights'   => 'Vols aériens',
     'sea_trips'     => 'sorties en mer',
@@ -53,8 +50,6 @@ return [
     'search_for_trip'=> 'recherchez le voyage SAFARI!',
     'trip_founded'   => 'voyage fondé',
 
-
-    //company text
     'dashboard'      => 'Tableau de bord',
     'my_trips'       => 'voyages créés',
     'active_trips'   => 'voyages actifs',
@@ -148,11 +143,8 @@ return [
     'join_code'       => 'joindre le code',
 
     'partner_register'=> 'registre des partenaires',
-
     'resetPassword'   => 'réinitialisez votre mot de passe',
     'sendEmail'       => 'envoyer un e-mail',
-
-
 
     'your_phone'      => 'votre numéro de téléphone',
     'advertisement'   => 'annonces',
@@ -170,7 +162,6 @@ return [
     'show_ads'        => 'annonces actives',
     'acceptTerms'     => "J'accepte les termes et conditions",
 
-
     'support'           => "soutien",
     'about_us'          => "à propos de nous",
     'message_admin'     => "envoyer à l'administration",
@@ -182,10 +173,23 @@ return [
     'sign_as_partner'   => "inscrivez-nous partenaire",
     'message_whats'     => "discuter avec whatsapp",
 
-
     'message'           =>"message",
     'send'              =>"envoyer",
     'new_message'       =>"message à l'administrateur",
     'new_voucher'       =>'new voucher',
+    'profileUpdated'   =>"votre profil mis à jour",
+
+    'sorry'             =>"Désolé",
+    'needToActive'      =>"Votre compte doit être activé",
+    'sendActivation'    =>"Envoyer l'e-mail d'activation",
+    'wellcome_back'     =>"Nous saluons le retour",
+    'account_pending'   =>"Votre compte est maintenant en phase d'examen",
+    'wellcome'          =>"Bonjour",
+    'profile_updated'   =>"Les données de votre compte ont été mises à jour",
+    'password_failed'   =>"Le mot de passe a échoué",
+    'account_blocked'   =>"Votre compte a été bloqué",
+    'account_rejected'  =>"Votre compte a été rejeté",
+    "account_activated" => "Le compte a été activé, vous pouvez utiliser tous les services",
+    'logout'            => 'se déconnecter',
 
 ];

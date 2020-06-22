@@ -1,6 +1,7 @@
 <?php
 
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/exp',function(){
-    return date(now());
-
+        Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('view:clear');
+        Artisan::call('route:clear');
 });
 Route::get('/locale/{locale}', function ($locale){
     Session::put('locale', $locale);
@@ -25,7 +28,12 @@ Route::any('/resendEmailActivation','users\usersController@resendEmailActivation
 
 Route::get('/{accountType}/verfiy/{email}/{verifyCode}', 'Admin\AdminController@verifyEmail');
 Route::get('needToActive', function (){
-    return view('needToActive');
+    if(\Illuminate\Support\Facades\Auth::check()){
+        return view('needToActive');
+    }
+    elseif(\Illuminate\Support\Facades\Auth::guard('company')->check()){
+        return view('company.needToActive');
+    }
 });
 //to view th form
 Route::get('user/forgotPassword', function (){
@@ -111,6 +119,12 @@ Route::group(['prefix' => 'company','middleware'=>'guest'], function () {
   Route::post('/password/reset', 'CompanyAuth\ResetPasswordController@reset')->name('company.password.email');
   Route::get('/password/reset', 'CompanyAuth\ForgotPasswordController@showLinkRequestForm')->name('company.password.reset');
   Route::get('/password/reset/{token}', 'CompanyAuth\ResetPasswordController@showResetForm');
+    Route::get('/home', 'company\companyController@home')->name('home')->middleware('company');
+
+    Route::get('/edit-profile/', 'company\companyController@editProfile')->middleware('company')->name('company.editProfile');
+
+    Route::post('/edit-profile/', 'company\companyController@updateProfile')->middleware('company')->name('company.updateProfile');
+
 });
 
 //auth admin routes
@@ -130,17 +144,14 @@ Route::group(['prefix' => 'admin',  'middleware' => ['admin','adminVerfied']], f
     Route::post('/advertisement/insert','Admin\AdminController@insertNewADS')->name('admin.insert.new.ads');
     Route::get('/ads/control/{control}/{ads_id}','Admin\AdminController@controlADS')->name('ads.control');
 });
-Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied','guest','companyAccepted']], function(){
-    Route::get('/home', 'company\companyController@home')->name('home');
-    Route::get('/trips/new','company\companyController@newTrip')->name('company.trips.new');
-    Route::post('/trips/new','company\companyController@insertNewTrip')->name('company.trips.insert');
-    Route::get('/trips/{action}/{trip_id}','company\companyController@controlTrip')->name('company.trips.control');
-    Route::get('/tripDetails/{trip_id}','company\companyController@tripDetails')->name('company.trips.details');
-    Route::post('/new-voucher','company\companyController@newVoucher')->name('company.trips.newVoucher');
-    Route::get('/tripDetails/joiners/{action}/{trip_id}/{user_id}','company\companyController@controlJoiners')->name('company.trip.control.joiner');
-    Route::get('/edit-profile/', 'company\companyController@editProfile')->name('company.editProfile');
-    Route::post('/edit-profile/', 'company\companyController@updateProfile')->name('company.updateProfile');
-    Route::post('/check-QR-code/', 'company\companyController@readQRcod')->name('company.checkQRCode');//check joiners code
+Route::group(['prefix' => 'company',  'middleware' => ['company','companyVerfied','guest',]], function(){
+    Route::get('/trips/new','company\companyController@newTrip')->name('company.trips.new')->middleware('companyAccepted');
+    Route::post('/trips/new','company\companyController@insertNewTrip')->name('company.trips.insert')->middleware('companyAccepted');;
+    Route::get('/trips/{action}/{trip_id}','company\companyController@controlTrip')->name('company.trips.control')->middleware('companyAccepted');;
+    Route::get('/tripDetails/{trip_id}','company\companyController@tripDetails')->name('company.trips.details')->middleware('companyAccepted');;
+    Route::post('/new-voucher','company\companyController@newVoucher')->name('company.trips.newVoucher')->middleware('companyAccepted');;
+    Route::get('/tripDetails/joiners/{action}/{trip_id}/{user_id}','company\companyController@controlJoiners')->name('company.trip.control.joiner')->middleware('companyAccepted');;
+    Route::post('/check-QR-code/', 'company\companyController@readQRcod')->name('company.checkQRCode')->middleware('companyAccepted');;//check joiners code
 
 });
 

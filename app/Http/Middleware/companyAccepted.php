@@ -16,6 +16,10 @@ class companyAccepted
      */
     public function handle($request, Closure $next, $guard = 'company')
     {
+
+        if (Auth::guard($guard)->user()->status =='active') {
+            return $next($request);
+        }
         if (Auth::guard($guard)->user()->status =='pending') {
             return response( view('company.account_pending'));
         }

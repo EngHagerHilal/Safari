@@ -71,7 +71,7 @@
                             </label>
 
                             <div class="wrap-input100 validate-input m-b-16 col-md-8">
-                                <input id="link" type="text" class=" input-100 form-control @error('link') is-invalid @enderror" name="link"  value="{{old('link')}}" >
+                                <input id="link" type="url" class=" input-100 form-control @error('link') is-invalid @enderror" name="link"  value="{{old('link')}}" >
                                 @error('link')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

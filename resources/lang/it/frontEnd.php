@@ -12,8 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
-
     'ar'            => 'عربي',
     'en'            => 'english',
     'es'            => 'español',
@@ -52,8 +50,6 @@ return [
     'search_for_trip'=> 'cerca il viaggio SAFARI!',
     'trip_founded'   => 'viaggio fondato',
 
-
-    //company text
     'dashboard'      => 'Pannello di controllo',
     'my_trips'       => 'viaggi creati',
     'active_trips'   => 'viaggi attivi',
@@ -145,12 +141,10 @@ return [
     'check'           => 'codice di controllo',
     'check_QR_user'   => 'controlla il codice di iscrizione',
     'join_code'       => 'unisci il codice',
-
     'partner_register'=> 'registro dei partner',
 
     'resetPassword'   => 'reimposta la tua password',
     'sendEmail'       => 'invia una email',
-
 
     'your_phone'      => 'il tuo numero di telefono',
     'advertisement'   => 'annunci',
@@ -168,8 +162,6 @@ return [
     'show_ads'        => 'annunci attivi',
     'acceptTerms'     => 'Accetto i Termini e Condizioni',
 
-
-
     'support'           => "supporto",
     'about_us'          => "riguardo a noi",
     'message_admin'     => "inviare all'amministrazione",
@@ -181,10 +173,22 @@ return [
     'sign_as_partner'   => "registrati noi partner",
     'message_whats'     => "chattare con whatsapp",
 
-
     'message'           =>"Messaggio",
     'send'              =>"Spedire",
     'new_message'       =>"messaggio all'amministratore",
     'new_voucher'       =>'new voucher',
+    'profileUpdated'   =>"il tuo profilo è stato aggiornato",
 
+    'sorry'             =>"scusa",
+    'needToActive'      =>"Il tuo account deve essere attivato",
+    'sendActivation'    =>"Invia l'e-mail di attivazione",
+    'wellcome_back'     =>'welcome "ben tornato"',
+    'account_pending'   =>"Il tuo account è ora in fase di revisione",
+    'wellcome'          =>"Ciao",
+    'profile_updated'   =>"I dati del tuo account sono stati aggiornati",
+    'password_failed'   =>"Password non riuscita",
+    'account_blocked'   =>"Il tuo account è stato bloccato",
+    'account_rejected'  =>"Il tuo account è stato rifiutato",
+    'account_activated' => "L'account è stato attivato, puoi utilizzare tutti i servizi",
+    'logout'            => 'logout',
 ];

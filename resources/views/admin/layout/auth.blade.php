@@ -9,7 +9,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="{{asset('img/logo.png')}}" type="image/x-icon">
-
+    <meta name="description" content="with safaregy explore wonderful egypt, enjoy your time and charge your life">
+    <meta name="keywords" content="safari, egypt, land trips, air flight, hotel, tourism, explore">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -76,10 +77,10 @@
                                 <a class="dropdown-item" href="{{ route('admin.logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{ __('frontEnd.logout') }}
                                 </a>
 
-                                <form id="logout-form" action="{{ route('company.logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
                             </div>
@@ -145,7 +146,7 @@
                         <a href="{{route('new-message')}}">{{__('frontEnd.message_admin')}}</a>
                     </li>
                     <li>
-                        <a target="_blank" href="https://api.whatsapp.com/send?phone=01001494049">{{__('frontEnd.message_whats')}}</a>
+                        <a target="_blank" href="https://wa.me/201001494049">{{__('frontEnd.message_whats')}}</a>
                     </li>
                 </ul>
 
@@ -183,8 +184,9 @@
     <!-- Footer Links -->
 
     <!-- Copyright -->
-    <div style="background-color: #eee" class="footer-copyright text-center py-3">© 2020 Copyright:
-        leen.com.eg
+    <div style="background-color: #eee" class="footer-copyright text-center py-3">
+        <a target="_blank" href="https://leen.com.eg/">powered by leen.com.eg </a><br><a href="{{url('/')}}"> © Copyright
+        {{date("Y")}} {{env('APP_NAME')}}</a>
     </div>
     <!-- Copyright -->
 

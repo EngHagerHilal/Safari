@@ -117,22 +117,23 @@ class paypalController extends Controller
         }
         if($result->getState()=='approved'){
             $joinCode=mt_rand(100000,999999);
-            $joinCode=implode('-',str_split(str_shuffle($joinCode.time(now())),4));
+            $joinCode=implode('-',str_split(str_shuffle($joinCode.time()),4));
             $user_id=Auth::id();
             $QR_code=public_path(
                 "img/users/$user_id/trips/$trip->id"
             );
             if(!is_dir(public_path("img/users/")))
-                mkdir(public_path('img/users/'));
+                mkdir(public_path('img/users/'), 0777, true);
+
             if(!is_dir(public_path("img/users/").Auth::id()))
-                mkdir(public_path('img/users/').Auth::id());
+                mkdir(public_path('img/users/').Auth::id(), 0777, true);
             if(!is_dir(public_path("img/users/").Auth::id()."/trips/"))
-                mkdir(public_path('img/users/').Auth::id()."/trips/");
+                mkdir(public_path('img/users/').Auth::id()."/trips/", 0777, true);
             if(!is_dir(public_path("img/users/").Auth::id()."/trips/".$trip->id))
-                mkdir(public_path('img/users/').Auth::id()."/trips/".$trip->id);
-            $new_img=time(now()).'.png';
+                mkdir(public_path('img/users/').Auth::id()."/trips/".$trip->id, 0777, true);
+            $new_img=time().'.png';
             QrCode::format('png')->size(400)
-                ->generate($joinCode,$QR_code.'\img_'.$new_img );
+                ->generate($joinCode,$QR_code.'/'.'img_'.$new_img );
             userTrips::create([
                 'user_id'=>Auth::id(),
                 'trip_id'=>$request->trip_id,

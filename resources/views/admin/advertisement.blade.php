@@ -55,7 +55,7 @@
                                                             <li class="list-group-item bg-transparent"><i class="fab fa-discourse font-1-2 main-text-green"></i>
                                                                 {{$ads_item->desc}}</li>
                                                             <li class="list-group-item bg-transparent"><i class="fas fa-sitemap font-1-2 main-text-green"></i> {{$ads_item->company_name}}</li>
-                                                            <li class="list-group-item bg-transparent"><i class="fas fa-globe font-1-2 main-text-green"></i> {{$ads_item->link}}</li>
+                                                                                                                        <li class="list-group-item bg-transparent"><a href="{{$ads_item->link}}" target="_blank"><i class="fas fa-globe font-1-2 main-text-green"></i> {{$ads_item->link}}</a></li>
                                                             <li class="list-group-item bg-transparent"><i class="far fa-calendar-check font-1-2 main-text-green"></i>
                                                                 {{date('d-m-Y',strtotime($ads_item->created_at))}}</li>
                                                         </ul>
@@ -82,7 +82,7 @@
                                                             <li class="list-group-item bg-transparent"><i class="fab fa-discourse font-1-2 main-text-green"></i>
                                                                 {{$ads_item->desc}}</li>
                                                             <li class="list-group-item bg-transparent"><i class="fas fa-sitemap font-1-2 main-text-green"></i> {{$ads_item->company_name}}</li>
-                                                            <li class="list-group-item bg-transparent"><i class="fas fa-globe font-1-2 main-text-green"></i> {{$ads_item->link}}</li>
+                                                            <li class="list-group-item bg-transparent"><a href="{{$ads_item->link}}" target="_blank"><i class="fas fa-globe font-1-2 main-text-green"></i> {{$ads_item->link}}</a></li>
                                                             <li class="list-group-item bg-transparent"><i class="far fa-calendar-check font-1-2 main-text-green"></i>
                                                                 {{date('d-m-Y',strtotime($ads_item->created_at))}}</li>
                                                         </ul>

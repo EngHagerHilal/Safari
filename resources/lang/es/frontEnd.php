@@ -13,7 +13,6 @@ return [
     |
     */
 
-
     'ar'            => 'عربي',
     'en'            => 'english',
     'es'            => 'español',
@@ -21,7 +20,6 @@ return [
     'fr'            => 'français',
     'de'            => 'Deutsche',
     'ru'            => 'русский',
-
 
     'air_flights'   => 'Vuelos aéreos',
     'sea_trips'     => 'viajes por mar',
@@ -53,8 +51,6 @@ return [
     'search_for_trip'=> 'buscar viaje SAFARI!',
     'trip_founded'   => 'viaje fundado',
 
-
-    //company text
     'dashboard'      => 'Tablero',
     'my_trips'       => 'viajes creados',
     'active_trips'   => 'viajes activos',
@@ -146,13 +142,10 @@ return [
     'check'           => 'Código de verificación',
     'check_QR_user'   => 'compruebe el código de unión',
     'join_code'       => 'código de unión',
-
     'partner_register'=> 'registro de socios',
 
     'resetPassword'   => 'Restablecer su contraseña',
     'sendEmail'       => 'enviar correo electrónico',
-
-
 
     'your_phone'      => 'su número de teléfono',
     'advertisement'   => 'anuncios',
@@ -170,8 +163,6 @@ return [
     'show_ads'        => 'anuncios activos',
     'acceptTerms'     => 'Estoy de acuerdo con los términos y condiciones',
 
-
-
     'support'           => 'apoyo',
     'about_us'          => 'sobre nosotros',
     'message_admin'     => 'enviar a la Administración',
@@ -187,6 +178,19 @@ return [
     'send'              =>'enviar',
     'new_message'       =>'mensaje al administrador',
     'new_voucher'       =>'mensaje voucher',
+    'profileUpdated'   =>'tu perfil actualizado',
 
+    'sorry'             =>'lo siento',
+    'needToActive'      =>'Su cuenta necesita ser activada',
+    'sendActivation'    =>'Enviar el correo electrónico de activación',
+    'wellcome_back'     =>'dar una buena acogida',
+    'account_pending'   =>'Su cuenta se encuentra ahora en la etapa de revisión.',
+    'wellcome'          =>'Hola',
+    'profile_updated'   =>'Los datos de su cuenta han sido actualizados',
+    'password_failed'   =>'Contraseña fallida',
+    'account_blocked'   =>'Tu cuenta ha sido bloqueada',
+    'account_rejected'  =>'Su cuenta ha sido rechazada',
+    "account_activated" => "La cuenta ha sido activada, puede usar todos los servicios",
+    'logout'           => 'cerrar sesión',
 
 ];

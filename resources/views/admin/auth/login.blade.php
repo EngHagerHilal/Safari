@@ -31,7 +31,7 @@
                         <div class="text-right p-t-13 p-b-23">
                         <span class="txt1">
                         </span>
-                            <a href="{{route('forgotPassword')}}" class="txt2">
+                            <a href="{{route('admin.forgotPassword')}}" class="txt2">
                                 {{__('frontEnd.forgot_password')}}
                             </a>
                         </div>

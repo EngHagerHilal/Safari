@@ -12,8 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
-
     'ar'            => 'عربي',
     'en'            => 'english',
     'es'            => 'español',
@@ -21,7 +19,6 @@ return [
     'fr'            => 'français',
     'de'            => 'Deutsche',
     'ru'            => 'русский',
-
 
     'air_flights'   => 'Flug',
     'sea_trips'     => 'Seereisen',
@@ -52,7 +49,6 @@ return [
     'my_joined_trips'=> 'meine gemeinsamen Reisen',
     'search_for_trip'=> 'Suche nach SAFARI Reise!',
     'trip_founded'   => 'Reise gegründet',
-
 
     //company text
     'dashboard'      => 'Instrumententafel',
@@ -119,14 +115,12 @@ return [
     'rejected_partners'  => 'abgelehnte Partner',
     'travel_day'         => 'Reisetag',
 
-
     'Edit_profile'       => 'Profil bearbeiten',
     'current_password'   => 'derzeitiges Passwort',
     'new_password'       => 'Neues Kennwort',
     'new_password_confirmation'=> 'bestätige neues Passwort',
     'save'               => 'speichern',
     'joiners'            => 'Anzahl der Reisenden',
-
 
     'enter_voucher'      => 'Geben Sie den Gutscheincode ein',
     'code_invalid'       => 'Ungültiger Code',
@@ -153,8 +147,6 @@ return [
     'resetPassword'     => 'Setze dein Passwort zurück',
     'sendEmail'         => 'E-Mail senden',
 
-
-
     'your_phone'      => 'deine Telefonnummer',
     'advertisement'   => 'Anzeige',
     'active_ads'      => 'sichtbare Anzeigen',
@@ -170,8 +162,6 @@ return [
     'hided_ads'       => 'versteckte Anzeigen',
     'show_ads'        => 'aktive Anzeigen',
     'acceptTerms'     => 'Ich stimme den AGB zu',
-
-
 
     'support'           => 'Unterstützung',
     'about_us'          => 'Über uns',
@@ -190,4 +180,17 @@ return [
     'new_voucher'       =>'Neue voucher',
     'profileUpdated'   =>'profile Updated',
 
+
+    'sorry'             =>'Entschuldigung',
+    'needToActive'      =>'Ihr Konto muss aktiviert sein',
+    'sendActivation'    =>'Senden Sie die Aktivierungs-E-Mail',
+    'wellcome_back'     =>'willkommen zurück',
+    'account_pending'   =>'Ihr Konto befindet sich jetzt in der Überprüfungsphase',
+    'wellcome'          =>'Hallo',
+    'profile_updated'   =>'Ihre Kontodaten wurden aktualisiert',
+    'password_failed'   =>'Passwort-Fehler',
+    'account_blocked'   =>'Ihr Konto wurde gesperrt',
+    'account_rejected'  =>'Ihr Konto wurde abgelehnt',
+    "account_activated" => "Das Konto wurde aktiviert, Sie können alle Dienste nutzen",
+    'logout'           => 'abmelden',
 ];

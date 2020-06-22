@@ -12,8 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
-
     'ar'            => 'عربي',
     'en'            => 'english',
     'es'            => 'español',
@@ -21,7 +19,6 @@ return [
     'fr'            => 'français',
     'de'            => 'Deutsche',
     'ru'            => 'русский',
-
 
     'air_flights'   => 'Air flights',
     'sea_trips'     => 'sea ​​trips',
@@ -53,8 +50,6 @@ return [
     'search_for_trip'=> 'search for SAFARI trip!',
     'trip_founded'   => 'trip founded',
 
-
-    //company text
     'dashboard'      => 'Dashboard',
     'my_trips'       => 'created trips',
     'active_trips'   => 'active trips',
@@ -119,7 +114,6 @@ return [
     'rejected_partners'  => 'rejected partners',
     'travel_day'         => 'travel day',
 
-
     'Edit_profile'       => 'Edit Profile',
     'current_password'   => 'current password',
     'new_password'       => 'new password',
@@ -144,11 +138,9 @@ return [
     'disabled_voucher'   => 'disabled voucher',
     'joined_with_code'   => 'you are joined with discount code',
 
-
     'check'           => 'check code',
     'check_QR_user'   => 'check join code',
     'join_code'       => 'join code',
-
     'partner_register'=> 'partner register',
 
     'resetPassword'   => 'reset your password',
@@ -170,8 +162,6 @@ return [
     'show_ads'        => 'active ads',
     'acceptTerms'     => 'I agree to the Terms and Conditions',
 
-
-
     'support'           => 'support',
     'about_us'          => 'about us',
     'message_admin'     => 'send to Administration',
@@ -180,12 +170,27 @@ return [
     'customer_terms'    => 'customer terms',
     'partner_terms'     => 'partners terms',
     'sign_as_customer'  => 'register as customer',
-    'sign_as_partner'   => 'register us partner',
+    'sign_as_partner'   => 'register as partner',
     'message_whats'     => 'chat with whatsapp',
 
+    'message'           =>'message',
+    'send'              =>'send',
+    'new_message'       =>'message to admin',
+    'new_voucher'       =>'new voucher',
+    'profileUpdated'   =>'your profile updated',
 
-
-
+    'sorry'             =>'sorry',
+    'needToActive'      =>'Your account needs to be activated',
+    'sendActivation'    =>'Send the activation email',
+    'wellcome_back'     =>'welcome back',
+    'account_pending'   =>'Your account is now in the review stage',
+    'wellcome'          =>'Hello',
+    'profile_updated'   =>'Your account data has been updated',
+    'password_failed'   =>'Password failed',
+    'account_blocked'   =>'Your account has been blocked',
+    'account_rejected'  =>'Your account has been rejected',
+    "account_activated" => "The account has been activated. You can use all services",
+    'logout'            => 'logout',
 
     'about_text_head'   => 'نبذة عنا ',
     'terms_intro'       => 'مقدمة',
@@ -297,11 +302,21 @@ return [
 سيكون لحذف ملفات تعريف الارتباط تأثير سلبي على سهولة استخدام مواقع الويب الخاصة بالرجل .
 ',
 
-
     'message'           =>'message',
     'send'              =>'send',
     'new_message'       =>'message to admin',
     'new_voucher'       =>'new voucher',
     'profileUpdated'   =>'your profile updated',
+
+    'sorry'             =>'sorry',
+    'needToActive'      =>'Your account needs to be activated',
+    'sendActivation'    =>'Send the activation email',
+    'wellcome_back'     =>'welcome back',
+    'account_pending'   =>'Your account is now in the review stage',
+    'wellcome'          =>'Hello',
+    'profile_updated'   =>'Your account data has been updated',
+    'password_failed'   =>'Password failed',
+    'account_blocked'   =>'Your account has been blocked',
+    'account_rejected'  =>'Your account has been rejected',
 
 ];

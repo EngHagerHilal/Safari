@@ -26,8 +26,10 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class usersController extends Controller
 {
     public function resendEmailActivation(Request $request){
+        $type='';
         if( $request->is('api/*')){
             //validate json
+
             $validateRules=[
                 'email'         =>  'required',
             ];
@@ -36,8 +38,11 @@ class usersController extends Controller
                 return \Response::json(['errors'=>$error->errors()->all()]);
             }
             $user=User::where('email',$request->email)->first();
+            $type='user';
             if(!$user){
                 $user=Company::where('email',$request->email)->first();
+                $type='company';
+
             }
             if(!$user){
                 return \Response::json(['errors'=>'user not found']);
@@ -48,8 +53,10 @@ class usersController extends Controller
 
         }
         else{
-            if(!$user=Auth::user()){
-                if(!$user=Auth::guard('company')->user());
+            $type='company';
+            if(!$user=Auth::guard('company')->user()){
+                $type='user';
+                if(!$user=Auth::user() )
                 return redirect(route('login'));
             }
             if($user->hasVerifiedEmail()){
@@ -60,7 +67,7 @@ class usersController extends Controller
         $user->verfiy_code=$verfiyCode;
         $user->save();
         $message='you need to verfy your account please click link below';
-        $url=url('/user/verfiy/'.$user->email.'/'.$verfiyCode);
+        $url=url("/$type/verfiy/".$user->email."/.$verfiyCode");
         MailController::sendEmail($user,$url,'verfy your account',$message);
         if( $request->is('api/*')){
             return \Response::json(['success'=>'activation email sent successfully check your email address to active your account']);
@@ -429,16 +436,21 @@ class usersController extends Controller
         return view('tripDetails',['trip'=>$trip]);
     }
     public function checkVoucher(Request $request){
-        if($request->has('code') &&$request->has('trip_id')){
-            $voucher=voucher::where([['trip_id',$request->trip_id],['code',$request->code],['status','active']])->first();
-            if($voucher) {
-                return response()->json(['success' =>'voucher valid','valid'=>true,'discount'=>$voucher->discount]);
-            }
-            else{
-                return response()->json(['error' =>'voucher invalid',]);
-            }
+        $validateRules=[
+            'code'         =>  'required',
+            'trip_id'      =>  'required',
+        ];
+        $error= Validator::make($request->all(),$validateRules);
+        if($error->fails()){
+            return \Response::json(['errors'=>$error->errors()->all()]);
         }
-
+        $voucher=voucher::where([['trip_id',$request->trip_id],['code',$request->code],['status','active']])->first();
+        if($voucher) {
+            return response()->json(['success' =>'voucher valid','valid'=>true,'discount'=>$voucher->discount]);
+        }
+        else{
+            return response()->json(['error' =>'voucher invalid',]);
+        }
     }
     public function rateTrip(Request $request){
         $trip = trips::find($request->trip_id);
