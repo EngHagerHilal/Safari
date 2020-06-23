@@ -3,24 +3,25 @@
 @section('content')
 <div class="padding-top-0 first-main-container login-bg" style="min-height: 600px;">
     <div class="limiter">
+        <div class="container">
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
+            @if (session('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('alert'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('alert') }}
+                </div>
+            @endif
+        </div>
+
         <div class="container-login100">
-            <div class="container">
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                @endif
-                @if (session('success'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if (session('alert'))
-                    <div class="alert alert-danger" role="alert">
-                        {{ session('alert') }}
-                    </div>
-                @endif
-            </div>
 
             <div class="wrap-login100">
 

@@ -26,7 +26,7 @@
                         {{__('frontEnd.resetPassword')}}
                         </span>
                     <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                        <input class="input100 @error('email') is-invalid @enderror" type="text" name="email" value="{{$email}}" placeholder="your email">
+                        <input class="input100 @error('email') is-invalid @enderror" type="text" name="email" value="{{$email}}" placeholder="{{__('frontEnd.email')}}">
                         <span class="focus-input100"></span>
                         <input type="hidden" name="type" value="{{$type}}">
                         <input type="hidden" name="verfiy_code" value="{{$verfiy_code}}">
@@ -37,7 +37,7 @@
                         @enderror
                     </div>
                     <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                        <input class="input100 @error('new_password') is-invalid @enderror" type="password" name="new_password" placeholder="new password">
+                        <input class="input100 @error('new_password') is-invalid @enderror" type="password" name="new_password" placeholder="{{__('frontEnd.new_password')}}">
 
                         @error('new_password')
                         <span class="px-4 invalid-feedback" role="alert">
@@ -46,7 +46,7 @@
                         @enderror
                     </div>
                     <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter username">
-                        <input class="input100 @error('confirm_password') is-invalid @enderror" type="password" name="confirm_password" placeholder="confirm new password">
+                        <input class="input100 @error('confirm_password') is-invalid @enderror" type="password" name="confirm_password" placeholder="{{__('frontEnd.new_password_confirmation')}}">
                         @error('confirm_password')
                         <span class="px-4 invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="container-login100-form-btn">
                         <button class="login100-form-btn">
-                            update password
+                            {{__('frontEnd.save')}}
                         </button>
                     </div>
 

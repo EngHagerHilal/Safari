@@ -140,7 +140,7 @@ class companyController extends Controller
             return redirect()->back()->with('alert','discount must be between 1 and 99');
 
         $voucherCode=mt_rand(100000,999999);
-        $voucherCode=implode('-',str_split(str_shuffle($voucherCode.time(now())),4));
+        $voucherCode=implode('-',str_split(str_shuffle($voucherCode.time()),4));
         $newVoucher=voucher::create([
             'trip_id'=>$request->trip_id,
             'discount'=>$request->discount,
@@ -245,17 +245,24 @@ class companyController extends Controller
             'name'              => 'required',
             'email'             => 'required|email',
             'current_password'  => 'required',
-            'current_email'     => 'required',
+            'current_email'     => 'required|email',
+            'phone'             => 'required',
         ]);
-        $other_user=Company::where([
-            ['email','=',$request->email],
-            ['id','!=',Auth::guard('company')->id()]
-        ])->first();
-        if(!$other_user){
-            $other_user=User::where('email','=',$request->email)->first();
-        }
+        $other_user=Company::where([['email','=',$request->email],['id','!=',Auth::guard('company')->id()]])->first();
         if($other_user){
-            return redirect()->back()->with(['email',__('frontEnd.repeatedEmail')]);
+            return redirect()->back()->withErrors(['email'=>[__('frontEnd.repeatedData')]]);
+        }
+        $other_user=User::where('email','=',$request->email)->first();
+        if($other_user){
+            return redirect()->back()->withErrors(['email'=>[__('frontEnd.repeatedData')]]);
+        }
+        $other_user=Company::where([['phone','=',$request->phone],['id','!=',Auth::guard('company')->id()]])->first();
+        if($other_user){
+            return redirect()->back()->withErrors(['phone'=>[__('frontEnd.repeatedData')]]);
+        }
+        $other_user=User::where('phone','=',$request->phone)->first();
+        if($other_user){
+            return redirect()->back()->withErrors(['phone'=>[__('frontEnd.repeatedData')]]);
         }
         if($request->new_password!=''){
             $dataValidated=$request->validate([
@@ -267,14 +274,15 @@ class companyController extends Controller
             $user=Company::where('email',$request->current_email)->first();
             $user->name=$request->name;
             $user->email=$request->email;
-            if($request->has('new_password')){
+            $user->phone=$request->phone;
+            if($request->new_password!=''){
                 $user->password=Hash::make($request->new_password);
             }
             $user->save();
-            return redirect()->back()->with('success',__('profile_updated'));
+            return redirect()->back()->with('success',__('frontEnd.profileUpdated'));
         }
         else{
-            return redirect()->back()->withErrors(['current_password' => __('password_failed')]);
+            return redirect()->back()->withErrors(['current_password' => __('validation.password')]);
         }
     }
 

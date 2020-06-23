@@ -29,11 +29,16 @@ Route::any('/resendEmailActivation','users\usersController@resendEmailActivation
 Route::get('/{accountType}/verfiy/{email}/{verifyCode}', 'Admin\AdminController@verifyEmail');
 Route::get('needToActive', function (){
     if(\Illuminate\Support\Facades\Auth::check()){
+        if(\auth()->user()->hasVerifiedEmail())
+            return redirect(url('/'));
         return view('needToActive');
     }
     elseif(\Illuminate\Support\Facades\Auth::guard('company')->check()){
+        if(\auth()->guard('company')->user()->hasVerifiedEmail())
+            return redirect(url('/'));
         return view('company.needToActive');
     }
+   return redirect(\route('login'));
 });
 //to view th form
 Route::get('user/forgotPassword', function (){
@@ -101,7 +106,7 @@ Route::group(['prefix' => 'admin'], function () {
   Route::post('/logout', 'AdminAuth\LoginController@logout')->name('admin.logout');
 
   Route::get('/register', 'AdminAuth\RegisterController@showRegistrationForm')->name('admin.register');
-  Route::post('/register', 'AdminAuth\RegisterController@register')->name('admin.post.register');
+  Route::post('/register', 'AdminAuth\RegisterController@APIregister')->name('admin.post.register');
 
   Route::post('/password/email', 'AdminAuth\ForgotPasswordController@sendResetLinkEmail')->name('admin.password.request');
   Route::post('/password/reset', 'AdminAuth\ResetPasswordController@reset')->name('admin.password.email');

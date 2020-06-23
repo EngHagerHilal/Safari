@@ -193,4 +193,6 @@ return [
     'account_rejected'  =>'Ihr Konto wurde abgelehnt',
     "account_activated" => "Das Konto wurde aktiviert, Sie können alle Dienste nutzen",
     'logout'           => 'abmelden',
+    'repeatedData'      =>"Die eingegebenen Daten werden mit einem anderen Konto wiederholt. Bitte geben Sie eindeutige Daten ein",
+
 ];

@@ -74,7 +74,7 @@
 
             </div>
             <div class="col-lg-4 col-12 panner-right post-full-details py-2">
-                <div style="max-height: 700px" class="panner bg-light box-shadow">
+                <div style="max-height: 900px" class="panner bg-light box-shadow">
                     <form method="POST" action="{{route('users.joinTrip')}}">
                         @csrf
                         <input type="hidden" name="trip_id" value="{{$trip->id}}">

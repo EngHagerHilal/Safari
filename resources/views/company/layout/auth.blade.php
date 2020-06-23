@@ -187,8 +187,9 @@
     <!-- Footer Links -->
 
     <!-- Copyright -->
-    <div style="background-color: #eee" class="footer-copyright text-center py-3"><a target="_blank" href="https://leen.com.eg/">© 2020 Copyright: leen.com.eg</a>
-
+    <div style="background-color: #eee" class="footer-copyright text-center py-3">
+        powered by <a target="_blank" href="https://leen.com.eg/">leen.com.eg </a><br> © Copyright
+            {{date("Y")}} <a href="{{url('/')}}">{{env('APP_NAME')}}</a>
     </div>
     <!-- Copyright -->
 

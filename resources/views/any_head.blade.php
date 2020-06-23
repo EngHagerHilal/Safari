@@ -41,22 +41,6 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar1">
-                    <ul class="navbar-nav">
-                        <li class="nav-item {{request()->category=='air flights'?'active':''}}">
-                            <a class="nav-link" href="{{url('/trips/search?category=air+flights')}}">{{__('frontEnd.air_flights')}}</a>
-                        </li>
-                        <li class="nav-item {{request()->category=='sea trips'?'active':''}}">
-                            <a class="nav-link" href="{{url('/trips/search?category=sea+trips')}}">{{__('frontEnd.sea_trips')}}</a>
-                        </li>
-                        <li class="nav-item {{request()->category=='land trips'?'active':''}}">
-                            <a class="nav-link" href="{{url('/trips/search?category=land+trips')}}">{{__('frontEnd.land_trips')}}</a>
-                        </li>
-
-                        <li class="nav-item d-inline-block d-lg-none">
-                            <a class="nav-link" href="{{route('user.trips.search.mobile')}}">{{__('frontEnd.search')}}</a>
-                        </li>
-
-                    </ul>
                     <ul class="navbar-nav {{$margin}}">
 
                         @if(! \Illuminate\Support\Facades\Auth::check())

@@ -113,7 +113,7 @@ class LoginController extends Controller
             $user=Admin::where([['email',$request->email],['verfiy_code',$request->verfiyCode]])->first();
         }
         else{
-            return view('error');
+            return view('notAvialable',['message'=>'this user not found.']);
         }
         if($user==null){
             return view('notAvialable',['message'=>'this user not found.']);

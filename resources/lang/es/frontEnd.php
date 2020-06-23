@@ -191,6 +191,7 @@ return [
     'account_blocked'   =>'Tu cuenta ha sido bloqueada',
     'account_rejected'  =>'Su cuenta ha sido rechazada',
     "account_activated" => "La cuenta ha sido activada, puede usar todos los servicios",
-    'logout'           => 'cerrar sesión',
+    'logout'            => 'cerrar sesión',
+    "repeatedData"      =>"Los datos ingresados ​​se repiten con otra cuenta. Ingrese datos únicos",
 
 ];

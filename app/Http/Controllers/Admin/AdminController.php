@@ -37,7 +37,7 @@ class AdminController extends Controller
         else{
             return view('error');
         }
-        $account=DB::table($type)->where([['email','=',$request->email],['verfiy_code','=',$request->verifyCode]])->get()->first();
+        $account=DB::table($type)->where([['email','=',$request->email],['verfiy_code','=',$request->verifyCode]])->first();
         if($account==null){
             return view('error');
         }
@@ -47,7 +47,12 @@ class AdminController extends Controller
         $accountUpdate=DB::table($type)->where(
             [['email','=',$request->email],['verfiy_code','=',$request->verifyCode]]
         )->update(['email_verified_at'=>now()]);
-        return view('company.account_pending',['username'=>$account->name,'message'=>'your email is verified now !.']);
+        if($type=='companies'){
+            $page='company.account_pending';
+        }else{
+            $page='email_verified';
+        }
+        return view($page,['username'=>$account->name,'message'=>'your email is verified now !.']);
     }
     public function homeAdmin(){
         $users=User::all()->count();
@@ -152,20 +157,18 @@ class AdminController extends Controller
             'email'             => 'required|email',
             'current_password'  => 'required',
             'current_email'     => 'required',
+            'phone'             => 'required',
         ]);
         $other_user=Admin::where([['email','=',$request->email],['id','!=',Auth::guard('admin')->id()]])->first();
         if($other_user){
-            return redirect()->back()->with('email',__('frontEnd.repeatedEmail'));
+            return redirect()->back()->withErrors(['email'=>[__('frontEnd.repeatedData')]]);
         }
 
-        $other_user=User::where([['phone','=',$request->phone],['id','!=',Auth::id()]])->first();
+        $other_user=User::where([['phone','=',$request->phone],['id','!=',Auth::guard('admin')->id()]])->first();
         if($other_user){
-            return redirect()->back()->with('phone',__('repeated field'));
+            return redirect()->back()->withErrors(['phone'=>[__('frontEnd.repeatedData')]]);
         }
-        $other_user=Company::where('phone','=',$request->phone)->first();
-        if($other_user){
-            return redirect()->back()->with('phone',__('repeated field'));
-        }
+
         if($request->new_password!=''){
             $dataValidated=$request->validate([
                 'new_password'               => 'required',
@@ -176,15 +179,15 @@ class AdminController extends Controller
             $user=Auth::guard('admin')->user();
             $user->name=$request->name;
             $user->email=$request->email;
-            if($request->has('new_password')){
+            if($request->new_password!=''){
                 $user->password=Hash::make($request->new_password);
             }
             $user->save();
 
-            return redirect()->back()->with('success',__('fontEnd.profileUpdated'));
+            return redirect()->back()->with('success',__('frontEnd.profileUpdated'));
         }
         else{
-            return redirect()->back()->withErrors(['current_password' => __('password not correct')]);
+            return redirect()->back()->withErrors(['current_password' => __('validation.password')]);
         }
     }
 

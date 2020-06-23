@@ -12,8 +12,6 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
-    'failed' => 'Queste credenziali non corrispondono ai nostri record.',
-    'throttle' => 'Troppi tentativi di accesso. Riprova tra :secondi secondi.',
-
+    'failed'   => 'Credenziali non corrispondenti ai dati registrati.',
+    'throttle' => 'Troppi tentativi di accesso. Riprova tra :seconds secondi.',
 ];

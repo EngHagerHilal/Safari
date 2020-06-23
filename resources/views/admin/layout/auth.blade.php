@@ -42,13 +42,13 @@
             <div class="collapse navbar-collapse" id="navbar1">
                 <ul class="navbar-nav">
                     <li class="nav-item ">
-                        <a class="nav-link" href="{{url('/admin/partners')}}">{{__('frontEnd.partners')}}</a>
+                        <a class="nav-link {{request()->path()=='admin/partners'?'active':''}}" href="{{url('/admin/partners')}}">{{__('frontEnd.partners')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('admin/users/')}}">{{__('frontEnd.users')}}</a>
+                        <a class="nav-link {{request()->path()=='admin/users'?'active':''}}" href="{{url('admin/users/')}}">{{__('frontEnd.users')}}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('admin/advertisement/')}}">{{__('frontEnd.ads')}}</a>
+                        <a class="nav-link {{request()->path()=='admin/advertisement'?'active':''}}" href="{{url('admin/advertisement/')}}">{{__('frontEnd.ads')}}</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav {{$margin}}">
@@ -185,8 +185,8 @@
 
     <!-- Copyright -->
     <div style="background-color: #eee" class="footer-copyright text-center py-3">
-        <a target="_blank" href="https://leen.com.eg/">powered by leen.com.eg </a><br><a href="{{url('/')}}"> © Copyright
-        {{date("Y")}} {{env('APP_NAME')}}</a>
+        powered by <a target="_blank" href="https://leen.com.eg/">leen.com.eg </a><br> © Copyright
+        {{date("Y")}} <a href="{{url('/')}}">{{env('APP_NAME')}}</a>
     </div>
     <!-- Copyright -->
 

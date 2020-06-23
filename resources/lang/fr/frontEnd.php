@@ -191,5 +191,7 @@ return [
     'account_rejected'  =>"Votre compte a été rejeté",
     "account_activated" => "Le compte a été activé, vous pouvez utiliser tous les services",
     'logout'            => 'se déconnecter',
+    "repeatedData"      =>"Les données saisies sont répétées avec un autre compte. Veuillez saisir des données uniques",
+
 
 ];

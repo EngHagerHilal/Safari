@@ -191,4 +191,6 @@ return [
     'account_rejected'  =>"Il tuo account è stato rifiutato",
     'account_activated' => "L'account è stato attivato, puoi utilizzare tutti i servizi",
     'logout'            => 'logout',
+    "repeatedData"      =>"I dati inseriti vengono ripetuti con un altro account. Inserire dati univoci",
+
 ];

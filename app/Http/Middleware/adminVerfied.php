@@ -17,7 +17,7 @@ class adminVerfied
     public function handle($request, Closure $next, $guard = 'admin')
     {
         if (Auth::guard($guard)->user()->email_verified_at =='') {
-            return redirect('/needToActive');
+            return response()->view('needToActive');
         }
 
         return $next($request);

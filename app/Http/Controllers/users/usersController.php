@@ -19,8 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use PayPal\Api\Payment;
-use PayPal\Api\PaymentExecution;
+
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class usersController extends Controller
@@ -57,6 +56,8 @@ class usersController extends Controller
             if(!$user=Auth::guard('company')->user()){
                 $type='user';
                 if(!$user=Auth::user() )
+                $type='admin';
+                if(!$user=Auth::guard('admin')->user() )
                 return redirect(route('login'));
             }
             if($user->hasVerifiedEmail()){
@@ -67,7 +68,8 @@ class usersController extends Controller
         $user->verfiy_code=$verfiyCode;
         $user->save();
         $message='you need to verfy your account please click link below';
-        $url=url("/$type/verfiy/".$user->email."/.$verfiyCode");
+        $url=url("/$type/verfiy/".$user->email."/$verfiyCode");
+
         MailController::sendEmail($user,$url,'verfy your account',$message);
         if( $request->is('api/*')){
             return \Response::json(['success'=>'activation email sent successfully check your email address to active your account']);
@@ -145,7 +147,7 @@ class usersController extends Controller
             $price=$trip->price*$voucher->discount/100;
         }
         $joinCode=mt_rand(100000,999999);
-        $joinCode=implode('-',str_split(str_shuffle($joinCode.time(now())),4));
+        $joinCode=implode('-',str_split(str_shuffle($joinCode.time()),4));
         $user_id=Auth::id();
         $QR_code=public_path(
              "img/users/$user_id/trips/$trip->id"
@@ -158,7 +160,7 @@ class usersController extends Controller
             mkdir(public_path('img/users/').Auth::id()."/trips/");
          if(!is_dir(public_path("img/users/").Auth::id()."/trips/".$trip->id))
             mkdir(public_path('img/users/').Auth::id()."/trips/".$trip->id);
-        $new_img=time(now()).'.png';
+        $new_img=time().'.png';
          QrCode::format('png')->size(400)
             ->generate($joinCode,$QR_code.'\img_'.$new_img );
         userTrips::create([
@@ -497,19 +499,19 @@ class usersController extends Controller
         ]);
         $other_user=User::where([['email','=',$request->email],['id','!=',Auth::id()]])->first();
         if($other_user){
-            return redirect()->back()->with('email',__('frontEnd.repeatedEmail'));
+            return redirect()->back()->withErrors(['email'=>[__('frontEnd.repeatedData')]]);
         }
         $other_user=Company::where('email','=',$request->email)->first();
         if($other_user){
-            return redirect()->back()->with('email',__('frontEnd.repeatedEmail'));
+            return redirect()->back()->withErrors(['email'=>[__('frontEnd.repeatedData')]]);
         }
         $other_user=User::where([['phone','=',$request->phone],['id','!=',Auth::id()]])->first();
         if($other_user){
-            return redirect()->back()->with('phone',__('repeated field'));
+            return redirect()->back()->withErrors(['phone'=>[__('frontEnd.repeatedData')]]);
         }
         $other_user=Company::where('phone','=',$request->phone)->first();
         if($other_user){
-            return redirect()->back()->with('phone',__('repeated field'));
+            return redirect()->back()->withErrors(['phone'=>[__('frontEnd.repeatedData')]]);
         }
         if($request->new_password!=''){
             $dataValidated=$request->validate([
@@ -521,12 +523,13 @@ class usersController extends Controller
             $user=Auth::user();
             $user->name=$request->name;
             $user->email=$request->email;
+            $user->phone=$request->phone;
             if($request->has('new_password')){
                 $user->password=Hash::make($request->new_password);
             }
             $user->save();
 
-            return redirect()->back()->with('success',__('fontEnd.profileUpdated'));
+            return redirect()->back()->with('success',__('frontEnd.profileUpdated'));
         }
         else{
             return redirect()->back()->withErrors(['current_password' => __('password not correct')]);
@@ -619,7 +622,7 @@ class usersController extends Controller
             $price=$trip->price*$voucher->discount/100;
         }
         $joinCode=mt_rand(100000,999999);
-        $joinCode=implode('-',str_split(str_shuffle($joinCode.time(now())),4));
+        $joinCode=implode('-',str_split(str_shuffle($joinCode.time()),4));
         $user_id=$user->id;
         $QR_code=public_path(
             "img/users/$user_id/trips/$trip->id"
@@ -632,7 +635,7 @@ class usersController extends Controller
             mkdir(public_path('img/users/').$user_id."/trips/");
         if(!is_dir(public_path("img/users/").$user_id."/trips/".$trip->id))
             mkdir(public_path('img/users/').$user_id."/trips/".$trip->id);
-        $new_img=time(now()).'.png';
+        $new_img=time().'.png';
         QrCode::format('png')->size(400)
             ->generate($joinCode,$QR_code.'\img_'.$new_img );
         $join=userTrips::create([

@@ -55,7 +55,7 @@
                         <div class="text-right p-t-13 p-b-23">
                         <span class="txt1">
                         </span>
-                            <a href="{{route('login')}}" class="txt2">
+                            <a href="{{route('admin.login')}}" class="txt2">
                                 {{__('frontEnd.have_account')}}
                             </a>
                         </div>

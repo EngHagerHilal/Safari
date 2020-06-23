@@ -74,7 +74,7 @@ class RegisterController extends Controller
             'email'=>$data['email'],
             'api_token'=>Str::random(60),
             'verfiy_code'=>$verfiyCode,
-            'password'=>bcrypt($data['password']),
+            'password'=>Hash::make($data['password']),
         ]);
 
         $message='you need to verfy your account please click link below';
@@ -107,15 +107,23 @@ class RegisterController extends Controller
 
     public function APIregister(Request $request)
     {
-        $validateRules=[
-            'name'          =>  'required|unique:admins',
-            'email'         =>  'required|unique:admins',
-            'password'      =>  'required|min:8',
 
-        ];
-        $error= \Illuminate\Support\Facades\Validator::make($request->all(),$validateRules);
-        if($error->fails()){
-            return \Response::json(['errors'=>$error->errors()->all()]);
+        if( $request->is('api/*')) {
+            $validateRules=[
+                'name'          =>  'required|unique:admins',
+                'email'         =>  'required|unique:admins',
+                'password'      =>  'required|min:8',
+            ];
+            $error = \Illuminate\Support\Facades\Validator::make($request->all(), $validateRules);
+            if ($error->fails()) {
+                return \Response::json(['errors' => $error->errors()->all()]);
+            }
+        }else{
+            $validatedData = $request->validate([
+                'name'          =>  'required|unique:admins',
+                'email'         =>  'required|unique:admins',
+                'password'      =>  'required|min:8',
+            ]);
         }
         $verfiyCode=Str::random(70);
         $data=Admin::create([
@@ -125,13 +133,14 @@ class RegisterController extends Controller
             'verfiy_code'=>$verfiyCode,
             'password'=>Hash::make($request->password)
         ]);
-
         $message='you need to verfy your account please click link below';
         $url=url('/admin/verfiy/'.$data->email.'/'.$verfiyCode);
         MailController::sendEmail($data,$url,'verfy your account',$message);
         $data->message='email created successfully check your email address to active your account';
-
-        return $data;
+        if( $request->is('api/*')) {
+            return $data;
+        }
+        return redirect()->to(route('admin.login'));
     }
 
 }

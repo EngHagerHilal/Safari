@@ -193,6 +193,7 @@ return [
     'account_rejected'  =>'تم رفض حسابك',
     'account_activated' =>'تم تفعيل الحساب يمكنك استخدام جميع الخدمات',
     'logout'            =>'تسجيل الخروج',
+    'repeatedData'     =>'البيانات المدخلة متكررة مع حساب اخر . الرجاء ادخال بيانات فريدة',
 
     //start of terms page
     'about_text_head'   => 'نبذة عنا ',

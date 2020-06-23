@@ -4,7 +4,7 @@
     $text= str_replace('_', '-', app()->getLocale()) =='ar' ? 'text-right' : 'text-left';
     $offset_1= str_replace('_', '-', app()->getLocale()) =='ar' ? 'margin-right:8.3%' : 'margin-left:8.3%';
 @endphp
-@extends('layouts.app')
+@extends('admin.layout.auth')
 
 @section('content')
 <div class="main-bg-safary pb-3">
@@ -55,6 +55,15 @@
                                         <input id="email" class="@error('email') is-invalid @enderror input100 {{$text}}" type="email" name="email" placeholder="{{__('frontEnd.your_email')}}" value="{{$user->email}}" required="required" autocomplete="email" >
                                         <span class="focus-input100"></span>
                                         @error('email')
+                                        <span class="px-4 invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="wrap-input100 validate-input m-b-16" data-validate="Please enter phone">
+                                        <input id="phone" class="@error('phone') is-invalid @enderror input100 {{$text}}" type="tel" name="phone" placeholder="{{__('frontEnd.phone')}}" value="{{$user->phone}}" required="required" >
+                                        <span class="focus-input100"></span>
+                                        @error('phone')
                                         <span class="px-4 invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

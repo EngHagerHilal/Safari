@@ -19,6 +19,9 @@ class usersVerfied
         if (Auth::user()->email_verified_at =='') {
             return redirect('/needToActive');
         }
+        if (Auth::user()->status =='blocked') {
+            return response()->view('company.account_blocked');
+        }
 
         return $next($request);
     }

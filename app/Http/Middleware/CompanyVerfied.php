@@ -19,6 +19,9 @@ class CompanyVerfied
         if (Auth::guard($guard)->user()->email_verified_at =='') {
             return redirect('/needToActive');
         }
+        if (Auth::guard($guard)->user()->status =='blocked') {
+            return response()->view('company.account_blocked');
+        }
 
         return $next($request);
     }
