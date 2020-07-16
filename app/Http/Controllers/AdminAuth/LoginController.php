@@ -178,4 +178,12 @@ class LoginController extends Controller
 
     }
 
+}/*
+[05-07-2020 10:29:37] PayPal\Core\PayPalHttpConnection : ERROR: Got Http response code 400 when accessing https://api.paypal.com/v1/payments/payment/PAYID-L4AY6PA9FF250767G597764B/execute. {
+"name":"COMPLIANCE_VIOLATION",
+"message":"Transaction is declined due to compliance violation.",
+"information_link":"https://developer.paypal.com/docs/api/payments/#errors",
+"debug_id":"28facea98601a"
 }
+[05-07-2020 10:29:37] PayPal\Core\PayPalHttpConnection : DEBUG:
+*/

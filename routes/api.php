@@ -35,6 +35,7 @@ Route::post('/tripDetails/rate/', 'users\usersController@rateTripAPI')->name('us
 Route::post('/myTrips','users\usersController@myJoinedTRipsAPI')->name('user.myTrips.api');
 Route::post('/edit-profile/', 'users\usersController@editProfileAPI');//done
 Route::post('/update-profile/', 'users\usersController@updateProfileAPI');//done
+Route::get('/ads/active', 'Admin\AdminController@randomADS');//done
 
 
 Route::group(['prefix' => 'admin'], function () {

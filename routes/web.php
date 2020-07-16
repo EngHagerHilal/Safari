@@ -26,6 +26,8 @@ Route::get('/locale/{locale}', function ($locale){
 });
 Route::any('/resendEmailActivation','users\usersController@resendEmailActivation')->name('resend.email.activation');
 
+//Route::get('/test-payment','WeAcceptPayment@testPayment');
+
 Route::get('/{accountType}/verfiy/{email}/{verifyCode}', 'Admin\AdminController@verifyEmail');
 Route::get('needToActive', function (){
     if(\Illuminate\Support\Facades\Auth::check()){

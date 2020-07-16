@@ -33,7 +33,6 @@
 </head>
 <body dir="{{$dir}}" style="overflow-x: hidden">
 <div id="app">
-    @yield('homePageSlider')
     <nav style="background-color: #00AA6C;box-shadow: 0 0 8px rgba(0,0,0,.6)" class="navbar navbar-expand-sm sticky-top navbar-light ">
         <div class="container">
             <a class="navbar-brand font-weight-bold text-uppercase" href="{{url('/')}}"><img src="{{asset('img/logo.png')}}" width="140" height="75" alt="safare"></a>
@@ -41,22 +40,6 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar1">
-                    <ul class="navbar-nav">
-                        <li class="nav-item {{request()->category=='air flights'?'active':''}}">
-                            <a class="nav-link" href="{{url('/trips/search?category=air+flights')}}">{{__('frontEnd.air_flights')}}</a>
-                        </li>
-                        <li class="nav-item {{request()->category=='sea trips'?'active':''}}">
-                            <a class="nav-link" href="{{url('/trips/search?category=sea+trips')}}">{{__('frontEnd.sea_trips')}}</a>
-                        </li>
-                        <li class="nav-item {{request()->category=='land trips'?'active':''}}">
-                            <a class="nav-link" href="{{url('/trips/search?category=land+trips')}}">{{__('frontEnd.land_trips')}}</a>
-                        </li>
-
-                        <li class="nav-item d-inline-block d-lg-none">
-                            <a class="nav-link" href="{{route('user.trips.search.mobile')}}">{{__('frontEnd.search')}}</a>
-                        </li>
-
-                    </ul>
                     <ul class="navbar-nav {{$margin}}">
 
                         @if(! \Illuminate\Support\Facades\Auth::check())
@@ -87,7 +70,7 @@
                                         <a class="dropdown-item" href="{{ route('company.logout') }}"
                                            onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            {{ __('frontEnd.logout') }}
+                                            {{ __('Logout') }}
                                         </a>
 
                                         <form id="logout-form" action="{{ route('company.logout') }}" method="POST" style="display: none;">
@@ -143,7 +126,8 @@
         </nav>
 
         <main >
-            @yield('content')
+            <iframe style="width: 100%;min-height: 600px" src="{{$url}}" title="test payment">
+            </iframe>
         </main>
     </div>
 <!-- Footer -->

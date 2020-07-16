@@ -213,7 +213,7 @@ return [
 
     //start of terms page
     'about_text_head'   =>
-     'نبذة عنا ',
+     'about us ',
     'terms_intro'       =>
      'Introduction',
     'terms_intro_text'       =>
@@ -249,10 +249,7 @@ Any other personal information you send us.
 
 
     'about_text'        =>
-     ' SAFAREGY
-‏ هى بوابة مشهورة تهتم بالخدمات السياحيه يمكنك عن طريقها اختيار وحجز و شراء الرحلات البحريه والصحراوى وخدمات اخرى كثيره فى مجال السياحه عبر الإنترنت بكل سهولة و امان مقرها الرئيسي في القاهرة، تأسس الموقع في عام ٢٠٢٠ .
-مهمتها الاساسية هي جعل السفر والسياحه عبر العالم أسهل للجميع، يحتوي الموقع على الكثير من الشركات التى تعمل فى مجال السياحه في 228 دولة ومنطقة حول العالم
-',
+     ' SAFAREGY is a famous portal that cares about tourism services, through which you can choose, book, and buy sea and desert trips and many other services in the field of tourism via the Internet with ease and safety. Its main headquarters is in Cairo. The site was established in the year 2020. Its main mission is to make travel and tourism across the world easier for everyone, the site contains a lot of companies that work in the field of tourism in 228 countries and regions around the world.',
 
     'using_info'=>
     'Use of your personal information',

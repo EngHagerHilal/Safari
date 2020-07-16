@@ -516,4 +516,11 @@ class AdminController extends Controller
         $ads->save();
         return \Response::json(['success'=>'ads updated ']);
     }
+    public  function randomADS(){
+        $ads=advertisement::where('status','show')->orderByRaw('RAND()')->take(3)->get();
+        if($ads->count()>0)
+        return $ads;
+        return \Response::json(['alert'=>'no ads available now ']);
+    }
+
 }

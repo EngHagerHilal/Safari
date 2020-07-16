@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" type="text/css" href="https://accept.paymobsolutions.com/static/css/bootstrap.min.css">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body, html {
+            font-family: "Open Sans", sans-serif;
+            text-rendering: optimizeLegibility !important;
+            -webkit-font-smoothing: antialiased !important;
+            width: 100% !important;
+            height: 100% !important;
+            background-color: #ffffff;
+        }
+
+        h1, h2, h3, h4, h5, h6, p {
+            color:#2A3F54;
+        }
+
+        h2 {
+            line-height: 36px;
+            margin: 0;
+            color: #444;
+            font-weight: 400;
+            margin-bottom: 30px;
+            font-size: 40px;
+            text-transform: uppercase;
+        }
+        h3 {
+            color: #7A8DA1;
+            font-size: 20px;
+            font-weight: 400px;
+        }
+        h4 {
+            color: #7A8DA1;
+            font-size: 20px;
+            font-weight: 400px;
+        }
+
+        jumbo {
+            color:#2A3F54;
+            font-size: 30px;
+        }
+
+        .black {
+            color:black;
+        }
+
+
+        .center-div {
+            padding: 70px 0;
+            text-align: center;
+        }
+
+
+
+        #prodInfo{
+            margin: 0 auto;
+        }
+
+        .caption {
+            background-color: white;
+        }
+
+        /* styling for bill view */
+        #cardForm {
+            padding-bottom: 20px;
+            color: #3b5998;
+            /*background-color: #f7f7f7;*/
+        }
+
+        #pageTitle{
+            color: white;
+        }
+
+
+        @media (min-width: 992px) {
+            .prodPanel{
+                height: 582px !important;
+            }
+            #spinner{
+                margin-top: -250px !important;
+                margin-left: 220px !important;
+            }
+
+        }
+
+        @media (min-width: 768px) and  (max-width: 992px){
+            #spinner{
+                margin-top: -230px !important;
+                margin-left: 200px !important;
+            }
+
+        }
+
+        .merchN{
+            font-size: 18px !important;
+        }
+
+
+        @media (max-width: 768px) {
+            #spinner{
+                margin-top: 100px !important;
+            }
+        }
+
+        #payDiv{
+            /*margin-top: 40px;*/
+            margin: 0 !important;
+        }
+
+        /* loading div styling */
+        .spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -50px; /* half width of the spinner gif */
+            margin-top: -50px; /* half height of the spinner gif */
+            text-align:center;
+            z-index:1234;
+            overflow: auto;
+            width: 100px; /* width of the spinner gif */
+            height: 102px; /*hight of the spinner gif +2px to fix IE8 issue */
+        }
+
+        .wrp {
+            position:absolute;
+            top:50%;
+            left:50%;
+        }
+
+        .heads{
+            margin-bottom: 20px;
+        }
+
+        #wrapper {
+            min-height:100%;
+        }
+
+        #content {
+            overflow: auto;
+            padding-bottom:150px;
+        }
+
+
+        footer {
+            position: relative;
+            margin-top: -150px; /* negative value of footer height */
+            height: 150px;
+            clear: both;
+            padding-top: 60px;
+        }
+
+
+        .btn-product{
+            width: 50%;
+        }
+
+        .error{
+            color: #ad2929 !important;
+        }
+
+        .bl{
+            color: #2A3F54;
+        }
+
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+
+        /* phone codes css */
+        .iti-flag {background-image: url("assets/telinput/img/flags.png");}
+        .intl-tel-input {width: 100%;}
+
+
+
+        .credit-card-box .display-tm {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+
+
+        /* CSS for Credit Card Payment form */
+        .credit-card-box .panel-title {
+            display: inline;
+            font-weight: bold;
+        }
+        .credit-card-box .form-control.error {
+            border-color: red;
+            outline: 0;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(255,0,0,0.6);
+        }
+        .credit-card-box label.error {
+            font-weight: bold;
+            color: red;
+            padding: 2px 8px;
+            margin-top: 2px;
+        }
+        .credit-card-box .payment-errors {
+            font-weight: bold;
+            color: red;
+            padding: 2px 8px;
+            margin-top: 2px;
+        }
+        .credit-card-box label {
+            display: block;
+        }
+        /* The old "center div vertically" hack */
+        .credit-card-box .display-table {
+            display: table;
+        }
+        .credit-card-box .display-tr {
+            display: table-row;
+        }
+        .credit-card-box .display-td {
+            display: table-cell;
+            vertical-align: middle;
+            width: 50%;
+        }
+        /* Just looks nicer */
+        .credit-card-box .panel-heading img {
+            min-width: 140px;
+        }
+    </style>
+</head>
+<body>
+    <div class="col-md-6 col-md-offset-3 col-sm-12  col-xs-12 ">
+        <div class="panel panel-default credit-card-box">
+            <div class="panel-heading display-table" >
+                <div class="row display-tr" >
+                    <h2 class="panel-title display-td" >Payment Details</h2>
+                    <div class="display-td" >
+                        <img class="img-responsive pull-right col-xs-1" src="https://accept.paymobsolutions.com/static/base/img/pm.png">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form role="form" id="paymob_checkout">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label for ="cardNumber">CARD NUMBER</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control cardInput" placeholder="4987654321098769" maxlength="16" paymob_field="card_number" />
+                                    <span class="input-group-addon">
+                                        <i class="glyphicon glyphicon-credit-card"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label for="cardName">CARD HOLDER NAME</label>
+                                <input type="text" class="form-control" placeholder="Test Account" paymob_field="card_holdername" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="form-group">
+
+                                <label for="expMonth">
+                                    EXP. MONTH
+                                </label>
+
+                                <input type="text" class="form-control" placeholder="05" paymob_field="card_expiry_mm">
+                                <!--
+                                <select class="form-control" paymob_field="card_expiry_mm">
+                                <option selected value="no">--</option>
+                                <option value=01>01</option>
+                                <option value=02>02</option>
+                                <option value=03>03</option>
+                                <option value=04>04</option>
+                                <option value=05>05</option>
+                                <option value=06>06</option>
+                                <option value=07>07</option>
+                                <option value=08>08</option>
+                                <option value=09>09</option>
+                                <option value=10>10</option>
+                                <option value=11>11</option>
+                                <option value=12>12</option>
+                                </select>
+                                -->
+
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="form-group">
+                                <label for="expYear">
+                                    EXPIRY YEAR
+                                </label>
+                                <input type="text" class="form-control" placeholder="21" paymob_field="card_expiry_yy">
+                                <!--
+                                <select class="form-control" id="cardExYY" name="c_expiry_yy_U">
+                                <option selected value="no">--</option>
+                                <option value=17>2017</option>
+                                <option value=18>2018</option>
+                                <option value=19>2019</option>
+                                <option value=20>2020</option>
+                                <option value=21>2021</option>
+                                <option value=22>2022</option>
+                                <option value=23>2023</option>
+                                <option value=24>2024</option>
+                                <option value=25>2025</option>
+                                </select>
+                                -->
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group">
+                                <label for="CVV">CVV</label>
+                                <!-- not to be sent with form -->
+                                <input type="text" class="form-control" placeholder="123" paymob_field="card_cvn" />
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" value="CARD" paymob_field="subtype">
+                    <label for="save card"> <input type="checkbox" value="tokenize" name="save card"> save card</label>
+                    <div class="row text-center">
+                        <br/>
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1">
+                            <input type="submit" class="btn btn-primary active submit payB" value="Pay">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5 text-center">
+                                <span><h5>Sponsor Bank</h5></span>
+                                <span><img class="img-responsive" src="https://accept.paymobsolutions.com/static/base/img/AAIB-logo.png"></span>
+                            </div>
+                            <div class="col-xs-4 col-xs-offset-2 text-center">
+                                <span><h5>Powered by</h5></span>
+                                <span><img class="img-responsive" src="https://accept.paymobsolutions.com/static/base/img/accept_blue.png"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
